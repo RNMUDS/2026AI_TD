@@ -1,0 +1,18 @@
+.DS_Store
+__pycache__/
+*.pyc
+# 研究用ハーネスは別プロジェクト（授業資料リポジトリには含めない）
+qwen3_harness/
+qwen3_harness.tar.gz
+# 未公開の下書き・生成元は公開しない
+docs/_build/
+# 教科書原稿・出版社納品物（非公開）
+LNDS-2/
+# 受講者の実行環境・成果物（build_student_dist.py が追加）
+.venv/
+results/*
+!results/.gitkeep
+assets/corpus/
+.ipynb_checkpoints/
+# 受講者手順の動作確認用クローン先
+Student/

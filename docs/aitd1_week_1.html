@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第1回: AIの性能を測る ― 良いAIとは何を測ることか | AI_TD1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ RESET & BASE ============ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: clamp(13px, 1.6vw, 28px); }
+html, body { overflow-x: hidden; max-width: 100%; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #111111;
+  color: #e0e0e0;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+/* Media and embeds should never overflow their container */
+img, video, iframe, svg, canvas { max-width: 100%; height: auto; }
+
+/* ============ LAYOUT ============ */
+.container { max-width: 1600px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); }
+section { padding: clamp(2rem, 5vw, 4rem) 0; }
+section + section { border-top: 1px solid #222; }
+
+/* ============ HEADER ============ */
+.hero {
+  background: linear-gradient(135deg, #111111, #0a1a2e, #0a0f1a);
+  color: white;
+  padding: clamp(3rem, 8vw, 6rem) 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(108,99,255,0.3), transparent 50%),
+              radial-gradient(circle at 20% 80%, rgba(155,89,182,0.2), transparent 50%);
+}
+.hero .container { position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 100px;
+  padding: 0.35rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+.hero p { font-size: clamp(0.95rem, 1.8vw, 1.15rem); opacity: 0.85; max-width: 600px; }
+
+/* ============ SUBMISSION BOX ============ */
+.submission-box {
+  background: linear-gradient(135deg, #1A1A1A, #0a1a2e);
+  border: 2px solid #4FC3F7;
+  border-radius: 16px;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  margin: 2rem 0;
+}
+.submission-box h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #4FC3F7;
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.submission-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.5rem;
+}
+.sub-item {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  gap: 0.3rem;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 0.4rem;
+  padding: 0.6rem 0.4rem;
+  font-size: 0.55rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.sub-item .sub-count {
+  margin-bottom: 0.1rem;
+}
+.sub-item .tag {
+  margin-bottom: 0.15rem;
+}
+.sub-count {
+  background: #4FC3F7;
+  color: white;
+  border-radius: 0.2rem;
+  min-width: 1.5rem; height: 1.5rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700;
+}
+
+/* ============ TAGS ============ */
+.tag {
+  display: inline-flex; align-items: center; gap: 0.2rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 100px;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.tag-note      { background: #0a1a2e; color: #4FC3F7; }
+.tag-standard  { background: #0a1a2e; color: #4FC3F7; }
+.tag-advanced  { background: #2e1a0a; color: #FFB800; }
+.tag-group     { background: #0a1a2e; color: #4FC3F7; }
+
+/* ============ EXAM ALERT TAG ============ */
+.exam-alert {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  background: rgba(255, 82, 82, 0.15);
+  border: 1px solid #FFB800;
+  color: #FFB800;
+  padding: 0.2rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+  animation: exam-pulse 2s ease-in-out 3;
+}
+@keyframes exam-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ============ SECTION HEADERS ============ */
+.section-header {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.section-num {
+  width: 2.5rem; height: 2.5rem;
+  border-radius: 0.4rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; font-weight: 900; color: white;
+  flex-shrink: 0;
+}
+.section-header h2 {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+/* ============ CARDS ============ */
+.card {
+  background: #141414;
+  border-radius: 16px;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  border: 1px solid #2a2a2a;
+}
+.card-header {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #222;
+}
+.card-header h3 { font-size: 1.1rem; font-weight: 700; }
+.card.standard  { border-left: 4px solid #4FC3F7; }
+.card.advanced  { border-left: 4px solid #FFB800; }
+.card.group     { border-left: 4px solid #81D4FA; }
+
+/* ============ NOTION CALLOUT ============ */
+.notion-submit {
+  background: #0a1a2e;
+  border: 1px solid #4FC3F7;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+  font-size: 0.88rem;
+  display: flex; align-items: flex-start; gap: 0.5rem;
+}
+.notion-submit::before { content: '\1F4DD'; font-size: 1rem; flex-shrink: 0; }
+.notion-submit strong { color: #FFB800; }
+
+/* ============ TABLES ============ */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9rem;
+  margin: 1rem 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+th {
+  background: rgba(108, 99, 255, 0.15);
+  font-weight: 700;
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.82rem;
+  color: #4FC3F7;
+  letter-spacing: 0.02em;
+}
+td {
+  padding: 0.55rem 0.8rem;
+  border-top: 1px solid #222;
+}
+tr:nth-child(even) td { background: #111; }
+
+/* ============ CODE ============ */
+pre {
+  background: #0A0A0A;
+  color: #E0E0E0;
+  border-radius: 12px;
+  padding: clamp(0.8rem, 2vw, 1.4rem);
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-ligatures: none;
+  font-size: clamp(0.75rem, 1.3vw, 0.88rem);
+  line-height: 1.7;
+  margin: 1rem 0;
+  position: relative;
+}
+pre .kw { color: #4FC3F7; }
+pre .fn { color: #81D4FA; }
+pre .str { color: #FFB800; }
+pre .cmt { color: #616161; font-style: italic; }
+pre .num { color: #FFB800; }
+pre .op { color: #81D4FA; }
+.code-label {
+  position: absolute; top: 0; right: 0;
+  background: rgba(255,255,255,0.08);
+  color: #999999;
+  padding: 0.2rem 0.8rem;
+  border-radius: 0 12px 0 8px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+/* inline code */
+:not(pre) > code {
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(108,99,255,0.15);
+  padding: 0.15em 0.45em;
+  border-radius: 5px;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+:not(pre) > code:hover { background: rgba(108,99,255,0.3); }
+:not(pre) > code.copied { background: rgba(108,99,255,0.5); }
+
+/* ============ EXPLANATION BLOCKS ============ */
+.concept-box {
+  background: rgba(108, 99, 255, 0.15);
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  margin: 1rem 0;
+  border: 1px solid #2a2a3a;
+}
+.concept-box h4 {
+  font-size: 0.95rem; font-weight: 700; color: #4FC3F7; margin-bottom: 0.5rem;
+}
+.analogy {
+  background: #1a1a0a;
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin: 0.75rem 0;
+  border-left: 3px solid #FFB800;
+  font-size: 0.95rem;
+}
+.analogy::before {
+  content: '\1F4A1 具体例';
+  display: block;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #FFB800;
+  margin-bottom: 0.3rem;
+}
+.point-list {
+  list-style: none;
+  padding: 0;
+}
+.point-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+.point-list li::before {
+  content: '\25B8';
+  position: absolute; left: 0;
+  color: #4FC3F7;
+  font-weight: 700;
+}
+
+/* ============ ANSWERS (COLLAPSIBLE) ============ */
+details {
+  background: #141414;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+details summary {
+  padding: 0.8rem 1.2rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 0.5rem;
+  background: #1a1a1a;
+  user-select: none;
+}
+details summary::marker { content: ''; }
+details summary::before {
+  content: '\25B6';
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+  color: #666;
+}
+details[open] summary::before { transform: rotate(90deg); }
+details .answer-content { padding: 1rem 1.2rem; border-top: 1px solid #2a2a2a; }
+
+/* ============ WARNING / DANGER CALLOUT ============ */
+.callout-danger {
+  background: rgba(255, 82, 82, 0.08);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+  border-left: 4px solid #FFB800;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.callout-danger h4 {
+  color: #FFB800; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;
+}
+.callout-warning {
+  background: rgba(255, 184, 0, 0.08);
+  border: 1px solid rgba(255, 184, 0, 0.3);
+  border-left: 4px solid #FFB800;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.callout-warning h4 {
+  color: #FFB800; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;
+}
+.callout-info {
+  background: rgba(108, 99, 255, 0.08);
+  border: 1px solid rgba(108, 99, 255, 0.3);
+  border-left: 4px solid #4FC3F7;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.callout-info h4 {
+  color: #4FC3F7; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;
+}
+.callout-tip {
+  background: rgba(155, 89, 182, 0.08);
+  border: 1px solid rgba(155, 89, 182, 0.3);
+  border-left: 4px solid #81D4FA;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.callout-tip h4 {
+  color: #81D4FA; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;
+}
+
+/* ============ FOOTER ============ */
+footer {
+  background: #0A0A0A;
+  color: #999999;
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 640px) {
+  .submission-items { grid-template-columns: 1fr; }
+  .section-num { width: 2rem; height: 2rem; font-size: 0.85rem; }
+}
+
+/* ============ COPY BUTTON ============ */
+pre { position: relative; }
+.copy-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid #444;
+  color: #999;
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.72rem;
+  cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: all 0.2s;
+  z-index: 2;
+}
+.copy-btn:hover { background: #4FC3F7; color: white; border-color: #4FC3F7; }
+.copy-btn.copied { background: #4FC3F7; color: white; border-color: #4FC3F7; }
+
+/* ============ SUB-ITEM LINKS ============ */
+a.sub-item { transition: transform 0.15s, box-shadow 0.15s; }
+a.sub-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79,195,247,0.3);
+  border-color: #4FC3F7;
+}
+
+/* ============ SECTION NAV (sticky) ============ */
+.section-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(17,17,17,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #222;
+  padding: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+.section-nav a {
+  color: #999;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.section-nav a:hover { color: #4FC3F7; background: rgba(79,195,247,0.1); }
+.section-nav a.nav-assignment { color: #81D4FA; }
+.section-nav a.nav-exam { color: #FFB800; }
+
+/* ============ SCROLL TARGET OFFSET ============ */
+[id] { scroll-margin-top: 3rem; }
+
+/* ============ REDUCED MOTION ============ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  details summary::before { transition: none; }
+}
+</style>
+
+<body>
+
+<!-- ============ SECTION NAV ============ -->
+<nav class="section-nav"><div style="display:flex;align-items:center;gap:0.1rem;margin-right:0.8rem;border-right:1px solid #333;padding-right:0.8rem"><span style="color:#666;font-size:0.5rem;white-space:nowrap">回:</span><a style="color:#4FC3F7;background:rgba(79,195,247,0.15);font-size:0.6rem;padding:0.2rem 0.5rem;border-radius:4px" href="aitd1_week_1.html">1</a> <span style="color:#444;font-size:0.6rem;padding:0.2rem 0.5rem">2</span> <span style="color:#444;font-size:0.6rem;padding:0.2rem 0.5rem">3</span> <span style="color:#444;font-size:0.6rem;padding:0.2rem 0.5rem">4</span> <span style="color:#444;font-size:0.6rem;padding:0.2rem 0.5rem">5</span> <span style="color:#444;font-size:0.6rem;padding:0.2rem 0.5rem">6</span> <span style="color:#444;font-size:0.6rem;padding:0.2rem 0.5rem">7</span> <a style="color:#999;font-size:0.6rem;padding:0.2rem 0.5rem" href="index.html">全体</a></div>
+  <a href="#sec-purpose">授業の目的</a>
+  <a href="#sec-flow">本日の流れ</a>
+  <a href="#sec-prep">0. 事前準備</a>
+  <a href="#sec-roles">1. 役割とルール</a>
+  <a href="#sec-lecture">2. 良いAIとは何を測ることか</a>
+  <a href="#sec-ex1" class="nav-assignment">3. 演習1 環境を測る</a>
+  <a href="#sec-ex2" class="nav-assignment">4. 演習2 3モデルを測る</a>
+  <a href="#sec-ex3" class="nav-assignment">5. 演習3 良いAIを定義する</a>
+  <a href="#sec-cards">6. 質問カード</a>
+  <a href="#sec-submit" class="nav-exam">提出</a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-badge">人工知能(AI)テクノロジデザインⅠ（AI_TD1）─ 2026年度 3学期</div>
+    <p style="font-size:0.85rem;opacity:0.7;margin-bottom:0.3rem">武蔵野大学データサイエンス学部　中村 亮太</p>
+    <h1>第1回: AIの性能を測る ― 良いAIとは何を測ることか</h1>
+    <p>自分のマシンの速さを測り、同じ大きさの3つのAIモデルを「正解率・損失・速度・メモリ」の4指標で同時に測る。そのうえで班ごとに「良いAI」を一文で定義し、順位を算出して他班の結果と比較する。</p>
+    <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:0.3rem;padding:0.4rem 0.8rem;margin-top:1rem;font-size:0.7rem;display:inline-block;max-width:100%;overflow-wrap:anywhere">
+      <strong>第1回のメイン:</strong> 環境ベンチマーク ＋ 学習済み3モデルの4指標同時測定 ＋ 「良いAI」の定義と順位づけ（各演習の後にグループディスカッションとグループ内プレゼン）
+    </div>
+  </div>
+</header>
+
+<!-- ============ COURSE PURPOSE ============ -->
+<section id="sec-purpose" style="padding-top:2.5rem;padding-bottom:0">
+  <div class="container">
+    <div class="card" style="border-left:4px solid #4FC3F7;background:linear-gradient(135deg,#141414,#111a24)">
+      <div class="card-header"><h3>📌 授業の目的：何をするのか（はじめに読もう）</h3></div>
+
+      <p style="font-size:1.05rem;margin-bottom:0.7rem">この科目を貫く問いは <strong style="color:#4FC3F7">「その数字は信じられるか」</strong>。</p>
+      <ul class="point-list" style="margin-bottom:1rem">
+        <li>ディープラーニングの授業は「正解率 92%」のような数字を出して終わりがちだが、<strong>その数値がどの程度変動するか</strong>を測定した経験を持つ学生は少ない</li>
+        <li>この科目では毎回、自分のマシンで<strong>小型の言語モデルを動かして数字を出し</strong>、班ごとに違う条件を担当して、<strong>他班の実測値と比較する</strong></li>
+        <li>レポートは<strong>自班の実測と、質問カード交換で集めた3〜4班の実測値</strong>を比較して作成する。提出された班の分を教員が統合した図を配る。LLM からは自班や他班の実測値は得られない</li>
+      </ul>
+
+      <p style="font-size:0.9rem;color:#999;margin:1.2rem 0 0.5rem">7回の流れは次の3ステップ。</p>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin:0.5rem 0 1rem">
+        <div style="flex:1;min-width:14rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #4FC3F7;border-radius:0.5rem;padding:0.9rem">
+          <div style="color:#4FC3F7;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem">STEP 1 ─ 測る</div>
+          <div style="font-size:0.88rem"><strong>性能・勾配・過学習を自分で測る</strong>。測定手順の誤りが数値を系統的に歪めることを確認する。<span style="color:#999">（第1〜3回）</span></div>
+        </div>
+        <div style="flex:1;min-width:14rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #FFB800;border-radius:0.5rem;padding:0.9rem">
+          <div style="color:#FFB800;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem">STEP 2 ─ 疑う</div>
+          <div style="font-size:0.88rem"><strong>同じ条件を5回回して分散を見る</strong>。「差がある」と言えるかを判定する作法を身につける。<span style="color:#999">（第4回 ★科目の要）</span></div>
+        </div>
+        <div style="flex:1;min-width:14rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #B388FF;border-radius:0.5rem;padding:0.9rem">
+          <div style="color:#B388FF;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem">STEP 3 ─ 比べる</div>
+          <div style="font-size:0.88rem"><strong>アーキテクチャ・ショートカット・スケーリング</strong>を班で分担した格子で比べ、原理的に解けない壁を実測で見る。<span style="color:#999">（第5〜7回）</span></div>
+        </div>
+      </div>
+
+      <h4 style="color:#4FC3F7;font-weight:700;font-size:1.05rem;margin:1.5rem 0 0.3rem">🎯 到達目標（7回終了時にできること）</h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(15.5rem,1fr));gap:0.6rem">
+        <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #4FC3F7;border-radius:0.5rem;padding:0.8rem 0.9rem">
+          <div style="font-weight:800;font-size:0.92rem;color:#4FC3F7;margin-bottom:0.25rem">① 正しく測る</div>
+          <div style="font-size:0.84rem;color:#ccc">GPU の同期・ウォームアップ・中央値を使って、正解率・損失・速度・メモリを同じ関数で測れる</div>
+        </div>
+        <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #FFB800;border-radius:0.5rem;padding:0.8rem 0.9rem">
+          <div style="font-weight:800;font-size:0.92rem;color:#FFB800;margin-bottom:0.25rem">② 差を疑う</div>
+          <div style="font-size:0.84rem;color:#ccc">シード複数回の平均と標準偏差を出し、「差 ÷ ばらつき」で差があると言えるかを判定できる</div>
+        </div>
+        <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #81D4FA;border-radius:0.5rem;padding:0.8rem 0.9rem">
+          <div style="font-weight:800;font-size:0.92rem;color:#81D4FA;margin-bottom:0.25rem">③ 公平に比べる</div>
+          <div style="font-size:0.84rem;color:#ccc">パラメータ数を揃えたアーキテクチャ比較を設計・実行し、データ量で解決できない壁を説明できる</div>
+        </div>
+        <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #B388FF;border-radius:0.5rem;padding:0.8rem 0.9rem">
+          <div style="font-weight:800;font-size:0.92rem;color:#B388FF;margin-bottom:0.25rem">④ 言葉にする</div>
+          <div style="font-size:0.84rem;color:#ccc">自班の実測値を根拠に、他班に「実測値を要求する質問」を作り、順位が割れた理由を説明できる</div>
+        </div>
+      </div>
+
+      <details style="margin-top:1.2rem">
+        <summary>📅 全7回の計画 ― クリックで開く</summary>
+        <div class="answer-content">
+          <table style="font-size:0.85rem">
+            <tr><th style="width:4rem">回</th><th>テーマ</th><th>やること</th><th>班別条件（ジグソー）</th></tr>
+            <tr><td><strong style="color:#4FC3F7">1</strong></td><td>AIの性能を測る</td><td>環境ベンチマーク／学習済み3モデルの4指標同時測定／「良いAI」の定義と順位</td><td>なし（条件は共通）</td></tr>
+            <tr><td>2</td><td>勾配の観測</td><td>層別勾配ノルムの記録と可視化／学習率ジグソーで発散境界を実測</td><td>学習率 9水準 × 3班</td></tr>
+            <tr><td>3</td><td>過学習と評価指標</td><td>過学習を意図的に作る／正則化3手法／損失と評価指標の乖離</td><td>weight decay／Dropout／データ拡張</td></tr>
+            <tr><td><strong style="color:#FFB800">4 ★</strong></td><td>再現性と分散</td><td>同一条件をシード5回で自動実行／差÷標準偏差／登壇発表</td><td>なし（以後シード5回が既定）</td></tr>
+            <tr><td>5</td><td>アーキテクチャ比較</td><td>3アーキ × 3タスク × 3データ量 ＝ 27セルの格子を班で分担して埋める</td><td>1班1セル</td></tr>
+            <tr><td>6</td><td>ショートカット学習</td><td>相関トークン混入データで学習／反転テスト／寄与度の可視化</td><td>相関強度 4水準</td></tr>
+            <tr><td>7</td><td>スケーリング則</td><td>幅 × データ量 16セル／両対数プロット／伏せたセルを外挿して当てる</td><td>16セルを班で分担（重複割当）</td></tr>
+          </table>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUBMISSION GUIDE ============ -->
+<section style="padding-top:2rem;padding-bottom:0">
+  <div class="container">
+    <div class="submission-box">
+      <h3>📤 提出ガイド（班で1セット、results/ の6ファイルをそのまま LMS にアップロード。zip にしない）</h3>
+      <div class="submission-items">
+        <a href="#sec-ex1" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-standard">演習1</span>c1_d1_ex1_&lt;班&gt;.csv（班員全員分の行）</a>
+        <a href="#sec-ex2" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">演習2</span>c1_d1_ex2_&lt;班&gt;.csv ／ table_c1_d1_ex2_&lt;班&gt;.csv</a>
+        <a href="#sec-ex3" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">演習3</span>c1_d1_ex3_&lt;班&gt;.csv ／ c1_d1_ex3_definition_&lt;班&gt;.txt</a>
+        <a href="#sec-cards" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-group">グループ</span>c1_d1_ex3_questions_&lt;班&gt;.txt（質問カード）</a>
+        <a href="#sec-roles" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">ノート</span>recorder の失敗記録・討議メモ</a>
+      </div>
+      <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:1rem;font-size:0.85rem;color:#81D4FA">
+        <strong>提出方法:</strong> 提出前に <code>python course1/day1/verify.py --group &lt;班番号&gt;</code> を実行し「OK」を確認 → <code>results/</code> の上記6ファイルを<strong>そのまま個別に</strong> LMS の課題「第1回」へアップロード（zip にまとめない。班の implementer が1人で提出し、他の3名は提出しない）
+      </div>
+      <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:0.5rem;font-size:0.85rem;color:#FFB800">
+        <strong>提出期限:</strong> 授業当日中を目指す（遅くとも第2回授業開始まで）。演習2 の CSV は第7回のベースラインになるので保存しておくこと
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIME FLOW ============ -->
+<section id="sec-flow" style="padding-top:1rem;padding-bottom:0">
+  <div class="container">
+    <div class="card" style="border-left:4px solid #4FC3F7">
+      <div class="card-header"><h3>本日の授業の流れ（150分）</h3></div>
+      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.6rem">各演習は <strong style="color:#4FC3F7">実行 → グループディスカッション → グループ内プレゼン</strong> の1セット。計算は1分以内に終わるので、時間の大半は討議と発表に使う。</p>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin:0.5rem 0">
+        <div style="flex:1;min-width:8rem;background:#1A1A1A;border:2px solid #4FC3F7;border-radius:0.4rem;padding:0.6rem;text-align:center">
+          <div style="font-size:1rem;font-weight:900;color:#4FC3F7">① 導入</div>
+          <div style="font-size:0.85rem;font-weight:700;color:#E0E0E0;margin:0.3rem 0">0–20分</div>
+          <div style="font-size:0.65rem;color:#999">今日の問い／役割割当／「同期しないと時間は測れない」3分解説</div>
+        </div>
+        <div style="flex:1;min-width:8rem;background:#1A1A1A;border:2px solid #81D4FA;border-radius:0.4rem;padding:0.6rem;text-align:center">
+          <div style="font-size:1rem;font-weight:900;color:#81D4FA">② 演習1</div>
+          <div style="font-size:0.85rem;font-weight:700;color:#E0E0E0;margin:0.3rem 0">20–50分</div>
+          <div style="font-size:0.65rem;color:#999">環境ベンチマーク → 討議1（5分）→ プレゼン1（10分）</div>
+        </div>
+        <div style="flex:1;min-width:8rem;background:#1A1A1A;border:2px solid #81D4FA;border-radius:0.4rem;padding:0.6rem;text-align:center">
+          <div style="font-size:1rem;font-weight:900;color:#81D4FA">③ 演習2</div>
+          <div style="font-size:0.85rem;font-weight:700;color:#E0E0E0;margin:0.3rem 0">50–85分</div>
+          <div style="font-size:0.65rem;color:#999">予測を書く → 3モデル同時測定 → 討議2（5分）→ プレゼン2（10分）</div>
+        </div>
+        <div style="flex:1;min-width:8rem;background:#1A1A1A;border:2px solid #FFB800;border-radius:0.4rem;padding:0.6rem;text-align:center">
+          <div style="font-size:1rem;font-weight:900;color:#FFB800">④ 演習3</div>
+          <div style="font-size:0.85rem;font-weight:700;color:#E0E0E0;margin:0.3rem 0">85–120分</div>
+          <div style="font-size:0.65rem;color:#999">討議3（10分）で定義と重みを決める → 順位を出す → プレゼン3（10分）</div>
+        </div>
+        <div style="flex:1;min-width:8rem;background:#1A1A1A;border:2px solid #B388FF;border-radius:0.4rem;padding:0.6rem;text-align:center">
+          <div style="font-size:1rem;font-weight:900;color:#B388FF">⑤ 班間討議</div>
+          <div style="font-size:0.85rem;font-weight:700;color:#E0E0E0;margin:0.3rem 0">120–150分</div>
+          <div style="font-size:0.65rem;color:#999">質問カード交換（20分）→ 全体共有：提出された班の順位の割れ方を投影 → 提出確認</div>
+        </div>
+      </div>
+      <table style="font-size:0.82rem;margin-top:1rem">
+        <tr><th style="width:6rem">時間</th><th>内容</th><th style="width:10rem">形式</th></tr>
+        <tr><td>0–10</td><td>今日の問いの掲示。質問カードの評価基準の配布</td><td>講義</td></tr>
+        <tr><td>10–20</td><td>役割割当。「同期しないと時間は測れない」の3分解説</td><td>講義</td></tr>
+        <tr><td>20–35</td><td><a href="#sec-ex1" style="color:#4FC3F7">演習1</a> 環境ベンチマーク（実行1分以内）</td><td>個人 → 班</td></tr>
+        <tr><td>35–40</td><td><strong>グループディスカッション1</strong>（ex1 ブロック(11) の4つの問い。全員が発言）</td><td><span class="tag tag-group">討議</span></td></tr>
+        <tr><td>40–50</td><td><strong>グループ内プレゼン1</strong>（1人2分、スライド禁止、画面を見せて話す）</td><td><span class="tag tag-group">発表</span></td></tr>
+        <tr><td>50–70</td><td><a href="#sec-ex2" style="color:#4FC3F7">演習2</a> 学習済み3モデルの4指標同時測定。<strong>実行前に予測を記入</strong></td><td>個人 → 班</td></tr>
+        <tr><td>70–75</td><td><strong>グループディスカッション2</strong>（ex2 ブロック(12)。外れた予測から話す）</td><td><span class="tag tag-group">討議</span></td></tr>
+        <tr><td>75–85</td><td><strong>グループ内プレゼン2</strong></td><td><span class="tag tag-group">発表</span></td></tr>
+        <tr><td>85–95</td><td><strong>グループディスカッション3</strong>（ex3 ブロック(5)。班の「良いAI」を一文で定義し、重みを決める）</td><td><span class="tag tag-group">討議</span></td></tr>
+        <tr><td>95–110</td><td><a href="#sec-ex3" style="color:#4FC3F7">演習3</a> 順位と感度分析（計算は数秒）</td><td>班</td></tr>
+        <tr><td>110–120</td><td><strong>グループ内プレゼン3</strong></td><td><span class="tag tag-group">発表</span></td></tr>
+        <tr><td>120–140</td><td><strong>班間ディスカッション</strong>：<a href="#sec-cards" style="color:#4FC3F7">質問カード交換</a>（10分で回答、3段階採点）。あわせて<strong>3〜4班の実測値を集める</strong></td><td><span class="tag tag-group">討議</span></td></tr>
+        <tr><td>140–150</td><td><strong>全体共有</strong>：教員が提出された班の順位分布を投影し、2班に発言してもらう。提出確認・次回予告</td><td>全体</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 0: PREP ============ -->
+<section id="sec-prep">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num" style="background:#4FC3F7">0</div>
+      <h2>事前準備（前週までに各自）── Homebrew → uv → Python → 仮想環境</h2>
+    </div>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:0.6rem">MD1 と同じ流儀で環境を作る。全体の流れは <strong>Homebrew で uv を導入 → uv で Python 3.12 をインストール → 授業用フォルダ AI_TD を取得 → uv venv で仮想環境を作る → その中に uv pip install で PyTorch などを追加 → 環境診断</strong>。授業当日に受講者全員が同時にダウンロードすると学内ネットワークが輻輳するので、<strong>前週までに</strong>通しておくこと。所要は15分程度（PyTorch のダウンロードに数分かかる）。</p>
+    <div style="background:#1a1a1a;border:1px solid #333;border-radius:0.4rem;padding:0.6rem 0.8rem;margin:0.3rem 0 1rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:#999">
+      ~（ホーム）<br>└ AI_TD/　　　　　　← 授業用フォルダ（以降のコマンドはすべてここで実行）<br>　　├ .venv/　　　　　← 仮想環境（自動生成、中身を触らない）<br>　　├ common/　　　　← 全14回で使い回す共通基盤<br>　　├ course1/day1/　← 今日の ex1.ipynb / ex2.ipynb / ex3.ipynb<br>　　├ assets/　　　　← コーパスと学習済み重み（download_assets.py が置く）<br>　　├ results/　　　← 自分の CSV がここに出る（提出物）<br>　　└ docs/　　　　　← 授業ページの元ファイル（読まなくてよい）
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>手順① uv をインストール</h3></div>
+      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">uv は Python のバージョン管理・仮想環境・パッケージ管理を1つのツールで行う。MD1 で導入済みなら (2) の確認だけでよい。Homebrew が無い場合は先に <a href="https://brew.sh/ja/" style="color:#4FC3F7">brew.sh</a> の手順で入れる。</p>
+<pre>Bash
+<span class="cmt"># (1) Homebrew で uv をインストール</span>
+<span class="fn">brew</span> install uv
+
+<span class="cmt"># (2) インストール確認（uv 0.10.x のようにバージョンが出れば成功）</span>
+<span class="fn">uv</span> --version</pre>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>手順② Python 3.12 をインストール</h3></div>
+<pre>Bash
+<span class="cmt"># (1) Python 3.12 を uv 経由でインストール</span>
+<span class="fn">uv</span> python install 3.12
+
+<span class="cmt"># (2) 確認（Python 3.12.x と出れば成功）</span>
+<span class="fn">uv</span> run python -V</pre>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>手順③ 授業用フォルダを取得</h3></div>
+      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">授業のコードは GitHub から取得する。フォルダ名・ファイル名に日本語は使わない。</p>
+<pre>Bash
+<span class="cmt"># (1) ホームへ移動し、授業用フォルダを AI_TD という名前で取得（初回のみ）</span>
+<span class="fn">cd</span>
+<span class="fn">git</span> clone https://github.com/RNMUDS/2026AI_TD.git AI_TD
+
+<span class="cmt"># (2) 以降のコマンドはすべて AI_TD の中で実行する</span>
+<span class="fn">cd</span> AI_TD
+
+<span class="cmt"># 2回目以降（次回の授業前）は、AI_TD の中で git pull すると最新の資料とコードに更新される</span>
+<span class="fn">git</span> pull</pre>
+      <p style="font-size:0.82rem;color:#999;margin:0.2rem 0 0">※ <code>git: command not found</code> と出た場合は <code>brew install git</code> を実行してから (2) をやり直す。</p>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>手順④ 仮想環境を作り、ライブラリを入れる</h3></div>
+      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">仮想環境はプロジェクトごとに独立した Python 環境。MD1 の環境とは別に作るので、py5 の環境に影響しない。</p>
+<pre>Bash
+<span class="cmt"># (1) AI_TD の直下に仮想環境を作る（Python 3.12 を指定）</span>
+<span class="fn">uv</span> venv --python 3.12
+
+<span class="cmt"># (2) 仮想環境を有効化（プロンプトの先頭に (.venv) が付けば成功）</span>
+<span class="fn">source</span> .venv/bin/activate
+
+<span class="cmt"># (3) PyTorch・pandas・matplotlib・Jupyter などをまとめて入れる（数分かかる）</span>
+<span class="fn">uv</span> pip install -r requirements.txt</pre>
+      <p style="font-size:0.82rem;color:#999;margin:0.2rem 0 0">※ ターミナルを開き直したら、毎回 <code>cd ~/AI_TD</code> と <code>source .venv/bin/activate</code> をやり直す。</p>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>手順⑤ 環境診断とデータ取得</h3></div>
+<pre>Bash
+<span class="cmt"># (1) 環境診断：チップ・メモリ・MPS が使えるか・簡易ベンチ</span>
+<span class="fn">python</span> setup/check_env.py
+
+<span class="cmt"># (2) コーパス（SST-2 映画レビュー，約 5MB）を取得し，配布済みの学習済み重みを確認</span>
+<span class="fn">python</span> setup/download_assets.py</pre>
+      <div class="callout-info">
+        <h4>check_env.py の出力で見るところ</h4>
+        <ul class="point-list">
+          <li><code>"mps_available": true</code> なら Apple GPU が使える。<code>false</code>（Intel Mac など）でも CPU で完走できるが、時間の目安は対象外</li>
+          <li><code>"problems": []</code> であること。<code>import error</code> が出たら仮想環境が有効か（プロンプトの <code>(.venv)</code>）を確認し、手順④ (3) をやり直す</li>
+          <li><code>bench</code> の3つの数値（帯域 GB/s・演算 GFLOPS・学習 ms/step）は演習1で自分で測り直す。ここではメモだけ</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>手順⑥ ノートブックを開く</h3></div>
+      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">VS Code（MD1 で導入済み）で開く方法と、JupyterLab で開く方法のどちらでもよい。</p>
+<pre>Bash
+<span class="cmt"># A. VS Code で開く（拡張機能 Python と Jupyter を入れておく）</span>
+<span class="fn">code</span> .
+<span class="cmt">#    → course1/day1/ex1.ipynb を開き，右上のカーネル選択で .venv の Python 3.12 を選ぶ</span>
+
+<span class="cmt"># B. JupyterLab で開く</span>
+<span class="fn">jupyter</span> lab course1/day1/</pre>
+    </div>
+
+    <div class="callout-warning">
+      <h4>問題が生じたとき（主な症状と対処）</h4>
+      <table style="font-size:0.82rem">
+        <tr><th>症状</th><th>原因</th><th>対処</th></tr>
+        <tr><td><code>uv: command not found</code></td><td>Homebrew のパスが通っていない</td><td>ターミナルを開き直す。それでも出なければ <code>brew doctor</code> の指示に従う</td></tr>
+        <tr><td><code>ModuleNotFoundError: torch</code></td><td>仮想環境が有効でない、または別の Python で実行している</td><td><code>source .venv/bin/activate</code> をやり直す。VS Code はカーネルに <code>.venv/bin/python</code> を選ぶ</td></tr>
+        <tr><td>MPS が false（Apple Silicon なのに）</td><td>PyTorch が古い</td><td><code>uv pip install --upgrade torch</code>（2.8 以上）</td></tr>
+        <tr><td><code>download_assets.py</code> が止まる</td><td>学内ネットワークの制限、または Hugging Face Hub に届かない</td><td>自宅回線でやり直す。それでも不可なら授業当日に教員が USB で配る</td></tr>
+        <tr><td>ノートブックの最初のセルで <code>作業フォルダ:</code> が出ない</td><td>別の場所から開いている</td><td><code>~/AI_TD</code> の中で <code>code .</code> か <code>jupyter lab</code> を起動する</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 1: ROLES ============ -->
+<section id="sec-roles">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num" style="background:#4FC3F7">1</div>
+      <h2>役割とルール ― 4人で1つの実験チーム</h2>
+    </div>
+
+    <div class="card group">
+      <div class="card-header"><h3>① 役割分担（毎回ローテーション）</h3></div>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">班は4名（1班のみ5名）。役割は<strong>日替わり</strong>で回し、7回で全員が全役割を1周半経験する。今日の役割は掲示の割当表で確認する。</p>
+      <table style="font-size:0.85rem">
+        <tr><th style="width:9rem">役割</th><th>責務</th><th style="width:12rem">今日の提出物</th></tr>
+        <tr><td><strong style="color:#4FC3F7">implementer</strong></td><td>コードを書く。<strong>他の3名はコードを書かない</strong>（助言はしてよい）</td><td>ノートブック・CSV</td></tr>
+        <tr><td><strong style="color:#FFB800">verifier</strong></td><td>結果を疑い、隣で<strong>条件を変えて再実行</strong>する（バッチサイズ、繰り返し回数、指標の向き）</td><td>比較表（何を変えたら何が変わったか）</td></tr>
+        <tr><td><strong style="color:#81D4FA">recorder</strong></td><td>出たエラーと直し方、討議で割れた点を残す</td><td>失敗記録・討議メモ（形式自由）</td></tr>
+        <tr><td><strong style="color:#B388FF">auditor</strong></td><td>演習中に<strong>他班への質問を3問</strong>作る</td><td>質問カード（3問）</td></tr>
+      </table>
+    </div>
+
+    <div class="card group">
+      <div class="card-header"><h3>② グループ内プレゼンの型（各10分、スライド禁止、画面を見せて話す）</h3></div>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">1人2分。話す順は implementer → verifier → recorder → auditor。成功した点より、<strong>行き詰まった点や予測が外れた点</strong>に報告の価値がある。</p>
+      <table style="font-size:0.85rem">
+        <tr><th style="width:9rem">役割</th><th>話すこと</th></tr>
+        <tr><td>implementer</td><td>どの TODO で行き詰まったか。同期を入れる前後で数値がどう変わったか</td></tr>
+        <tr><td>verifier</td><td>条件を変えて何が変わったか（繰り返し回数、バッチサイズ、指標の向き）</td></tr>
+        <tr><td>recorder</td><td>出たエラーと直し方。討議で割れた点をどう決めたか</td></tr>
+        <tr><td>auditor</td><td>他班に投げる質問3問と、その根拠</td></tr>
+      </table>
+    </div>
+
+    <div class="card group">
+      <div class="card-header"><h3>③ 質問カードの評価基準（第1回に配布、以後毎回使う）</h3></div>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">auditor が作る質問は、受け取った班が10分で答え、質問元が3段階で採点する。<strong>検索でも LLM でも答えられない質問</strong>が最高評価。</p>
+      <table style="font-size:0.85rem">
+        <tr><th style="width:5rem">段階</th><th>基準</th><th>例</th></tr>
+        <tr><td><strong style="color:#4FC3F7">3</strong></td><td>相手の<strong>実測値</strong>を要求する。検索でも生成でも答えられない</td><td>「あなたの班の重みで正解率の重みを 0.1 下げたとき1位は変わりますか。変わるなら何から何へ」</td></tr>
+        <tr><td><strong style="color:#FFB800">2</strong></td><td>手法の理解を問う。教科書的だが妥当</td><td>「minmax と rank で順位が変わるのはどういうときですか」</td></tr>
+        <tr><td><strong style="color:#999">1</strong></td><td>用語の定義を問うだけ。調べれば分かる</td><td>「交差エントロピーとは何ですか」</td></tr>
+      </table>
+    </div>
+
+    <div class="callout-tip">
+      <h4>LLM とこの授業の立場</h4>
+      <p style="font-size:0.9rem">コードを書く作業も、誤りを見つける作業も、その多くは LLM（大規模言語モデル）を用いたツールに任せられるようになった。人がすべてのコードを一から手で打つ場面は、今後さらに減っていく。</p><p style="font-size:0.9rem;margin-top:0.5rem">一方で、複数の LLM が異なる案を出したとき、あるいは出力が正しいかどうか判断がつかないとき、最終的にコードを読み、根拠をもって「この方法を採る」と決めるのは人間である。その判断ができるかどうかで、LLM を使う人と、LLM に使われる人が分かれる。</p><p style="font-size:0.9rem;margin-top:0.5rem">この授業では LLM の利用を制限しない。そのかわり、LLM が書いたコードを読み解き、実行結果を測定し、その数値が信頼できるかを自分で確かめる力を身につける。それが LLM に仕事を任せるために必要な「コードを読む力」であり、この科目で最も重視する能力である。<strong>自班の実測値は LLM からは得られない</strong>。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 2: LECTURE ============ -->
+<section id="sec-lecture">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num" style="background:#4FC3F7">2</div>
+      <h2>良いAIとは何を測ることか（3分講義 ＋ 読み物）</h2>
+    </div>
+
+    <div class="concept-box">
+      <h4>今日の問い</h4>
+      <p style="font-size:0.95rem">「良いAI」と聞いて、正解率を思い浮かべるなら、それは4つの評価軸の1つを選んだにすぎない。今日は<strong>正解率・損失・速度・メモリ</strong>の4つを<strong>同じ関数で</strong>測り、「どれを重く見るか」を班で決めてもらう。同じ数値から違う結論が出るはずで、そこが本日の中心的な論点である。</p>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>教科書のコードテンプレートとの対応（毎回この番号で進める）</h3></div>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">教科書 2.3 節の「コードテンプレート①〜⑫」を全14回の共通の骨格にする。章が進むと同じ番号に接尾辞が付く（⑦-CNN、⑦-転移学習、③-オリジナルデータセット）のと同じ流儀で、この授業では「⑬-計測」「⑬-記録」を1つ足す。今日のノートブックの各ブロックにはテンプレート番号を付けてある。</p>
+      <table style="font-size:0.82rem">
+        <tr><th style="width:5rem">番号</th><th>教科書の内容</th><th>第1回での扱い</th></tr>
+        <tr><td>①</td><td>ライブラリのインポート</td><td>そのまま。計測モジュール <code>common</code> を追加</td></tr>
+        <tr><td>②③</td><td>データ変換／乱数固定とデータセット作成</td><td>②-テキスト（トークン化と固定長化）、③の乱数固定3行は毎回書く（第4回で検証）</td></tr>
+        <tr><td>④⑥</td><td>DataLoader／ミニバッチの形状確認</td><td>④-計測用（転送時間を混ぜないため先にデバイスへ載せる）、⑥はそのまま</td></tr>
+        <tr><td>⑤</td><td>使用デバイスの選択（cuda → mps → cpu）</td><td>そのまま。<code>get_device()</code> は⑤にメモリ上限を足したもの</td></tr>
+        <tr><td>⑦</td><td>モデル定義</td><td>⑦-学習済みモデル（8章「学習済みモデルのロード」と同じ手順）</td></tr>
+        <tr><td>⑧⑫</td><td>損失関数／テストデータでの評価</td><td>⑫-4指標：教科書の3行（<code>torch.max</code>、<code>total</code>、<code>correct</code>）に損失・時間・メモリを加える</td></tr>
+        <tr><td>⑨⑩⑪</td><td>最適化関数／学習ループ／推移グラフ</td><td>第1回は学習しないので使わない。第2回から主役になる</td></tr>
+        <tr><td>⑬</td><td>（授業で追加）計測・記録</td><td>同期、帯域、演算、ピークメモリ、共通形式 CSV への記録</td></tr>
+      </table>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>4つの評価軸</h3></div>
+      <table style="font-size:0.85rem">
+        <tr><th style="width:10rem">指標</th><th>何を測るか</th><th style="width:7rem">向き</th></tr>
+        <tr><td><strong>正解率 accuracy</strong></td><td>正解した割合。分かりやすいが、正解と不正解の「境目の近さ」は見えない</td><td>高いほど良い</td></tr>
+        <tr><td><strong>損失 loss</strong></td><td>正解ラベルに対する<strong>確信の低さ</strong>（交差エントロピー）。当たっていても自信がなければ大きくなる</td><td>低いほど良い</td></tr>
+        <tr><td><strong>推論時間</strong></td><td>1000文を流す時間（スループット）と、1文だけ入れたときの時間（レイテンシ）。<strong>この2つは別物</strong></td><td>短いほど良い</td></tr>
+        <tr><td><strong>メモリ</strong></td><td>重みの大きさ（今日は3モデルで同じ）と、推論中に途中の計算結果が占めるピーク（モデルで違う）</td><td>少ないほど良い</td></tr>
+      </table>
+      <div class="analogy">
+        同一の製品を複数の評価者が採点する場合、価格・性能・耐久性・保守性のどれを重視するかは評価者によって異なる。「最も良い製品」は評価基準の重みを定めた時点で決まる。演習3はその重みを班で決定する作業である。
+      </div>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>同期しないと時間は測れない（演習1の主眼）</h3></div>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">GPU（Apple Silicon では MPS）は命令を受け取るとすぐ制御を返し、裏で計算を続ける。<code>time.perf_counter()</code> で囲むだけでは<strong>命令を送った時間</strong>しか測れない。計測の前後で <code>synchronize(device)</code> を呼び、計算の完了を待ってから時計を読む。</p>
+      <div class="analogy">
+        処理を依頼した時刻と処理が完了した時刻は異なる。完了時刻を測るには完了を待つ必要がある。同期はこの「完了を待つ」操作に相当する。
+      </div>
+      <div class="callout-danger">
+        <h4>どの程度の差が生じるか</h4>
+        <p style="font-size:0.9rem">M3 MacBook Air の実測では、同期なしと同期ありの時間比は <strong>70〜225倍</strong>。同期を欠いた計測は、計算の完了時間ではなく命令の発行時間を測っている。</p>
+      </div>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>「速い」には2種類ある ― 帯域律速と演算律速</h3></div>
+      <ul class="point-list">
+        <li><strong>帯域律速</strong>：大きなベクトルの加算 <code>c = a + b</code> は計算より<strong>メモリの読み書き</strong>が律速になる。1回の加算で動くのは「a を読む ＋ b を読む ＋ c を書く」＝ 3 × 要素数 × 4 バイト</li>
+        <li><strong>演算律速</strong>：N×N の行列積は 2N³ 回の浮動小数点演算を行う。こちらは<strong>計算</strong>が律速になる</li>
+        <li>どちらが支配的かは処理の種類によって変わる。したがって「このマシンは速い」という主張は、対象とする処理を明示しなければ意味を持たない</li>
+      </ul>
+      <div class="analogy">
+        データを供給する速さ（帯域）と、供給されたデータを処理する速さ（演算）は独立した能力である。供給が遅ければ、演算能力が高くても待ち時間が生じる。
+      </div>
+      <div class="callout-info">
+        <h4>もう1つの落とし穴：ファンレスの MacBook Air はブーストする</h4>
+        <p style="font-size:0.9rem">最初の数百 ms だけ GPU が速く（実測 2.6 TFLOPS）、1秒ほどで定常値（約 1.05 TFLOPS）に落ちる。短時間の計測は過大な値を与える。演習では<strong>最低2秒回して中央値</strong>を定常値とし、初回の値は「バースト」として別に見る。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 3: EX1 ============ -->
+<section id="sec-ex1">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num" style="background:#81D4FA">3</div>
+      <h2>演習1（E1-1）環境ベンチマーク ― 自分のマシンを測って台帳に投稿する</h2>
+    </div>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem"><code>course1/day1/ex1.ipynb</code> を上から順に実行し、<code>TODO</code> を埋める。実行時間は1分以内。implementer が書き、verifier は隣で条件を変えて再実行する。</p>
+
+    <div class="card standard">
+      <div class="card-header"><h3>ブロック構成（ノートブックの番号と対応）</h3></div>
+      <table style="font-size:0.85rem">
+        <tr><th style="width:4rem">#</th><th style="width:7rem">教科書</th><th>内容</th><th style="width:10rem">TODO</th></tr>
+        <tr><td>(0)</td><td>—</td><td>班と役割の設定。<code>GROUP_ID</code> と <code>MEMBER_ROLE</code> を自分のものに書き換える</td><td>書き換え</td></tr>
+        <tr><td>(1)–(2)</td><td>①、⑬-計測</td><td>インポート、機種情報（チップ・メモリ・OS・PyTorch の版）</td><td>—</td></tr>
+        <tr><td>(3)</td><td>⑤（2.3節）</td><td>使用デバイスの選択。cuda → mps → cpu の3分岐</td><td><strong style="color:#FFB800">TODO 1</strong></td></tr>
+        <tr><td>(4)</td><td>⑬-計測</td><td>同期あり／なしで行列積の時間を比べる</td><td><strong style="color:#FFB800">TODO 2</strong></td></tr>
+        <tr><td>(5)</td><td>⑬-計測</td><td>B1 メモリ帯域（GB/s）。2秒回して中央値</td><td><strong style="color:#FFB800">TODO 3</strong></td></tr>
+        <tr><td>(6)</td><td>⑬-計測</td><td>B2 演算性能（GFLOPS）</td><td><strong style="color:#FFB800">TODO 4</strong></td></tr>
+        <tr><td>(7)–(8)</td><td>⑬-計測</td><td>B3 学習ステップ時間（ms/step）、1GB 確保時のピークメモリ</td><td>—</td></tr>
+        <tr><td>(9)–(10)</td><td>⑬-記録</td><td>台帳（CSV）へ投稿し、読み戻して確認</td><td>—</td></tr>
+        <tr><td>(11)</td><td>—</td><td><span class="tag tag-group">討議</span> グループディスカッション1 → プレゼン1</td><td>討議メモ</td></tr>
+      </table>
+    </div>
+
+    <div class="card group">
+      <div class="card-header"><h3>TODO のヒント（答えを写すのではなく、なぜそう書くかを言えるように）</h3></div>
+
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.5rem 0 0.2rem">TODO 1：使用デバイスの選択（ブロック 3、教科書テンプレート⑤）</p>
+      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">教科書 2.3 節のテンプレート⑤と同じ3分岐。MPS（Apple GPU）が使えるかの判定 <code>torch.backends.mps.is_available()</code> を <code>MPS_AVAILABLE</code> に書く。未実装のまま実行すると <code>AssertionError: TODO 未実装</code> で止まる。</p>
+<pre>Python
+<span class="cmt"># コードテンプレート⑤</span>
+MPS_AVAILABLE <span class="op">=</span> torch.backends.mps.is_available()
+<span class="kw">if</span> torch.cuda.is_available():
+    device <span class="op">=</span> torch.device(<span class="str">"cuda"</span>)
+<span class="kw">elif</span> MPS_AVAILABLE:
+    device <span class="op">=</span> torch.device(<span class="str">"mps"</span>)
+<span class="kw">else</span>:
+    device <span class="op">=</span> torch.device(<span class="str">"cpu"</span>)
+<span class="fn">print</span>(<span class="str">f"使用デバイス: {device}"</span>)</pre>
+
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 2：同期（ブロック 4）</p>
+      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">計測の<strong>前</strong>に1回（先行する計算を終わらせる）、<strong>後</strong>に1回（今の計算を終わらせる）。片方だけでは足りない。</p>
+<pre>Python
+synchronize(device)                          <span class="cmt"># 前：先行する計算を全部終わらせてから時計を読む</span>
+t0 <span class="op">=</span> time.perf_counter()
+<span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):
+    c <span class="op">=</span> a <span class="op">@</span> b
+synchronize(device)                          <span class="cmt"># 後：計算の完了を待ってから時計を読む</span>
+t_sync <span class="op">=</span> (time.perf_counter() <span class="op">-</span> t0) <span class="op">/</span> <span class="num">10</span></pre>
+
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 3・4：動いたバイト数と演算数（ブロック 5・6）</p>
+      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">加算は「読み2本＋書き1本」、float32 は4バイト。行列積は N³ 回の乗算と N³ 回の加算。</p>
+<pre>Python
+bytes_moved <span class="op">=</span> <span class="num">3</span> <span class="op">*</span> n <span class="op">*</span> <span class="num">4</span>        <span class="cmt"># 読み a, b ＋ 書き c，各 4 バイト</span>
+flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</span> N <span class="op">**</span> <span class="num">3</span>            <span class="cmt"># 乗算 N^3 ＋ 加算 N^3</span></pre>
+
+      <div class="callout-info">
+        <h4>M3 MacBook Air（16GB）の参考値 ― 自分の値と桁が違ったら測り方を疑う</h4>
+        <table style="font-size:0.82rem">
+          <tr><th>項目</th><th>参考値</th><th>読み方</th></tr>
+          <tr><td>同期あり／なしの比</td><td>70〜225倍</td><td>CPU ではほぼ1倍。MPS で1倍に近ければ同期を入れ忘れている</td></tr>
+          <tr><td>B1 帯域（定常）</td><td>約 44 GB/s（バースト 84〜90）</td><td>公称 100 GB/s の4〜5割。バーストは公称値の約9割に達する</td></tr>
+          <tr><td>B2 演算（定常）</td><td>約 1,050 GFLOPS（バースト 2,600）</td><td>定常とバーストの差は帯域より大きい</td></tr>
+          <tr><td>B3 学習</td><td>約 55 ms/step（3.7M パラメータの参考）</td><td>授業中の「待ち時間」を決める数字</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>verifier がやること（implementer の隣で）</h3></div>
+      <ul class="point-list">
+        <li>ブロック 4 の繰り返し回数 <code>10</code> を <code>1</code> と <code>100</code> にして、同期比がどう動くかを見る</li>
+        <li>ブロック 5 の <code>min_sec=2.0</code> を <code>0.2</code> にして、中央値がバースト側に寄るかを見る</li>
+        <li>電源アダプタを外して（バッテリ駆動で）B2 を測り直す。数値が落ちるか</li>
+      </ul>
+    </div>
+
+    <div class="card group" id="disc1">
+      <div class="card-header"><h3>グループディスカッション1（5分）→ グループ内プレゼン1（1人2分）</h3></div>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">班の4台の数値を並べる（ノートブックのブロック 11 が自分の行を出す。他の3台は画面を見せ合う）。<strong>全員が1回は発言</strong>。recorder は結論を3行で残す。</p>
+      <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
+        <li>同期あり／なしの比は班内で<strong>何倍から何倍まで</strong>あったか。なぜ機種で違うか</li>
+        <li>帯域は公称値の<strong>何%</strong>出たか。待ち時間用課題に書いた予測と比べてどうか</li>
+        <li>B1（帯域）と B2（演算）で、定常とバーストの差が大きいのは<strong>どちら</strong>か。その理由は</li>
+        <li>班で最も遅いマシンを基準にすると、今日の演習2は<strong>何倍</strong>の時間がかかる見込みか</li>
+      </ol>
+      <div class="notion-submit"><div><strong>記録（recorder）:</strong> 討議メモの4行（範囲・%・B1/B2・倍率）を失敗記録に残す。プレゼン1 は implementer → verifier → recorder → auditor の順</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4: EX2 ============ -->
+<section id="sec-ex2">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num" style="background:#81D4FA">4</div>
+      <h2>演習2（E1-2）学習済み3モデルの4指標同時測定</h2>
+    </div>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">3つの学習済みモデル（<strong>A1</strong> 埋め込み平均＋MLP／<strong>A2</strong> 1次元畳み込み／<strong>A3</strong> 小型 Transformer）を動かし、正解率・損失・推論時間・メモリを<strong>同じ関数で</strong>測って1枚の表にする。3モデルはパラメータ数を約30万に揃え、同じデータ（SST-2 映画レビューの肯定／否定）で同じ回数だけ学習してある。</p>
+
+    <div class="callout-warning">
+      <h4>実行する前に：予測を書く（waiting_task.md）</h4>
+      <p style="font-size:0.9rem;margin-bottom:0.5rem">結果を見る前に、<strong>4人それぞれ</strong>が次の表を埋める。外れた予測がプレゼン2の材料になる。当たった予測より価値がある。</p>
+      <table style="font-size:0.82rem">
+        <tr><th>問い</th><th style="width:6rem">予測</th><th>根拠（一言）</th><th style="width:6rem">実際</th></tr>
+        <tr><td>最も正解率が高いのは</td><td></td><td></td><td></td></tr>
+        <tr><td>最も損失が低いのは</td><td></td><td></td><td></td></tr>
+        <tr><td>1000文あたり最も速いのは</td><td></td><td></td><td></td></tr>
+        <tr><td>1文あたり最も速いのは</td><td></td><td></td><td></td></tr>
+        <tr><td>推論中のメモリが最も少ないのは</td><td></td><td></td><td></td></tr>
+        <tr><td>正解率1位と損失1位は同じモデルか</td><td>はい／いいえ</td><td></td><td></td></tr>
+      </table>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>ブロック構成</h3></div>
+      <table style="font-size:0.85rem">
+        <tr><th style="width:4rem">#</th><th style="width:7rem">教科書</th><th>内容</th><th style="width:10rem">TODO</th></tr>
+        <tr><td>(1)–(2)</td><td>①、⑤</td><td>インポート、使用デバイスの選択</td><td>—</td></tr>
+        <tr><td>(3)</td><td>②③-テキスト</td><td>乱数固定の3行とデータセット。評価にはテストデータ（1,821文。訓練にも検証にも使っていない文）を使う</td><td>—</td></tr>
+        <tr><td>(4)</td><td>④⑥-計測用</td><td>ミニバッチを<strong>先にデバイスへ載せる</strong>（転送時間を混ぜない）。形状を確認する</td><td>—</td></tr>
+        <tr><td>(5)</td><td>⑦-学習済みモデル（8章）</td><td>学習済みモデルのロード。<code>load_state_dict</code> で読み込み、評価モードにする</td><td><strong style="color:#FFB800">TODO 1</strong></td></tr>
+        <tr><td>(6)</td><td>⑧⑫-4指標</td><td>損失関数と正解率。教科書⑫の3行で予測クラスを取り、正解数を数える</td><td><strong style="color:#FFB800">TODO 2</strong></td></tr>
+        <tr><td>(7)</td><td>⑬-計測</td><td>推論時間。スループット（1000文あたり ms）とレイテンシ（1文 ms）</td><td><strong style="color:#FFB800">TODO 3</strong></td></tr>
+        <tr><td>(8)</td><td>⑬-計測</td><td>メモリ。重みの大きさと推論中のピーク（順伝播フックで同期的に読む）</td><td>—</td></tr>
+        <tr><td>(9)–(11)</td><td>⑫-4指標、⑬-記録</td><td>GPU を2秒間動作させて定常状態にしてから3モデルを同時測定 → 予測と照合 → CSV に記録</td><td>—</td></tr>
+        <tr><td>(12)</td><td>—</td><td><span class="tag tag-group">討議</span> グループディスカッション2 → プレゼン2</td><td>討議メモ</td></tr>
+      </table>
+    </div>
+
+    <div class="card group">
+      <div class="card-header"><h3>TODO のヒント</h3></div>
+
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.5rem 0 0.2rem">TODO 1：学習済みモデルのロードと評価モード（ブロック 5、教科書⑦-学習済みモデル／8章）</p>
+      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">重みファイルには構造の情報（隠れ幅など）も入っている。同じ構造を組み立ててから <code>load_state_dict</code> で学習済みパラメータを読み込む。推論だけなので評価モードにして Dropout などを無効化する。</p>
+<pre>Python
+model.load_state_dict(ckpt[<span class="str">"state_dict"</span>])   <span class="cmt"># 学習済みモデルのロード</span>
+model.eval()                                <span class="cmt"># 評価モード（Dropout などを無効化）</span></pre>
+
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 2：予測クラスと正解数（ブロック 6、教科書テンプレート⑫）</p>
+      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">教科書⑫の3行をそのまま書く。<code>torch.max(outputs.data, 1)</code> は（最大値, その位置）を返し、位置が予測クラスになる。未実装だと <code>AssertionError: TODO 未実装</code> で止まる。</p>
+<pre>Python
+_, predicted <span class="op">=</span> torch.max(outputs.data, <span class="num">1</span>)     <span class="cmt"># 教科書⑫と同じ：確率最大のクラス</span>
+total <span class="op">+=</span> labels.size(<span class="num">0</span>)
+correct <span class="op">+=</span> (predicted <span class="op">==</span> labels).sum().item()</pre>
+
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 3：時計を読む前に同期（ブロック 7）</p>
+      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">演習1と同じ。<strong>この TODO を忘れてもエラーは出ない</strong>。数値が不自然に小さくなるだけ。verifier は同期を外した値と比べて何倍の差が生じるかを記録する。</p>
+<pre>Python
+<span class="kw">for</span> tokens, _ <span class="kw">in</span> batches:
+    model(tokens)
+synchronize(device)                       <span class="cmt"># 計算の完了を待ってから時計を読む</span>
+times.append(time.perf_counter() <span class="op">-</span> t0)</pre>
+
+      <div class="callout-info">
+        <h4>M3 MacBook Air の参考値（配布した重み。正解率と損失は機種によらず同じ）</h4>
+        <table style="font-size:0.82rem">
+          <tr><th>model</th><th>Accuracy</th><th>Loss</th><th>ms / 1000文</th><th>ms / 1文</th><th>peak MB</th></tr>
+          <tr><td>A1 埋め込み平均＋MLP</td><td>0.8056</td><td>0.4664</td><td>6.0</td><td>0.71</td><td>1.16</td></tr>
+          <tr><td>A2 1次元畳み込み</td><td>0.7897</td><td>0.6941</td><td>26.9</td><td>0.75</td><td>8.0</td></tr>
+          <tr><td>A3 小型 Transformer</td><td>0.8094</td><td>0.4348</td><td>81.3</td><td>1.68</td><td>11.47</td></tr>
+        </table>
+        <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">正解率・損失・パラメータ数は2回実行しても完全に一致する。時間は実行ごとに数%変動する。<strong>1つのモデルが4指標すべてで最良にはならない</strong>ことを確認する。</p>
+      </div>
+    </div>
+
+    <div class="card group" id="disc2">
+      <div class="card-header"><h3>グループディスカッション2（5分）→ グループ内プレゼン2（1人2分）</h3></div>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">予測表を4人分並べ、<strong>外れた予測から</strong>話す。全員が1回は発言する。ブロック 12 が4指標の順位表を出す。</p>
+      <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
+        <li>正解率1位と損失1位は同じモデルか。違うなら、<strong>損失は何を余分に見ている</strong>か</li>
+        <li>1000文あたりの時間と1文の時間で速いモデルは同じか。違うなら、どちらの指標が<strong>「実運用」に近い</strong>か</li>
+        <li>パラメータ数が同じなのに推論中のピークメモリが違うのは<strong>なぜ</strong>か（各モデルの <code>forward</code> を見て答える）</li>
+        <li>正解率の差 0.4 ポイントは「差がある」と言えるか。言えないなら、<strong>何を測れば</strong>言えるようになるか（→ 第4回で扱う）</li>
+      </ol>
+      <div class="notion-submit"><div><strong>プレゼン2:</strong> verifier は条件を変えた再実験（バッチサイズ、繰り返し回数、同期の有無）で何が変わったかを画面で見せる。recorder は「外れた予測／理由の仮説／次に測るべきもの」を記録</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 5: EX3 ============ -->
+<section id="sec-ex3">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num" style="background:#FFB800">5</div>
+      <h2>演習3（E1-3）「良いAI」を定義して順位を出す</h2>
+    </div>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">演習2の4指標に<strong>班で決めた重み</strong>を付け、3モデルの順位を出す。重みの付け方は班の自由。ただし<strong>なぜその重みか</strong>を一文で書く。計算は数秒で終わる。時間は議論に使う。</p>
+
+    <div class="card group" id="disc3">
+      <div class="card-header"><h3>グループディスカッション3（10分）― 先に話し、後で計算する</h3></div>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">ノートブックのブロック 5 を埋める前に、次の手順で班の定義を作る。</p>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin:0.5rem 0 1rem">
+        <div style="flex:1;min-width:12rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #FFB800;border-radius:0.5rem;padding:0.9rem">
+          <div style="color:#FFB800;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem">(a) 各自1分</div>
+          <div style="font-size:0.88rem">「このモデルを<strong>誰が、どこで</strong>使うか」を1つ挙げる。例：スマホのレビュー判定／研究用の最高正解率／教室の全員が同時に使うデモ</div>
+        </div>
+        <div style="flex:1;min-width:12rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #FFB800;border-radius:0.5rem;padding:0.9rem">
+          <div style="color:#FFB800;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem">(b) 班で1つに絞る</div>
+          <div style="font-size:0.88rem">用途を1つ選ぶ。割れたら多数決ではなく「その用途で<strong>失敗するとどうなるか</strong>」で決める</div>
+        </div>
+        <div style="flex:1;min-width:12rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #FFB800;border-radius:0.5rem;padding:0.9rem">
+          <div style="color:#FFB800;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem">(c) 定義・重み・正規化</div>
+          <div style="font-size:0.88rem">定義を<strong>一文</strong>で書き、4指標の重み（合計1）と正規化（minmax／rank）を決める。「なぜ正解率より速度が重いのか」を他班に説明できる形にする</div>
+        </div>
+      </div>
+      <div class="analogy">
+        「学生のスマホで動く映画レビュー判定器」なら速度とメモリが重い。「研究用の最高正解率」なら正解率だけ。「良いAI」は用途を決めた瞬間に決まる。
+      </div>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>ブロック構成</h3></div>
+      <table style="font-size:0.85rem">
+        <tr><th style="width:4rem">#</th><th style="width:7rem">教科書</th><th>内容</th><th style="width:10rem">TODO</th></tr>
+        <tr><td>(2)</td><td>5.3節の発想</td><td>演習2の CSV から自班の行を読み、モデル × 指標の表に戻す</td><td>—</td></tr>
+        <tr><td>(3)</td><td>—</td><td>指標の向き。「高いほど良い」と「低いほど良い」が混ざっている</td><td><strong style="color:#FFB800">TODO 1</strong></td></tr>
+        <tr><td>(4)</td><td>—</td><td>正規化。% と ms と MB を足せる形にする（minmax か rank）</td><td><strong style="color:#FFB800">TODO 2</strong></td></tr>
+        <tr><td>(5)</td><td>—</td><td><span class="tag tag-group">討議</span> 班の定義・正規化・重み</td><td><strong style="color:#FFB800">TODO 3</strong></td></tr>
+        <tr><td>(6)–(7)</td><td>—</td><td>スコアと順位。感度分析：重みと正規化をどれだけ動かすと1位が変わるか</td><td>—</td></tr>
+        <tr><td>(8)–(9)</td><td>⑬-記録</td><td>CSV に記録 → プレゼン3用まとめ</td><td>—</td></tr>
+        <tr><td>(10)</td><td>—</td><td><span class="tag tag-group">討議</span> 質問カードと全体共有</td><td>質問3問</td></tr>
+      </table>
+    </div>
+
+    <div class="card group">
+      <div class="card-header"><h3>TODO のヒント</h3></div>
+
+      <p style="font-weight:700;color:#FFB800;font-size:0.9rem;margin:0.5rem 0 0.2rem">TODO 1：指標の向き（ブロック 3）</p>
+      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">どちらかを間違えると順位が反転する。値は <code>"higher"</code> か <code>"lower"</code> の文字列。</p>
+<pre>Python
+DIRECTION <span class="op">=</span> {
+    <span class="str">"accuracy"</span>:          <span class="str">"higher"</span>,   <span class="cmt"># 高いほど良い</span>
+    <span class="str">"loss"</span>:              <span class="str">"lower"</span>,    <span class="cmt"># 低いほど良い</span>
+    <span class="str">"infer_ms_per_1000"</span>: <span class="str">"lower"</span>,
+    <span class="str">"peak_mem_mb"</span>:       <span class="str">"lower"</span>,
+    <span class="str">"latency_ms_b1"</span>:     <span class="str">"lower"</span>,
+}</pre>
+
+      <p style="font-weight:700;color:#FFB800;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 2：minmax で「小さいほど良い」指標を反転（ブロック 4）</p>
+      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">minmax は最悪＝0、最良＝1 に引き伸ばす。<code>lower</code> の指標はそのままだと最悪が1になるので <code>1 - z</code> で反転する。</p>
+<pre>Python
+<span class="kw">if</span> direction[m] <span class="op">==</span> <span class="str">"lower"</span>:
+    z <span class="op">=</span> <span class="num">1.0</span> <span class="op">-</span> z                      <span class="cmt"># 小さいほど良い指標は反転</span></pre>
+
+      <p style="font-weight:700;color:#FFB800;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 3：班の定義（ブロック 5）― 討議3で決めたものを書く</p>
+<pre>Python
+DEFINITION <span class="op">=</span> <span class="str">"誤りが少なく，手元の端末で待たずに応答するモデル"</span>   <span class="cmt"># ← 班の定義（一文）</span>
+METHOD <span class="op">=</span> <span class="str">"minmax"</span>            <span class="cmt"># "minmax" か "rank"</span>
+WEIGHTS <span class="op">=</span> {<span class="str">"accuracy"</span>: <span class="num">0.4</span>, <span class="str">"loss"</span>: <span class="num">0.1</span>, <span class="str">"infer_ms_per_1000"</span>: <span class="num">0.3</span>, <span class="str">"peak_mem_mb"</span>: <span class="num">0.2</span>}   <span class="cmt"># 合計 1</span></pre>
+
+      <div class="callout-info">
+        <h4>minmax と rank ― どちらも「正しい」が、同じ重みでも順位が変わりうる</h4>
+        <ul class="point-list">
+          <li><strong>minmax</strong>：3モデル中の最悪＝0、最良＝1 に線形に引き伸ばす。<strong>差の大きさ</strong>が反映される。A3 が A1 に正解率で 0.4 ポイントしか勝っていなければ、正解率の得点差は小さい</li>
+          <li><strong>rank</strong>：順位だけを使う（1位＝1、2位＝0.5、3位＝0）。差の大きさは捨てる。0.4 ポイントでも「1位」は1位</li>
+          <li>ブロック 7 の感度分析で、正解率の重みを 0→1 に動かしたとき<strong>どこで1位が変わるか</strong>を先に見ておくと、プレゼンでの反論に備えられる</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card group">
+      <div class="card-header"><h3>グループ内プレゼン3（1人2分）― ブロック 9 の出力を画面に出して話す</h3></div>
+      <table style="font-size:0.85rem">
+        <tr><th style="width:9rem">役割</th><th>話すこと</th></tr>
+        <tr><td>implementer</td><td>定義と重みの根拠。「なぜ正解率より速度が重いのか」</td></tr>
+        <tr><td>verifier</td><td>重みか正規化を変えたとき順位がどう動いたか（ブロック 7 の表）</td></tr>
+        <tr><td>recorder</td><td>討議で割れた点と、どう決めたか</td></tr>
+        <tr><td>auditor</td><td>他班に投げる質問3問（評価基準の段階3を狙う）</td></tr>
+      </table>
+    </div>
+
+    <div class="callout-danger">
+      <h4>補足：多くの班で A1 が1位になると予想される</h4>
+      <p style="font-size:0.9rem">配布した3モデルでは、A1 は正解率で A3 に 0.4 ポイント劣るだけで、速度とメモリは10倍以上優れている。無作為な重みでは70〜90%の班で A1 が1位になる。<strong>それは A1 が「良い」からか、それとも正解率の差 0.4 ポイントがばらつきの範囲内に収まっているからか</strong>。3シードで学習し直すと正解率は ±0.2〜0.7 ポイント変動する。この問いを第4回「再現性と分散」で確かめる。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 6: CARDS ============ -->
+<section id="sec-cards">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num" style="background:#B388FF">6</div>
+      <h2>班間ディスカッション ― 質問カード交換（20分）と全体共有（10分）</h2>
+    </div>
+
+    <div class="card group">
+      <div class="card-header"><h3>質問カード交換の手順 ― ここで他班の実測値を集める</h3></div>
+      <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
+        <li>auditor はブロック 10 の <code>questions</code> に3問を書き、実行して <code>c1_d1_ex3_questions_&lt;班&gt;.txt</code> を出す</li>
+        <li>掲示された割当（巡回置換。自班には戻らない）に従い、<strong>同じ教室内の別班</strong>へ渡す</li>
+        <li>受け取った班は<strong>自班の実測値を使って</strong>10分で答える。定義を問うだけの質問には、段階1である旨を伝えてよい</li>
+        <li>質問元が3段階で採点し、recorder が記録する</li>
+        <li>回答を受け取る際に、<strong>その班の演習2の表（3モデル × 4指標）と演習3の順位・重み</strong>を受け取る。口頭でも AirDrop でもよい。<strong>3〜4班分</strong>あればレポートの比較に十分である</li>
+      </ol>
+      <div class="callout-info">
+        <h4>レポートで比べるもの（自班 ＋ 集めた3〜4班）</h4>
+        <ul class="point-list">
+          <li>同期あり／なしの比と帯域は<strong>機種でどれだけ違うか</strong>（演習1）</li>
+          <li>正解率・損失は<strong>どの班でも同じ値</strong>になったか。時間とメモリは<strong>何%異なった</strong>か（演習2）</li>
+          <li>同じ3モデルから<strong>何通りの順位</strong>が出たか。割れた原因は重みか正規化か（演習3）</li>
+        </ul>
+        <p style="font-size:0.85rem;color:#999;margin-top:0.4rem">提出された班の分は教員が統合図として全体共有で投影し、統合 CSV を授業後に LMS へ置く。集めきれなかった分はそれを使ってよい。</p>
+      </div>
+<pre>Python
+questions <span class="op">=</span> [
+    <span class="str">"Q1: あなたの班の重みで正解率の重みを 0.1 下げたとき 1 位は変わりますか．変わるなら何から何へ"</span>,
+    <span class="str">"Q2: あなたの班の同期あり／なしの比は何倍でしたか．うちの班（__倍）と違う理由は何だと思いますか"</span>,
+    <span class="str">"Q3: rank 正規化に変えたとき，あなたの班の順位は変わりますか"</span>,
+]</pre>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>全体共有（教員）</h3></div>
+      <ul class="point-list">
+        <li>教員が <code>aggregate/c1d1_rank.py</code> の図を投影する。<strong>同じ3モデルの数値から何通りの順位が出たか</strong>を確認する</li>
+        <li>順位が割れた理由（重みか、正規化か）を2班に発言してもらう</li>
+        <li>次回に持ち越す問い：「正解率の差 0.4 ポイントは差と言えるか」→ 第4回</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUBMIT / CHECKLIST ============ -->
+<section id="sec-submit">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num" style="background:#FFB800">✓</div>
+      <h2>提出前チェックと次回予告</h2>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>✅ 出す前に、この順で確認する</h3></div>
+<pre>Bash
+<span class="cmt"># 班番号を入れて形式検証（OK が出るまで提出しない）</span>
+<span class="fn">python</span> course1/day1/verify.py --group 12
+
+<span class="cmt"># 出るべきファイル（班 12 の例）</span>
+<span class="fn">ls</span> results/ | <span class="fn">grep</span> _12
+<span class="cmt"># c1_d1_ex1_12.csv  c1_d1_ex2_12.csv  table_c1_d1_ex2_12.csv</span>
+<span class="cmt"># c1_d1_ex3_12.csv  c1_d1_ex3_definition_12.txt  c1_d1_ex3_questions_12.txt</span></pre>
+      <table style="font-size:0.82rem">
+        <tr><th style="width:5%"></th><th>確認項目</th></tr>
+        <tr><td><input type="checkbox"></td><td>演習1の CSV に<strong>班員全員分</strong>の行がある（各自が自分のマシンで投稿 → 1台に集める）</td></tr>
+        <tr><td><input type="checkbox"></td><td>演習2の表に A1・A2・A3 の3行があり、4指標＋パラメータ数が入っている</td></tr>
+        <tr><td><input type="checkbox"></td><td>演習3の重みの合計が 1、定義が一文で書かれている</td></tr>
+        <tr><td><input type="checkbox"></td><td>質問カード3問が書かれている（<code>____</code> のままになっていない）</td></tr>
+        <tr><td><input type="checkbox"></td><td>recorder の失敗記録・討議メモ（3回分）がある</td></tr>
+        <tr><td><input type="checkbox"></td><td>質問カード交換で集めた<strong>他班3〜4班分</strong>の演習2の表と演習3の順位が、班番号つきで記録されている</td></tr>
+        <tr><td><input type="checkbox"></td><td><code>verify.py</code> が <code>OK: 提出物の形式に問題なし</code> を出した</td></tr>
+        <tr><td><input type="checkbox"></td><td>zip にしていない。ファイル名に班番号（<code>_12</code> など）が入ったまま、名前を変えていない</td></tr>
+      </table>
+      <div class="notion-submit"><div><strong>提出:</strong> 上記6ファイルを zip にせず、そのまま LMS の課題「第1回」へ implementer がアップロードする（最大8ファイル、拡張子 .csv／.txt）。演習2の CSV は<strong>第7回のベースライン</strong>になるので、自分のマシンにも保存しておくこと</div></div>
+    </div>
+
+    <div class="callout-tip">
+      <h4>次回予告 ― 第2回「勾配の観測」</h4>
+      <p style="font-size:0.9rem">今日は学習済みの重みを「測る」だけだった。次回は自分で学習を回し、<strong>層ごとの勾配の大きさ</strong>を記録して可視化する。班ごとに違う学習率（1e-5〜1e-1 の9水準）を担当し、どこで学習が発散するかを班で分担して実測する。今日作った CSV の形式をそのまま使う。</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>AIテクノロジデザインⅠ ─ 2026年度3学期 ─ 第1回</div>
+    <div style="margin-top:0.5rem;font-size:0.8rem;color:#666">&copy;2026 Ryota Nakamura.</div>
+  </div>
+</footer>
+
+<!-- ============ SCRIPTS ============ -->
+<script>
+// Copy button for pre blocks
+document.querySelectorAll('pre').forEach(function(pre) {
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function() {
+    var code = pre.textContent.replace(/^(Python|JavaScript|HTML|Bash|JSON|Terminal|Directory Tree|\.zshrc|Notion テンプレート)( ── [^\n]+)?\n/, '');
+    navigator.clipboard.writeText(code).then(function() {
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.textContent = 'コピー';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+  pre.appendChild(btn);
+});
+
+// Click-to-copy on inline code elements
+document.querySelectorAll(':not(pre) > code').forEach(function(code) {
+  code.title = 'クリックでコピー';
+  code.addEventListener('click', function() {
+    navigator.clipboard.writeText(code.textContent).then(function() {
+      code.classList.add('copied');
+      setTimeout(function() {
+        code.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+</script>
+
+</body>
+</html>

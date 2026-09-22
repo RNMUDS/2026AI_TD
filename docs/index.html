@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人工知能(AI)テクノロジデザインⅠ ― 2026年度 | AI_TD1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ RESET & BASE ============ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: clamp(13px, 1.6vw, 28px); }
+html, body { overflow-x: hidden; max-width: 100%; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #111111;
+  color: #e0e0e0;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+/* Media and embeds should never overflow their container */
+img, video, iframe, svg, canvas { max-width: 100%; height: auto; }
+
+/* ============ LAYOUT ============ */
+.container { max-width: 1600px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); }
+section { padding: clamp(2rem, 5vw, 4rem) 0; }
+section + section { border-top: 1px solid #222; }
+
+/* ============ HEADER ============ */
+.hero {
+  background: linear-gradient(135deg, #111111, #0a1a2e, #0a0f1a);
+  color: white;
+  padding: clamp(3rem, 8vw, 6rem) 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(108,99,255,0.3), transparent 50%),
+              radial-gradient(circle at 20% 80%, rgba(155,89,182,0.2), transparent 50%);
+}
+.hero .container { position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 100px;
+  padding: 0.35rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+.hero p { font-size: clamp(0.95rem, 1.8vw, 1.15rem); opacity: 0.85; max-width: 600px; }
+
+/* ============ SUBMISSION BOX ============ */
+.submission-box {
+  background: linear-gradient(135deg, #1A1A1A, #0a1a2e);
+  border: 2px solid #4FC3F7;
+  border-radius: 16px;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  margin: 2rem 0;
+}
+.submission-box h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #4FC3F7;
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.submission-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.5rem;
+}
+.sub-item {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  gap: 0.3rem;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 0.4rem;
+  padding: 0.6rem 0.4rem;
+  font-size: 0.55rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.sub-item .sub-count {
+  margin-bottom: 0.1rem;
+}
+.sub-item .tag {
+  margin-bottom: 0.15rem;
+}
+.sub-count {
+  background: #4FC3F7;
+  color: white;
+  border-radius: 0.2rem;
+  min-width: 1.5rem; height: 1.5rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700;
+}
+
+/* ============ TAGS ============ */
+.tag {
+  display: inline-flex; align-items: center; gap: 0.2rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 100px;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.tag-note      { background: #0a1a2e; color: #4FC3F7; }
+.tag-standard  { background: #0a1a2e; color: #4FC3F7; }
+.tag-advanced  { background: #2e1a0a; color: #FFB800; }
+.tag-group     { background: #0a1a2e; color: #4FC3F7; }
+
+/* ============ EXAM ALERT TAG ============ */
+.exam-alert {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  background: rgba(255, 82, 82, 0.15);
+  border: 1px solid #FFB800;
+  color: #FFB800;
+  padding: 0.2rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+  animation: exam-pulse 2s ease-in-out 3;
+}
+@keyframes exam-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ============ SECTION HEADERS ============ */
+.section-header {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.section-num {
+  width: 2.5rem; height: 2.5rem;
+  border-radius: 0.4rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; font-weight: 900; color: white;
+  flex-shrink: 0;
+}
+.section-header h2 {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+/* ============ CARDS ============ */
+.card {
+  background: #141414;
+  border-radius: 16px;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  border: 1px solid #2a2a2a;
+}
+.card-header {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #222;
+}
+.card-header h3 { font-size: 1.1rem; font-weight: 700; }
+.card.standard  { border-left: 4px solid #4FC3F7; }
+.card.advanced  { border-left: 4px solid #FFB800; }
+.card.group     { border-left: 4px solid #81D4FA; }
+
+/* ============ NOTION CALLOUT ============ */
+.notion-submit {
+  background: #0a1a2e;
+  border: 1px solid #4FC3F7;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+  font-size: 0.88rem;
+  display: flex; align-items: flex-start; gap: 0.5rem;
+}
+.notion-submit::before { content: '\1F4DD'; font-size: 1rem; flex-shrink: 0; }
+.notion-submit strong { color: #FFB800; }
+
+/* ============ TABLES ============ */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9rem;
+  margin: 1rem 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+th {
+  background: rgba(108, 99, 255, 0.15);
+  font-weight: 700;
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.82rem;
+  color: #4FC3F7;
+  letter-spacing: 0.02em;
+}
+td {
+  padding: 0.55rem 0.8rem;
+  border-top: 1px solid #222;
+}
+tr:nth-child(even) td { background: #111; }
+
+/* ============ CODE ============ */
+pre {
+  background: #0A0A0A;
+  color: #E0E0E0;
+  border-radius: 12px;
+  padding: clamp(0.8rem, 2vw, 1.4rem);
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-ligatures: none;
+  font-size: clamp(0.75rem, 1.3vw, 0.88rem);
+  line-height: 1.7;
+  margin: 1rem 0;
+  position: relative;
+}
+pre .kw { color: #4FC3F7; }
+pre .fn { color: #81D4FA; }
+pre .str { color: #FFB800; }
+pre .cmt { color: #616161; font-style: italic; }
+pre .num { color: #FFB800; }
+pre .op { color: #81D4FA; }
+.code-label {
+  position: absolute; top: 0; right: 0;
+  background: rgba(255,255,255,0.08);
+  color: #999999;
+  padding: 0.2rem 0.8rem;
+  border-radius: 0 12px 0 8px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+/* inline code */
+:not(pre) > code {
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(108,99,255,0.15);
+  padding: 0.15em 0.45em;
+  border-radius: 5px;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+:not(pre) > code:hover { background: rgba(108,99,255,0.3); }
+:not(pre) > code.copied { background: rgba(108,99,255,0.5); }
+
+/* ============ EXPLANATION BLOCKS ============ */
+.concept-box {
+  background: rgba(108, 99, 255, 0.15);
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  margin: 1rem 0;
+  border: 1px solid #2a2a3a;
+}
+.concept-box h4 {
+  font-size: 0.95rem; font-weight: 700; color: #4FC3F7; margin-bottom: 0.5rem;
+}
+.analogy {
+  background: #1a1a0a;
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin: 0.75rem 0;
+  border-left: 3px solid #FFB800;
+  font-size: 0.95rem;
+}
+.analogy::before {
+  content: '\1F4A1 具体例';
+  display: block;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #FFB800;
+  margin-bottom: 0.3rem;
+}
+.point-list {
+  list-style: none;
+  padding: 0;
+}
+.point-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+.point-list li::before {
+  content: '\25B8';
+  position: absolute; left: 0;
+  color: #4FC3F7;
+  font-weight: 700;
+}
+
+/* ============ ANSWERS (COLLAPSIBLE) ============ */
+details {
+  background: #141414;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+details summary {
+  padding: 0.8rem 1.2rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 0.5rem;
+  background: #1a1a1a;
+  user-select: none;
+}
+details summary::marker { content: ''; }
+details summary::before {
+  content: '\25B6';
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+  color: #666;
+}
+details[open] summary::before { transform: rotate(90deg); }
+details .answer-content { padding: 1rem 1.2rem; border-top: 1px solid #2a2a2a; }
+
+/* ============ WARNING / DANGER CALLOUT ============ */
+.callout-danger {
+  background: rgba(255, 82, 82, 0.08);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+  border-left: 4px solid #FFB800;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.callout-danger h4 {
+  color: #FFB800; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;
+}
+.callout-warning {
+  background: rgba(255, 184, 0, 0.08);
+  border: 1px solid rgba(255, 184, 0, 0.3);
+  border-left: 4px solid #FFB800;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.callout-warning h4 {
+  color: #FFB800; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;
+}
+.callout-info {
+  background: rgba(108, 99, 255, 0.08);
+  border: 1px solid rgba(108, 99, 255, 0.3);
+  border-left: 4px solid #4FC3F7;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.callout-info h4 {
+  color: #4FC3F7; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;
+}
+.callout-tip {
+  background: rgba(155, 89, 182, 0.08);
+  border: 1px solid rgba(155, 89, 182, 0.3);
+  border-left: 4px solid #81D4FA;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.callout-tip h4 {
+  color: #81D4FA; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;
+}
+
+/* ============ FOOTER ============ */
+footer {
+  background: #0A0A0A;
+  color: #999999;
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 640px) {
+  .submission-items { grid-template-columns: 1fr; }
+  .section-num { width: 2rem; height: 2rem; font-size: 0.85rem; }
+}
+
+/* ============ COPY BUTTON ============ */
+pre { position: relative; }
+.copy-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid #444;
+  color: #999;
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.72rem;
+  cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: all 0.2s;
+  z-index: 2;
+}
+.copy-btn:hover { background: #4FC3F7; color: white; border-color: #4FC3F7; }
+.copy-btn.copied { background: #4FC3F7; color: white; border-color: #4FC3F7; }
+
+/* ============ SUB-ITEM LINKS ============ */
+a.sub-item { transition: transform 0.15s, box-shadow 0.15s; }
+a.sub-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79,195,247,0.3);
+  border-color: #4FC3F7;
+}
+
+/* ============ SECTION NAV (sticky) ============ */
+.section-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(17,17,17,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #222;
+  padding: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+.section-nav a {
+  color: #999;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.section-nav a:hover { color: #4FC3F7; background: rgba(79,195,247,0.1); }
+.section-nav a.nav-assignment { color: #81D4FA; }
+.section-nav a.nav-exam { color: #FFB800; }
+
+/* ============ SCROLL TARGET OFFSET ============ */
+[id] { scroll-margin-top: 3rem; }
+
+/* ============ REDUCED MOTION ============ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  details summary::before { transition: none; }
+}
+</style>
+
+<body>
+
+<nav class="section-nav">
+  <a href="#sec-about">科目の概要</a>
+  <a href="#sec-goal">到達目標</a>
+  <a href="#sec-plan">授業計画</a>
+  <a href="#sec-rules">進め方とルール</a>
+  <a href="#sec-links" class="nav-assignment">各回の資料</a>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="hero-badge">人工知能(AI)テクノロジデザインⅠ（AI_TD1）─ 2026年度 3学期</div>
+    <p style="font-size:0.85rem;opacity:0.7;margin-bottom:0.3rem">武蔵野大学データサイエンス学部　中村 亮太</p>
+    <h1>その数字は信じられるか ― 小型言語モデルで学ぶ深層学習の実験方法論</h1>
+    <p>自分のマシンで小型の言語モデルを動かし、正解率・損失・速度・メモリを自分で測る。班ごとに違う条件を担当し、他班の実測値と比較して「差があると言えるか」を判定する方法を身につける。</p>
+  </div>
+</header>
+
+<section id="sec-about" style="padding-top:2.5rem">
+  <div class="container">
+    <div class="card" style="border-left:4px solid #4FC3F7;background:linear-gradient(135deg,#141414,#111a24)">
+      <div class="card-header"><h3>📌 科目の概要</h3></div>
+      <ul class="point-list" style="margin-bottom:1rem">
+        <li>150分 × 7回（3学期・木曜3〜4限・有明 5-501/502）。2年次必修</li>
+        <li>受講者は自分の MacBook Air（Apple Silicon）で PyTorch（MPS）を動かす。クラウド GPU は使わない</li>
+        <li>4名1班のグループワーク。役割（implementer／verifier／recorder／auditor）を毎回交代する</li>
+        <li>毎回、班別条件（ジグソー）で実験する。レポートは<strong>自班の実測と、質問カード交換で集めた3〜4班の実測値</strong>を比較して作成する。提出された班の分を教員が統合した図を配る</li>
+        <li>各演習の後に<strong>グループディスカッション</strong>と<strong>グループ内プレゼン</strong>を必ず行う。授業の後半は班間の質問カード交換</li>
+      </ul>
+      <div class="callout-info">
+        <h4>教科書との関係</h4>
+        <p style="font-size:0.9rem">『データサイエンティストのためのディープラーニングプログラミング』（中村亮太、サイエンス社）は、モデル構築のプログラミングパターン（学習ループ・データセット・転移学習・デプロイ）の参照用として使う。授業の題材は画像分類ではなく小型言語モデルで、演習は GitHub から取得する授業用フォルダ <code>AI_TD</code> で進める。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sec-goal">
+  <div class="container">
+    <div class="section-header"><div class="section-num" style="background:#4FC3F7">1</div><h2>到達目標</h2></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(15.5rem,1fr));gap:0.6rem">
+      <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #4FC3F7;border-radius:0.5rem;padding:0.8rem 0.9rem">
+        <div style="font-weight:800;font-size:0.92rem;color:#4FC3F7;margin-bottom:0.25rem">① 正しく測る</div>
+        <div style="font-size:0.84rem;color:#ccc">GPU の同期・ウォームアップ・中央値を使い、正解率・損失・速度・メモリを同じ関数で測れる。損失曲線を読んで「どこで止めるか」を判断できる</div>
+      </div>
+      <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #FFB800;border-radius:0.5rem;padding:0.8rem 0.9rem">
+        <div style="font-weight:800;font-size:0.92rem;color:#FFB800;margin-bottom:0.25rem">② 差を疑う</div>
+        <div style="font-size:0.84rem;color:#ccc">同一条件をシード5回で実行し、平均と標準偏差を出し、「差 ÷ ばらつき」で差があると言えるかを判定できる</div>
+      </div>
+      <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #81D4FA;border-radius:0.5rem;padding:0.8rem 0.9rem">
+        <div style="font-weight:800;font-size:0.92rem;color:#81D4FA;margin-bottom:0.25rem">③ 公平に比べる</div>
+        <div style="font-size:0.84rem;color:#ccc">パラメータ数を揃えたアーキテクチャ比較を設計・実行し、データ量で解決できない壁（語順を捨てるモデルは語順課題を解けない）を実測で示せる</div>
+      </div>
+      <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #B388FF;border-radius:0.5rem;padding:0.8rem 0.9rem">
+        <div style="font-weight:800;font-size:0.92rem;color:#B388FF;margin-bottom:0.25rem">④ 言葉にする</div>
+        <div style="font-size:0.84rem;color:#ccc">ショートカット学習やスケーリング則を自分の実測から説明し、他班に「実測値を要求する質問」を作れる</div>
+      </div>
+    </div>
+    <div class="callout-tip" style="margin-top:1rem">
+      <h4>シラバス上の到達目標との対応</h4>
+      <p style="font-size:0.88rem">「先端AIテクノロジの特徴・課題を把握できる」（①③④）／「Python で課題に適したAIモデルをデザイン・実装できる」（①③）／「構築したモデルの適用範囲と有効性を論理的に説明できる」（②④）／「チームで協力して進められる」（毎回のグループワーク）</p>
+    </div>
+  </div>
+</section>
+
+<section id="sec-plan">
+  <div class="container">
+    <div class="section-header"><div class="section-num" style="background:#FFB800">2</div><h2>授業計画（全7回）</h2></div>
+    <table style="font-size:0.88rem">
+      <tr><th style="width:4rem">回</th><th style="width:12rem">テーマ</th><th>前半</th><th>後半</th><th style="width:12rem">班別条件</th></tr>
+      <tr><td><a href="aitd1_week_1.html" style="color:#4FC3F7;font-weight:700">1</a></td><td>AIの性能を測る</td><td>環境ベンチマーク（同期しないと時間は測れない）／学習済み3モデルの4指標同時測定</td><td>「良いAI」を班で定義し順位を出す／質問カード交換</td><td>なし（条件は共通）</td></tr>
+      <tr><td>2</td><td>勾配の観測</td><td>層別勾配ノルム記録の実装と可視化</td><td>学習率ジグソー：発散境界を実測</td><td>学習率 1e-5〜1e-1 の9水準 × 3班</td></tr>
+      <tr><td>3</td><td>過学習と評価指標</td><td>過学習を意図的に作り、正則化3手法を群別実験</td><td>損失と評価指標の乖離。3指標で順位が入れ替わる例</td><td>weight decay／Dropout／データ拡張 各4水準</td></tr>
+      <tr><td><strong style="color:#FFB800">4 ★</strong></td><td>再現性と分散（科目の要）</td><td>同一条件をシード5通りで自動実行</td><td>差 ÷ 標準偏差で「差があると言えるか」。登壇発表</td><td>なし。以後すべての実験でシード5回が既定</td></tr>
+      <tr><td>5</td><td>アーキテクチャ比較</td><td>3アーキ × 3タスク × 3データ量 ＝ 27セルの担当セルを実行</td><td>投稿された分で格子を投影。「MLP は語順を原理的に解けない」を実測で確認</td><td>1班1セル（副担当で欠測対策）</td></tr>
+      <tr><td>6</td><td>ショートカット学習</td><td>相関トークンを混入したデータで学習</td><td>反転テスト／勾配記録を再利用した寄与度可視化／不変性学習</td><td>相関強度 0.50／0.70／0.90／1.00</td></tr>
+      <tr><td>7</td><td>スケーリング則</td><td>幅 × データ量 ＝ 16セルのジグソー</td><td>両対数プロット統合 → 大きい4セルを伏せて外挿 → 開示して誤差を測る</td><td>16セルを班で分担（重複割当）</td></tr>
+    </table>
+    <p style="font-size:0.82rem;color:#999;margin-top:0.5rem">※ 4学期のⅡ（第8〜14回）は「他人が使えるか」を貫く問いとして、評価データの自作・LoRA・RAG・API化・因果判定へ進む。</p>
+  </div>
+</section>
+
+<section id="sec-rules">
+  <div class="container">
+    <div class="section-header"><div class="section-num" style="background:#81D4FA">3</div><h2>進め方とルール</h2></div>
+    <div class="card group">
+      <div class="card-header"><h3>毎回の型</h3></div>
+      <ul class="point-list">
+        <li><strong>実行 → グループディスカッション（5〜10分）→ グループ内プレゼン（1人2分）</strong>を演習ごとに1セット。スライドは作らない。画面を見せて話す</li>
+        <li>結果を見る前に<strong>予測を書く</strong>。外れた予測がプレゼンの材料になる</li>
+        <li>各班の auditor が質問3問を作り、別班へ渡して10分で回答、3段階で採点する。「相手の実測値を要求する質問」が最高評価。このやり取りで<strong>3〜4班分の実測値</strong>を集める</li>
+        <li>すべての計測結果は共通形式の CSV に記録し、教員が提出された分を1枚の図に統合して投影する。統合 CSV は授業後に LMS へ置く</li>
+      </ul>
+    </div>
+    <div class="card standard">
+      <div class="card-header"><h3>評価と提出</h3></div>
+      <ul class="point-list">
+        <li>成績は課題提出 100%（必須課題・任意課題・授業内課題・グループワークの主体性）</li>
+        <li>毎回、班で1セットの成果物（CSV・定義・質問カード・失敗記録）を LMS に提出。授業当日中の提出を目指す</li>
+        <li>LLM（大規模言語モデル）の利用は制限しない。ただし自班の実測値は LLM からは得られない。「作れたか」ではなく「読み解いて説明できるか」を見る</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="sec-links">
+  <div class="container">
+    <div class="section-header"><div class="section-num" style="background:#B388FF">4</div><h2>各回の資料</h2></div>
+    <div class="submission-items">
+      <a href="aitd1_week_1.html" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">公開</span>AIの性能を測る</a>
+      <span class="sub-item" style="opacity:0.45"><span class="sub-count" style="background:#333">2</span><span class="tag" style="background:#222;color:#888">準備中</span>勾配の観測</span>
+      <span class="sub-item" style="opacity:0.45"><span class="sub-count" style="background:#333">3</span><span class="tag" style="background:#222;color:#888">準備中</span>過学習と評価指標</span>
+      <span class="sub-item" style="opacity:0.45"><span class="sub-count" style="background:#333">4</span><span class="tag" style="background:#222;color:#888">準備中</span>再現性と分散</span>
+      <span class="sub-item" style="opacity:0.45"><span class="sub-count" style="background:#333">5</span><span class="tag" style="background:#222;color:#888">準備中</span>アーキテクチャ比較</span>
+      <span class="sub-item" style="opacity:0.45"><span class="sub-count" style="background:#333">6</span><span class="tag" style="background:#222;color:#888">準備中</span>ショートカット学習</span>
+      <span class="sub-item" style="opacity:0.45"><span class="sub-count" style="background:#333">7</span><span class="tag" style="background:#222;color:#888">準備中</span>スケーリング則</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>AIテクノロジデザインⅠ ─ 2026年度3学期 ─ 全体</div>
+    <div style="margin-top:0.5rem;font-size:0.8rem;color:#666">&copy;2026 Ryota Nakamura.</div>
+  </div>
+</footer>
+
+<!-- ============ SCRIPTS ============ -->
+<script>
+// Copy button for pre blocks
+document.querySelectorAll('pre').forEach(function(pre) {
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'コピー';
+  btn.addEventListener('click', function() {
+    var code = pre.textContent.replace(/^(Python|JavaScript|HTML|Bash|JSON|Terminal|Directory Tree|\.zshrc|Notion テンプレート)( ── [^\n]+)?\n/, '');
+    navigator.clipboard.writeText(code).then(function() {
+      btn.textContent = 'コピーしました';
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.textContent = 'コピー';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+  pre.appendChild(btn);
+});
+
+// Click-to-copy on inline code elements
+document.querySelectorAll(':not(pre) > code').forEach(function(code) {
+  code.title = 'クリックでコピー';
+  code.addEventListener('click', function() {
+    navigator.clipboard.writeText(code.textContent).then(function() {
+      code.classList.add('copied');
+      setTimeout(function() {
+        code.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+</script>
+
+</body>
+</html>
