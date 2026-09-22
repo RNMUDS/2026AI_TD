@@ -13,7 +13,7 @@ from .device import machine_string
 
 COLUMNS = ["timestamp", "group_id", "member_role", "course", "day", "exercise",
            "condition", "seed", "metric_name", "metric_value", "elapsed_sec", "device", "machine"]
-ROLES = ("implementer", "verifier", "recorder", "auditor")
+ROLES = ("implementer", "verifier", "recorder", "auditor", "collector")   # collector は 5 人班の 5 つ目の役割
 
 
 class ResultLogger:

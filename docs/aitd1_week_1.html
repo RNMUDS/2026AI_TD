@@ -759,6 +759,15 @@ a.sub-item:hover {
         <tr><td><strong style="color:#81D4FA">recorder</strong></td><td>出たエラーと直し方、討議で割れた点を残す</td><td>失敗記録・討議メモ（形式自由）</td></tr>
         <tr><td><strong style="color:#B388FF">auditor</strong></td><td>演習中に<strong>他班への質問を3問</strong>作る</td><td>質問カード（3問）</td></tr>
       </table>
+      <div class="callout-info">
+        <h4>班が3人または5人のとき</h4>
+        <ul class="point-list">
+          <li><strong>3人班</strong>：recorder と auditor を1人が兼任する（ノートブックの <code>MEMBER_ROLE</code> は <code>"recorder"</code>）。3役を日替わりで回すと、7回で全員が各役割を2回以上経験する</li>
+          <li><strong>5人班</strong>：5つ目の役割 <strong style="color:#4FC3F7">collector（収集係）</strong>を置く。質問カード交換で他班3〜4班分の実測値（演習2の表と演習3の順位・重み）を集め、討議とプレゼンの時間管理も担う。<code>MEMBER_ROLE</code> は <code>"collector"</code></li>
+          <li>どちらの場合も <strong>implementer は1人のまま</strong>。コードを書く人を増やすと、読んで判断する側が減る</li>
+          <li>グループ内プレゼンは1人2分なので、3人班は6分、5人班は10分。余った時間は討議に回す</li>
+        </ul>
+      </div>
     </div>
 
     <div class="card group">

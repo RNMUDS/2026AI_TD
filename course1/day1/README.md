@@ -49,6 +49,9 @@ code .                                # ⑥ VS Code（または jupyter lab cour
 4. recorder は出たエラーと直し方を `results/` に残す（形式自由）
 5. auditor は演習中に他班への質問を 3 問作る（`waiting_task.md` 参照）
 
+**班が 3 人のとき**：recorder と auditor を 1 人が兼任する（`MEMBER_ROLE` は "recorder"）．3 役を日替わりで回す．
+**班が 5 人のとき**：5 つ目の役割 **collector**（収集係）を置く．質問カード交換で他班 3〜4 班分の実測値（演習2 の表と演習3 の順位）を集め，時間管理も担う．implementer は増やさない（コードを書くのは 1 人のまま）．
+
 ### 演習1（E1-1）環境ベンチマーク
 
 自分のマシンの帯域（GB/s）・演算（GFLOPS）・学習ステップ時間（ms/step）を測り，CSV に投稿する．
