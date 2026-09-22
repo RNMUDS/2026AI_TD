@@ -14,7 +14,7 @@ source .venv/bin/activate
 uv pip install -r requirements.txt    #    PyTorch など（数分）
 python setup/check_env.py             # ⑤ 環境診断．MPS が使えるか，速度の目安
 python setup/download_assets.py       #    コーパス（SST-2）の取得と配布重みの確認
-code .                                # ⑥ VS Code（または jupyter lab course1/day1/）
+code .                                # ⑥ VS Code で開き，course1/day1/ex1.ipynb のカーネルに .venv の Python 3.12 を選ぶ
 ```
 
 ターミナルを開き直したら `cd ~/AI_TD && source .venv/bin/activate` を毎回行う．

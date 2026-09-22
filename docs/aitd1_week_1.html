@@ -716,15 +716,21 @@ a.sub-item:hover {
     </div>
 
     <div class="card standard">
-      <div class="card-header"><h3>手順⑥ ノートブックを開く</h3></div>
-      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">VS Code（MD1 で導入済み）で開く方法と、JupyterLab で開く方法のどちらでもよい。</p>
+      <div class="card-header"><h3>手順⑥ VS Code でノートブックを開く</h3></div>
+      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">ノートブック（<code>.ipynb</code>）は MD1 で導入した VS Code で開く。初回だけ拡張機能を2つ入れる。</p>
 <pre>Bash
-<span class="cmt"># A. VS Code で開く（拡張機能 Python と Jupyter を入れておく）</span>
-<span class="fn">code</span> .
-<span class="cmt">#    → course1/day1/ex1.ipynb を開き，右上のカーネル選択で .venv の Python 3.12 を選ぶ</span>
-
-<span class="cmt"># B. JupyterLab で開く</span>
-<span class="fn">jupyter</span> lab course1/day1/</pre>
+<span class="cmt"># (1) AI_TD フォルダを VS Code で開く（. は現在のフォルダ）</span>
+<span class="fn">code</span> .</pre>
+      <ol style="font-size:0.88rem;color:#ccc;padding-left:1.4rem;line-height:1.9">
+        <li>左端の「拡張機能」（四角が4つのアイコン）で <strong>Python</strong> と <strong>Jupyter</strong>（どちらも Microsoft 製）をインストールする。初回のみ</li>
+        <li>左のエクスプローラーで <code>course1/day1/ex1.ipynb</code> をクリックして開く</li>
+        <li>右上の「カーネルの選択」→「Python 環境」→ パスに <code>.venv/bin/python</code> を含む <strong>Python 3.12（.venv）</strong> を選ぶ</li>
+        <li>最初のセルの左にある ▶ を押す。<code>作業フォルダ: /Users/…/AI_TD</code> と表示されれば成功。以降は上から順にセルを実行する（Shift + Enter で次のセルへ）</li>
+      </ol>
+      <div class="callout-tip">
+        <h4>カーネルの一覧に .venv が出ないとき</h4>
+        <p style="font-size:0.88rem">ターミナルで <code>source .venv/bin/activate</code> のあと <code>uv pip install ipykernel</code> を実行し、VS Code を開き直す（<code>code .</code>）。それでも出なければ、⌘ + Shift + P →「Python: Select Interpreter」で <code>.venv/bin/python</code> を選んでからノートブックを開く。</p>
+      </div>
     </div>
 
     <div class="callout-warning">
@@ -735,7 +741,8 @@ a.sub-item:hover {
         <tr><td><code>ModuleNotFoundError: torch</code></td><td>仮想環境が有効でない、または別の Python で実行している</td><td><code>source .venv/bin/activate</code> をやり直す。VS Code はカーネルに <code>.venv/bin/python</code> を選ぶ</td></tr>
         <tr><td>MPS が false（Apple Silicon なのに）</td><td>PyTorch が古い</td><td><code>uv pip install --upgrade torch</code>（2.8 以上）</td></tr>
         <tr><td><code>download_assets.py</code> が止まる</td><td>学内ネットワークの制限、または Hugging Face Hub に届かない</td><td>自宅回線でやり直す。それでも不可なら授業当日に教員が USB で配る</td></tr>
-        <tr><td>ノートブックの最初のセルで <code>作業フォルダ:</code> が出ない</td><td>別の場所から開いている</td><td><code>~/AI_TD</code> の中で <code>code .</code> か <code>jupyter lab</code> を起動する</td></tr>
+        <tr><td>ノートブックの最初のセルで <code>作業フォルダ:</code> が出ない</td><td>別の場所から開いている</td><td><code>~/AI_TD</code> の中で <code>code .</code> を実行し、その VS Code からノートブックを開く</td></tr>
+        <tr><td>セルを実行すると <code>ModuleNotFoundError</code></td><td>カーネルが .venv 以外の Python になっている</td><td>右上の「カーネルの選択」で <code>.venv/bin/python</code> を選び直す</td></tr>
       </table>
     </div>
   </div>
