@@ -500,8 +500,8 @@ a.sub-item:hover {
       <p style="font-size:1.05rem;margin-bottom:0.7rem">この科目を貫く問いは <strong style="color:#4FC3F7">「その数字は信じられるか」</strong>。</p>
       <ul class="point-list" style="margin-bottom:1rem">
         <li>ディープラーニングの授業は「正解率 92%」のような数字を出して終わりがちだが、<strong>その数値がどの程度変動するか</strong>を測定した経験を持つ学生は少ない</li>
-        <li>この科目では毎回、自分のマシンで<strong>小型の言語モデルを動かして数字を出し</strong>、班ごとに違う条件を担当して、<strong>他班の実測値と比較する</strong></li>
-        <li>レポートは<strong>自班の実測と、質問カード交換で集めた3〜4班の実測値</strong>を比較して作成する。提出された班の分を教員が統合した図を配る。LLM からは自班や他班の実測値は得られない</li>
+        <li>この科目では毎回、自分のマシンで<strong>小型の言語モデルを動かして数字を出し</strong>、グループごとに違う条件を担当して、<strong>他グループの実測値と比較する</strong></li>
+        <li>レポートは<strong>自グループの実測と、質問カード交換で集めた3〜4グループの実測値</strong>を比較して作成する。提出されたグループの分を教員が統合した図を配る。LLM からは自グループや他グループの実測値は得られない</li>
       </ul>
 
       <p style="font-size:0.9rem;color:#999;margin:1.2rem 0 0.5rem">7回の流れは次の3ステップ。</p>
@@ -516,7 +516,7 @@ a.sub-item:hover {
         </div>
         <div style="flex:1;min-width:14rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #B388FF;border-radius:0.5rem;padding:0.9rem">
           <div style="color:#B388FF;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem">STEP 3 ─ 比べる</div>
-          <div style="font-size:0.88rem"><strong>アーキテクチャ・ショートカット・スケーリング</strong>を班で分担した格子で比べ、原理的に解けない壁を実測で見る。<span style="color:#999">（第5〜7回）</span></div>
+          <div style="font-size:0.88rem"><strong>アーキテクチャ・ショートカット・スケーリング</strong>をグループで分担した格子で比べ、原理的に解けない壁を実測で見る。<span style="color:#999">（第5〜7回）</span></div>
         </div>
       </div>
 
@@ -536,7 +536,7 @@ a.sub-item:hover {
         </div>
         <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #B388FF;border-radius:0.5rem;padding:0.8rem 0.9rem">
           <div style="font-weight:800;font-size:0.92rem;color:#B388FF;margin-bottom:0.25rem">④ 言葉にする</div>
-          <div style="font-size:0.84rem;color:#ccc">自班の実測値を根拠に、他班に「実測値を要求する質問」を作り、順位が割れた理由を説明できる</div>
+          <div style="font-size:0.84rem;color:#ccc">自グループの実測値を根拠に、他グループに「実測値を要求する質問」を作り、順位が割れた理由を説明できる</div>
         </div>
       </div>
 
@@ -544,14 +544,14 @@ a.sub-item:hover {
         <summary>📅 全7回の計画 ― クリックで開く</summary>
         <div class="answer-content">
           <table style="font-size:0.85rem">
-            <tr><th style="width:4rem">回</th><th>テーマ</th><th>やること</th><th>班別条件（ジグソー）</th></tr>
+            <tr><th style="width:4rem">回</th><th>テーマ</th><th>やること</th><th>グループ別条件（ジグソー）</th></tr>
             <tr><td><strong style="color:#4FC3F7">1</strong></td><td>AIの性能を測る</td><td>環境ベンチマーク／学習済み3モデルの4指標同時測定／「良いAI」の定義と順位</td><td>なし（条件は共通）</td></tr>
-            <tr><td>2</td><td>勾配の観測</td><td>層別勾配ノルムの記録と可視化／学習率ジグソーで発散境界を実測</td><td>学習率 9水準 × 3班</td></tr>
+            <tr><td>2</td><td>勾配の観測</td><td>層別勾配ノルムの記録と可視化／学習率ジグソーで発散境界を実測</td><td>学習率 9水準 × 3グループ</td></tr>
             <tr><td>3</td><td>過学習と評価指標</td><td>過学習を意図的に作る／正則化3手法／損失と評価指標の乖離</td><td>weight decay／Dropout／データ拡張</td></tr>
             <tr><td><strong style="color:#FFB800">4 ★</strong></td><td>再現性と分散</td><td>同一条件をシード5回で自動実行／差÷標準偏差／登壇発表</td><td>なし（以後シード5回が既定）</td></tr>
-            <tr><td>5</td><td>アーキテクチャ比較</td><td>3アーキ × 3タスク × 3データ量 ＝ 27セルの格子を班で分担して埋める</td><td>1班1セル</td></tr>
+            <tr><td>5</td><td>アーキテクチャ比較</td><td>3アーキ × 3タスク × 3データ量 ＝ 27セルの格子をグループで分担して埋める</td><td>1グループ1セル</td></tr>
             <tr><td>6</td><td>ショートカット学習</td><td>相関トークン混入データで学習／反転テスト／寄与度の可視化</td><td>相関強度 4水準</td></tr>
-            <tr><td>7</td><td>スケーリング則</td><td>幅 × データ量 16セル／両対数プロット／伏せたセルを外挿して当てる</td><td>16セルを班で分担（重複割当）</td></tr>
+            <tr><td>7</td><td>スケーリング則</td><td>幅 × データ量 16セル／両対数プロット／伏せたセルを外挿して当てる</td><td>16セルをグループで分担（重複割当）</td></tr>
           </table>
         </div>
       </details>
@@ -563,16 +563,16 @@ a.sub-item:hover {
 <section style="padding-top:2rem;padding-bottom:0">
   <div class="container">
     <div class="submission-box">
-      <h3>📤 提出ガイド（班で1セット、ファイルをそのまま LMS にアップロード。zip にしない）</h3>
+      <h3>📤 提出ガイド（<strong>一人ひとりが個人で提出</strong>。グループで共有したデータから自分の提出ファイルを作り、そのまま Open-LMS にアップロード。zip にしない）</h3>
       <div class="submission-items">
-        <a href="#sec-gw1" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">GW1・GW2</span>記入済みの穴埋めシート（PDF または写真）</a>
-        <a href="#sec-gw3" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">GW3</span>並び替えた ex0.ipynb ／ c1_d1_ex0_&lt;班&gt;.csv</a>
-        <a href="#sec-ex1" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-standard">演習1</span>c1_d1_ex1_&lt;班&gt;.csv（班員全員分の行）</a>
-        <a href="#sec-ex2" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">演習2</span>c1_d1_ex2_&lt;班&gt;.csv ／ table_c1_d1_ex2_&lt;班&gt;.csv</a>
-        <a href="#sec-roles" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">ノート</span>recorder の失敗記録・討議メモ</a>
+        <a href="#sec-gw1" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">GW1・GW2</span>記入済みの穴埋めシート（グループで共有した PDF または写真）</a>
+        <a href="#sec-gw3" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">GW3</span>並び替えた ex0.ipynb ／ c1_d1_ex0_&lt;グループ&gt;.csv</a>
+        <a href="#sec-ex1" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-standard">演習1</span>c1_d1_ex1_&lt;グループ&gt;.csv（グループ全員分の行）</a>
+        <a href="#sec-ex2" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">演習2</span>c1_d1_ex2_&lt;グループ&gt;.csv ／ table_c1_d1_ex2_&lt;グループ&gt;.csv</a>
+        <a href="#sec-roles" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">ノート</span>失敗記録・討議メモ（recorder が作り、グループで共有）</a>
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:1rem;font-size:0.85rem;color:#81D4FA">
-        <strong>提出方法:</strong> 提出前に <code>python course1/day1/verify.py --group &lt;班番号&gt;</code> を実行し「OK」を確認 → <code>results/</code> の上記ファイルと <code>ex0.ipynb</code> を<strong>そのまま個別に</strong> LMS の課題「第1回」へアップロード（zip にまとめない。班の implementer が1人で提出し、他の3名は提出しない）
+        <strong>提出方法:</strong> ① グループで共有する：演習1 の CSV（各自の行）、穴埋めシート、失敗記録・討議メモを、グループ内で AirDrop・Slack などで全員に配る → ② 自分で提出ファイルを作る：共有された演習1 の行を自分の <code>results/</code> に集め、GW3 の <code>ex0.ipynb</code> と演習2 は<strong>自分のマシンで実行した結果</strong>を使う → ③ <code>python course1/day1/verify.py --group &lt;グループ番号&gt;</code> を実行し「OK」を確認 → ④ <strong>自分で</strong> <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の課題「第1回」へ、<code>results/</code> の上記ファイルと <code>ex0.ipynb</code> を<strong>そのまま個別に</strong>アップロードする（zip にまとめない。代表者がまとめて出すのではなく、<strong>全員がそれぞれ提出</strong>する）
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:0.5rem;font-size:0.85rem;color:#FFB800">
         <strong>提出期限:</strong> 授業当日中を目指す（遅くとも第2回授業開始まで）。演習2 の CSV は第7回のベースラインになるので保存しておくこと
@@ -617,13 +617,13 @@ a.sub-item:hover {
       <table style="font-size:0.82rem;margin-top:1rem">
         <tr><th style="width:6rem">時間</th><th>内容</th><th style="width:10rem">形式</th></tr>
         <tr><td>0–10</td><td>今日の問いの掲示。役割割当（implementer／verifier／recorder／presenter）</td><td>講義</td></tr>
-        <tr><td>10–35</td><td><a href="#sec-prep" style="color:#4FC3F7">環境構築</a>：uv → Python 3.12 → git clone → 仮想環境 → 環境診断・データ取得。先に終わった班は GW1 に進む</td><td>個人（班で助け合う）</td></tr>
+        <tr><td>10–35</td><td><a href="#sec-prep" style="color:#4FC3F7">環境構築</a>：uv → Python 3.12 → git clone → 仮想環境 → 環境診断・データ取得。先に終わったグループは GW1 に進む</td><td>個人（グループで助け合う）</td></tr>
         <tr><td>35–50</td><td><a href="#sec-gw1" style="color:#4FC3F7"><strong>GW1 グループディスカッション</strong></a>：穴埋めシート2ページ（AIの3つのアプローチの表、フクロウの画像分類の例）</td><td><span class="tag tag-group">討議</span></td></tr>
         <tr><td>50–60</td><td><a href="#sec-gw2" style="color:#4FC3F7"><strong>GW2 並び替え</strong></a>：プログラミングの流れ12枚のカードを3フェーズに並べる。テンソルの形状を埋める</td><td><span class="tag tag-group">討議</span></td></tr>
-        <tr><td>60–95</td><td><a href="#sec-gw3" style="color:#4FC3F7"><strong>GW3 コードを組み立てる</strong></a>：シャッフルされた12セルに番号を付け、並び替えて実行する（実行は約30秒）。討議5分</td><td>班</td></tr>
+        <tr><td>60–95</td><td><a href="#sec-gw3" style="color:#4FC3F7"><strong>GW3 コードを組み立てる</strong></a>：シャッフルされた12セルに番号を付け、並び替えて実行する（実行は約30秒）。討議5分</td><td>グループ</td></tr>
         <tr><td>95–105</td><td><strong>グループ内プレゼン1</strong>（presenter 2分 → 他の3名 1分ずつ → 質疑）：GW1〜3 の結論</td><td><span class="tag tag-group">発表</span></td></tr>
-        <tr><td>105–115</td><td><a href="#sec-ex1" style="color:#4FC3F7">演習1</a> 環境ベンチマーク（実行1分）→ 討議（同期・帯域・演算）</td><td>個人 → 班</td></tr>
-        <tr><td>115–140</td><td><a href="#sec-ex2" style="color:#4FC3F7">演習2</a> 学習済み3モデルの4指標同時測定。<strong>実行前に予測を記入</strong> → 実行 → 討議（外れた予測から）</td><td>個人 → 班</td></tr>
+        <tr><td>105–115</td><td><a href="#sec-ex1" style="color:#4FC3F7">演習1</a> 環境ベンチマーク（実行1分）→ 討議（同期・帯域・演算）</td><td>個人 → グループ</td></tr>
+        <tr><td>115–140</td><td><a href="#sec-ex2" style="color:#4FC3F7">演習2</a> 学習済み3モデルの4指標同時測定。<strong>実行前に予測を記入</strong> → 実行 → 討議（外れた予測から）</td><td>個人 → グループ</td></tr>
         <tr><td>140–150</td><td><strong>全体共有</strong>：教員が GW3 の正解率と演習2 の表を投影。提出確認・次回予告（第2回冒頭で「良いAI」の定義と順位づけ、質問カード交換）</td><td>全体</td></tr>
       </table>
     </div>
@@ -637,14 +637,14 @@ a.sub-item:hover {
       <div class="section-num" style="background:#4FC3F7">0</div>
       <h2>環境構築（授業内 25分）── Homebrew → uv → Python → 仮想環境</h2>
     </div>
-    <p style="font-size:0.95rem;color:#ccc;margin-bottom:0.6rem">MD1 と同じ流儀で環境を作る。全体の流れは <strong>Homebrew で uv を導入 → uv で Python 3.12 をインストール → 授業用フォルダ AI_TD を取得 → uv venv で仮想環境を作る → その中に uv pip install で PyTorch などを追加 → 環境診断</strong>。第1回の授業内で行う（事前課題はない）。所要は15〜25分で、PyTorch と FashionMNIST のダウンロードに数分かかる。班の中で先に終わった人が隣を手伝い、班全員が手順⑤まで終わったら GW1 に進む。</p>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:0.6rem">環境構築の全体の流れは <strong>Homebrew で uv を導入 → uv で Python 3.12 をインストール → 授業用フォルダ AI_TD を取得 → uv venv で仮想環境を作る → その中に uv pip install で PyTorch などを追加 → 環境診断</strong>。第1回の授業内で行う（事前課題はない）。所要は15〜25分で、PyTorch と FashionMNIST のダウンロードに数分かかる。グループの中で先に終わった人が隣を手伝い、グループ全員が手順⑤まで終わったら GW1 に進む。</p>
     <div style="background:#1a1a1a;border:1px solid #333;border-radius:0.4rem;padding:0.6rem 0.8rem;margin:0.3rem 0 1rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:#999">
       ~（ホーム）<br>└ AI_TD/　　　　　　← 授業用フォルダ（以降のコマンドはすべてここで実行）<br>　　├ .venv/　　　　　← 仮想環境（自動生成、中身を触らない）<br>　　├ common/　　　　← 全14回で使い回す共通基盤<br>　　├ course1/day1/　← 今日の ex1.ipynb / ex2.ipynb / ex3.ipynb<br>　　├ assets/　　　　← コーパスと学習済み重み（download_assets.py が置く）<br>　　├ results/　　　← 自分の CSV がここに出る（提出物）<br>　　└ docs/　　　　　← 授業ページの元ファイル（読まなくてよい）
     </div>
 
     <div class="card standard">
       <div class="card-header"><h3>手順① uv をインストール</h3></div>
-      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">uv は Python のバージョン管理・仮想環境・パッケージ管理を1つのツールで行う。MD1 で導入済みなら (2) の確認だけでよい。Homebrew が無い場合は先に <a href="https://brew.sh/ja/" style="color:#4FC3F7">brew.sh</a> の手順で入れる。</p>
+      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">uv は Python のバージョン管理・仮想環境・パッケージ管理を1つのツールで行う。すでに導入済みなら (2) の確認だけでよい。Homebrew が無い場合は先に <a href="https://brew.sh/ja/" style="color:#4FC3F7">brew.sh</a> の手順で入れる。</p>
 <pre>Bash
 <span class="cmt"># (1) Homebrew で uv をインストール</span>
 <span class="fn">brew</span> install uv
@@ -681,7 +681,7 @@ a.sub-item:hover {
 
     <div class="card standard">
       <div class="card-header"><h3>手順④ 仮想環境を作り、ライブラリを入れる</h3></div>
-      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">仮想環境はプロジェクトごとに独立した Python 環境。MD1 の環境とは別に作るので、py5 の環境に影響しない。</p>
+      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">仮想環境はプロジェクトごとに独立した Python 環境。他の授業で作った環境とは別に作るので、互いに影響しない。</p>
 <pre>Bash
 <span class="cmt"># (1) AI_TD の直下に仮想環境を作る（Python 3.12 を指定）</span>
 <span class="fn">uv</span> venv --python 3.12
@@ -714,7 +714,7 @@ a.sub-item:hover {
 
     <div class="card standard">
       <div class="card-header"><h3>手順⑥ VS Code でノートブックを開く</h3></div>
-      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">ノートブック（<code>.ipynb</code>）は MD1 で導入した VS Code で開く。初回だけ拡張機能を2つ入れる。</p>
+      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">ノートブック（<code>.ipynb</code>）は VS Code で開く。未導入なら <a href="https://code.visualstudio.com/" style="color:#4FC3F7">code.visualstudio.com</a> から入れる。初回だけ拡張機能を2つ入れる。</p>
 <pre>Bash
 <span class="cmt"># (1) AI_TD フォルダを VS Code で開く（. は現在のフォルダ）</span>
 <span class="fn">code</span> .</pre>
@@ -755,43 +755,43 @@ a.sub-item:hover {
 
     <div class="card group">
       <div class="card-header"><h3>① 役割分担（毎回ローテーション）</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">班は4名（1班のみ5名）。役割は<strong>日替わり</strong>で回し、7回で全員が全役割を1周半経験する。今日の役割は掲示の割当表で確認する。</p>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">グループは4名（1グループのみ5名）。役割は<strong>日替わり</strong>で回し、7回で全員が全役割を1周半経験する。今日の役割は掲示の割当表で確認する。</p>
       <table style="font-size:0.85rem">
         <tr><th style="width:9rem">役割</th><th>責務</th><th style="width:12rem">今日の提出物</th></tr>
         <tr><td><strong style="color:#4FC3F7">implementer</strong></td><td>コードを書く。<strong>他の3名はコードを書かない</strong>（助言はしてよい）</td><td>ノートブック・CSV</td></tr>
         <tr><td><strong style="color:#FFB800">verifier</strong></td><td>結果を疑い、隣で<strong>条件を変えて再実行</strong>する（バッチサイズ、繰り返し回数、指標の向き）</td><td>比較表（何を変えたら何が変わったか）</td></tr>
-        <tr><td><strong style="color:#81D4FA">recorder</strong>（記録・質問係）</td><td>出たエラーと直し方、討議で割れた点を記録し、そこから<strong>他班への質問を3問</strong>作る</td><td>失敗記録・討議メモ・質問カード（3問）</td></tr>
-        <tr><td><strong style="color:#B388FF">presenter</strong>（進行・発表係）</td><td>討議の司会と時間管理。班の結論を<strong>一文</strong>にまとめ、グループ内プレゼンと全体共有で班を代表して話す。質問カード交換で他班3〜4班分の実測値を集める</td><td>班の結論（一文）・集めた他班データ</td></tr>
+        <tr><td><strong style="color:#81D4FA">recorder</strong>（記録・質問係）</td><td>出たエラーと直し方、討議で割れた点を記録し、そこから<strong>他グループへの質問を3問</strong>作る</td><td>失敗記録・討議メモ・質問カード（3問）</td></tr>
+        <tr><td><strong style="color:#B388FF">presenter</strong>（進行・発表係）</td><td>討議の司会と時間管理。グループの結論を<strong>一文</strong>にまとめ、グループ内プレゼンと全体共有でグループを代表して話す。質問カード交換で他グループ3〜4グループ分の実測値を集める</td><td>グループの結論（一文）・集めた他グループデータ</td></tr>
       </table>
       <div class="callout-info">
-        <h4>班が3人または5人のとき</h4>
+        <h4>グループが3人または5人のとき</h4>
         <ul class="point-list">
-          <li><strong>3人班</strong>：presenter を verifier が兼任する（ノートブックの <code>MEMBER_ROLE</code> は <code>"verifier"</code>）。3役を日替わりで回すと、7回で全員が各役割を2回以上経験する</li>
-          <li><strong>5人班</strong>：5つ目の役割 <strong style="color:#4FC3F7">collector（収集係）</strong>を置き、他班3〜4班分の実測値（演習2の表と演習3の順位・重み）の収集を presenter から引き取る。<code>MEMBER_ROLE</code> は <code>"collector"</code></li>
+          <li><strong>3人グループ</strong>：presenter を verifier が兼任する（ノートブックの <code>MEMBER_ROLE</code> は <code>"verifier"</code>）。3役を日替わりで回すと、7回で全員が各役割を2回以上経験する</li>
+          <li><strong>5人グループ</strong>：5つ目の役割 <strong style="color:#4FC3F7">collector（収集係）</strong>を置き、他グループ3〜4グループ分の実測値（演習2の表と演習3の順位・重み）の収集を presenter から引き取る。<code>MEMBER_ROLE</code> は <code>"collector"</code></li>
           <li>どちらの場合も <strong>implementer は1人のまま</strong>。コードを書く人を増やすと、読んで判断する側が減る</li>
-          <li>グループ内プレゼンは presenter 2分＋他の各1分なので、3人班は4分、5人班は6分。余った時間は質疑に回す</li>
+          <li>グループ内プレゼンは presenter 2分＋他の各1分なので、3人グループは4分、5人グループは6分。余った時間は質疑に回す</li>
         </ul>
       </div>
     </div>
 
     <div class="card group">
       <div class="card-header"><h3>② グループ内プレゼンの型（各10分、スライド禁止、画面を見せて話す）</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem"><strong>presenter が班の結論を2分</strong>で話し、続いて implementer・verifier・recorder が<strong>1分ずつ補足</strong>する（合計5分）。残り5分は質疑。成功した点より、<strong>行き詰まった点や予測が外れた点</strong>に報告の価値がある。</p>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem"><strong>presenter がグループの結論を2分</strong>で話し、続いて implementer・verifier・recorder が<strong>1分ずつ補足</strong>する（合計5分）。残り5分は質疑。成功した点より、<strong>行き詰まった点や予測が外れた点</strong>に報告の価値がある。</p>
       <table style="font-size:0.85rem">
         <tr><th style="width:9rem">役割</th><th>話すこと</th></tr>
         <tr><td>implementer</td><td>どの TODO で行き詰まったか。同期を入れる前後で数値がどう変わったか</td></tr>
         <tr><td>verifier</td><td>条件を変えて何が変わったか（繰り返し回数、バッチサイズ、指標の向き）</td></tr>
-        <tr><td>recorder</td><td>出たエラーと直し方。討議で割れた点と、そこから作った他班への質問3問</td></tr>
-        <tr><td>presenter</td><td>班の結論（一文）と、その根拠となる数値。先頭で2分</td></tr>
+        <tr><td>recorder</td><td>出たエラーと直し方。討議で割れた点と、そこから作った他グループへの質問3問</td></tr>
+        <tr><td>presenter</td><td>グループの結論（一文）と、その根拠となる数値。先頭で2分</td></tr>
       </table>
     </div>
 
     <div class="card group">
       <div class="card-header"><h3>③ 質問カードの評価基準（第1回に配布、以後毎回使う）</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">recorder が作る質問は、受け取った班が10分で答え、質問元が3段階で採点する。<strong>検索でも LLM でも答えられない質問</strong>が最高評価。</p>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">recorder が作る質問は、受け取ったグループが10分で答え、質問元が3段階で採点する。<strong>検索でも LLM でも答えられない質問</strong>が最高評価。</p>
       <table style="font-size:0.85rem">
         <tr><th style="width:5rem">段階</th><th>基準</th><th>例</th></tr>
-        <tr><td><strong style="color:#4FC3F7">3</strong></td><td>相手の<strong>実測値</strong>を要求する。検索でも生成でも答えられない</td><td>「あなたの班の重みで正解率の重みを 0.1 下げたとき1位は変わりますか。変わるなら何から何へ」</td></tr>
+        <tr><td><strong style="color:#4FC3F7">3</strong></td><td>相手の<strong>実測値</strong>を要求する。検索でも生成でも答えられない</td><td>「あなたのグループの重みで正解率の重みを 0.1 下げたとき1位は変わりますか。変わるなら何から何へ」</td></tr>
         <tr><td><strong style="color:#FFB800">2</strong></td><td>手法の理解を問う。教科書的だが妥当</td><td>「minmax と rank で順位が変わるのはどういうときですか」</td></tr>
         <tr><td><strong style="color:#999">1</strong></td><td>用語の定義を問うだけ。調べれば分かる</td><td>「交差エントロピーとは何ですか」</td></tr>
       </table>
@@ -799,7 +799,7 @@ a.sub-item:hover {
 
     <div class="callout-tip">
       <h4>LLM とこの授業の立場</h4>
-      <p style="font-size:0.9rem">コードを書く作業も、誤りを見つける作業も、その多くは LLM（大規模言語モデル）を用いたツールに任せられるようになった。人がすべてのコードを一から手で打つ場面は、今後さらに減っていく。</p><p style="font-size:0.9rem;margin-top:0.5rem">一方で、複数の LLM が異なる案を出したとき、あるいは出力が正しいかどうか判断がつかないとき、最終的にコードを読み、根拠をもって「この方法を採る」と決めるのは人間である。その判断ができるかどうかで、LLM を使う人と、LLM に使われる人が分かれる。</p><p style="font-size:0.9rem;margin-top:0.5rem">この授業では LLM の利用を制限しない。そのかわり、LLM が書いたコードを読み解き、実行結果を測定し、その数値が信頼できるかを自分で確かめる力を身につける。それが LLM に仕事を任せるために必要な「コードを読む力」であり、この科目で最も重視する能力である。<strong>自班の実測値は LLM からは得られない</strong>。</p>
+      <p style="font-size:0.9rem">コードを書く作業も、誤りを見つける作業も、その多くは LLM（大規模言語モデル）を用いたツールに任せられるようになった。人がすべてのコードを一から手で打つ場面は、今後さらに減っていく。</p><p style="font-size:0.9rem;margin-top:0.5rem">一方で、複数の LLM が異なる案を出したとき、あるいは出力が正しいかどうか判断がつかないとき、最終的にコードを読み、根拠をもって「この方法を採る」と決めるのは人間である。その判断ができるかどうかで、LLM を使う人と、LLM に使われる人が分かれる。</p><p style="font-size:0.9rem;margin-top:0.5rem">この授業では LLM の利用を制限しない。そのかわり、LLM が書いたコードを読み解き、実行結果を測定し、その数値が信頼できるかを自分で確かめる力を身につける。それが LLM に仕事を任せるために必要な「コードを読む力」であり、この科目で最も重視する能力である。<strong>自グループの実測値は LLM からは得られない</strong>。</p>
     </div>
   </div>
 </section>
@@ -814,7 +814,7 @@ a.sub-item:hover {
 
     <div class="concept-box">
       <h4>今日の問い</h4>
-      <p style="font-size:0.95rem">「良いAI」と聞いて、正解率を思い浮かべるなら、それは4つの評価軸の1つを選んだにすぎない。今日は<strong>正解率・損失・速度・メモリ</strong>の4つを<strong>同じ関数で</strong>測り、「どれを重く見るか」を班で決めてもらう。同じ数値から違う結論が出るはずで、そこが本日の中心的な論点である。</p>
+      <p style="font-size:0.95rem">「良いAI」と聞いて、正解率を思い浮かべるなら、それは4つの評価軸の1つを選んだにすぎない。今日は<strong>正解率・損失・速度・メモリ</strong>の4つを<strong>同じ関数で</strong>測り、「どれを重く見るか」をグループで決めてもらう。同じ数値から違う結論が出るはずで、そこが本日の中心的な論点である。</p>
     </div>
 
     <div class="card standard">
@@ -843,7 +843,7 @@ a.sub-item:hover {
         <tr><td><strong>メモリ</strong></td><td>重みの大きさ（今日は3モデルで同じ）と、推論中に途中の計算結果が占めるピーク（モデルで違う）</td><td>少ないほど良い</td></tr>
       </table>
       <div class="analogy">
-        同一の製品を複数の評価者が採点する場合、価格・性能・耐久性・保守性のどれを重視するかは評価者によって異なる。「最も良い製品」は評価基準の重みを定めた時点で決まる。演習3はその重みを班で決定する作業である。
+        同一の製品を複数の評価者が採点する場合、価格・性能・耐久性・保守性のどれを重視するかは評価者によって異なる。「最も良い製品」は評価基準の重みを定めた時点で決まる。演習3はその重みをグループで決定する作業である。
       </div>
     </div>
 
@@ -887,12 +887,12 @@ a.sub-item:hover {
     <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">穴埋めシート（下のリンクから PDF をダウンロード）の2枚を埋める。教科書1章の内容を、答えを見ずに自分たちの言葉で再構成する。</p>
     <div class="callout-info">
       <h4>穴埋めシート（PDF をダウンロードして使う）</h4>
-      <p style="font-size:0.9rem">班で1部、<a href="slides/aitd1_week1_groupwork.pdf" style="color:#4FC3F7"><strong>穴埋めシート（PDF、5ページ）</strong></a> をダウンロードする。記入は次のどちらでもよい。</p>
+      <p style="font-size:0.9rem">グループで1部、<a href="slides/aitd1_week1_groupwork.pdf" style="color:#4FC3F7"><strong>穴埋めシート（PDF、5ページ）</strong></a> をダウンロードする。記入は次のどちらでもよい。</p>
       <ul class="point-list" style="margin-top:0.4rem">
         <li><strong>PDF に注釈で書く</strong>：Mac の「プレビュー」や iPad で開き、黄色の欄にテキスト注釈を入れる。チップ（人が設計／データから学習）は、欄に文字で書けばよい</li>
-        <li><strong>印刷して手書き</strong>：教室のプリンタで班1部を印刷し、ペンで記入する。終わったらスマートフォンで撮影する</li>
+        <li><strong>印刷して手書き</strong>：教室のプリンタでグループ1部を印刷し、ペンで記入する。終わったらスマートフォンで撮影する</li>
       </ul>
-      <p style="font-size:0.85rem;color:#ccc;margin-top:0.5rem">完成したシート（PDF または写真）は recorder が失敗記録に添付し、提出物に含める。Google スライドで共同編集したい班は <a href="slides/aitd1_week1_groupwork.pptx" style="color:#4FC3F7">pptx 版</a> を Google ドライブにアップロードして「Google スライドで開く」を使ってよい。</p>
+      <p style="font-size:0.85rem;color:#ccc;margin-top:0.5rem">完成したシート（PDF または写真）はグループ全員に共有し、<strong>各自が自分の提出物に含める</strong>。Google スライドで共同編集したいグループは <a href="slides/aitd1_week1_groupwork.pptx" style="color:#4FC3F7">pptx 版</a> を Google ドライブにアップロードして「Google スライドで開く」を使ってよい。</p>
       <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">教員用：答え合わせ4枚を含む版 <a href="slides/aitd1_week1_groupwork_with_answers.pdf" style="color:#4FC3F7">PDF</a>（全体共有で投影する）</p>
     </div>
 
@@ -971,7 +971,7 @@ a.sub-item:hover {
     <div class="card group">
       <div class="card-header"><h3>手順</h3></div>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li>VS Code で <code>course1/day1/ex0.ipynb</code> を開き、最初のセル（班と役割）を実行する</li>
+        <li>VS Code で <code>course1/day1/ex0.ipynb</code> を開き、最初のセル（グループと役割）を実行する</li>
         <li>12個のセルを上から読み、各セルの <code># コードテンプレート ?</code> の <code>?</code> に①〜⑫を書き込む。<strong>implementer が書き、他の3名はコードを読んで根拠を言う</strong></li>
         <li>セルを正しい順に並べ替える（セル左のつまみをドラッグ、またはセルを選んで Alt + ↑／↓）</li>
         <li>上から順に実行する。順番が違うと <code>NameError</code> などで止まる。<strong>どのセルがどのセルに依存しているか</strong>をエラーから読み取り、recorder が記録する</li>
@@ -1007,7 +1007,7 @@ a.sub-item:hover {
         <li>学習が始まるのは何番目のセルか。それより前の9個のセルは何をしているか、一文で言う</li>
         <li>データが画像からテキストに変わったとき、差し替えるのはどのセルか（→ 演習2 で確認する）</li>
         <li><code>NameError</code> で止まったセルがあれば、「どのセルが先に必要だったか」を記録する</li>
-        <li>正解率は班の4台で同じ値になったか。違うなら何が原因か（→ 第4回で扱う）</li>
+        <li>正解率はグループの4台で同じ値になったか。違うなら何が原因か（→ 第4回で扱う）</li>
       </ol>
       <div class="notion-submit"><div><strong>プレゼン1:</strong> presenter が GW1 の表の結論と GW3 の正解率を2分で話す → implementer は番号付けで迷ったセル、verifier は並びを変えて出たエラー、recorder は討議で割れた点を1分ずつ</div></div>
     </div>
@@ -1027,7 +1027,7 @@ a.sub-item:hover {
       <div class="card-header"><h3>ブロック構成（ノートブックの番号と対応）</h3></div>
       <table style="font-size:0.85rem">
         <tr><th style="width:4rem">#</th><th style="width:7rem">教科書</th><th>内容</th><th style="width:10rem">TODO</th></tr>
-        <tr><td>(0)</td><td>—</td><td>班と役割の設定。<code>GROUP_ID</code> と <code>MEMBER_ROLE</code> を自分のものに書き換える</td><td>書き換え</td></tr>
+        <tr><td>(0)</td><td>—</td><td>グループと役割の設定。<code>GROUP_ID</code> と <code>MEMBER_ROLE</code> を自分のものに書き換える</td><td>書き換え</td></tr>
         <tr><td>(1)–(2)</td><td>①、⑬-計測</td><td>インポート、機種情報（チップ・メモリ・OS・PyTorch の版）</td><td>—</td></tr>
         <tr><td>(3)</td><td>⑤（2.3節）</td><td>使用デバイスの選択。cuda → mps → cpu の3分岐</td><td><strong style="color:#FFB800">TODO 1</strong></td></tr>
         <tr><td>(4)</td><td>⑬-計測</td><td>同期あり／なしで行列積の時間を比べる</td><td><strong style="color:#FFB800">TODO 2</strong></td></tr>
@@ -1094,12 +1094,12 @@ flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</s
 
     <div class="card group" id="disc1">
       <div class="card-header"><h3>グループディスカッション（5分）― 同期・帯域・演算</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">presenter が進行し、班の4台の数値を並べる（ノートブックのブロック 11 が自分の行を出す。他の3台は画面を見せ合う）。<strong>全員が1回は発言</strong>。recorder は結論を3行で残す。</p>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">presenter が進行し、グループの4台の数値を並べる（ノートブックのブロック 11 が自分の行を出す。他の3台は画面を見せ合う）。<strong>全員が1回は発言</strong>。recorder は結論を3行で残す。</p>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li>同期あり／なしの比は班内で<strong>何倍から何倍まで</strong>あったか。なぜ機種で違うか</li>
+        <li>同期あり／なしの比はグループ内で<strong>何倍から何倍まで</strong>あったか。なぜ機種で違うか</li>
         <li>帯域は公称値の<strong>何%</strong>出たか。待ち時間用課題に書いた予測と比べてどうか</li>
         <li>B1（帯域）と B2（演算）で、定常とバーストの差が大きいのは<strong>どちら</strong>か。その理由は</li>
-        <li>班で最も遅いマシンを基準にすると、今日の演習2は<strong>何倍</strong>の時間がかかる見込みか</li>
+        <li>グループで最も遅いマシンを基準にすると、今日の演習2は<strong>何倍</strong>の時間がかかる見込みか</li>
       </ol>
       <div class="notion-submit"><div><strong>記録（recorder）:</strong> 討議メモの4行（範囲・%・B1/B2・倍率）を失敗記録に残す。結論は全体共有で presenter が1分で報告する</div></div>
     </div>
@@ -1206,28 +1206,28 @@ times.append(time.perf_counter() <span class="op">-</span> t0)</pre>
     <div class="card standard">
       <div class="card-header"><h3>✅ 出す前に、この順で確認する</h3></div>
 <pre>Bash
-<span class="cmt"># 班番号を入れて形式検証（OK が出るまで提出しない）</span>
+<span class="cmt"># グループ番号を入れて形式検証（OK が出るまで提出しない）</span>
 <span class="fn">python</span> course1/day1/verify.py --group 12
 
-<span class="cmt"># 出るべきファイル（班 12 の例）</span>
+<span class="cmt"># 出るべきファイル（グループ 12 の例）</span>
 <span class="fn">ls</span> results/ | <span class="fn">grep</span> _12
 <span class="cmt"># c1_d1_ex0_12.csv  c1_d1_ex1_12.csv  c1_d1_ex2_12.csv  table_c1_d1_ex2_12.csv</span></pre>
       <table style="font-size:0.82rem">
         <tr><th style="width:5%"></th><th>確認項目</th></tr>
-        <tr><td><input type="checkbox"></td><td>演習1の CSV に<strong>班員全員分</strong>の行がある（各自が自分のマシンで投稿 → 1台に集める）</td></tr>
+        <tr><td><input type="checkbox"></td><td>演習1の CSV に<strong>グループ全員分</strong>の行がある（各自が自分のマシンで投稿 → グループで共有し、自分の <code>results/</code> に集める）</td></tr>
         <tr><td><input type="checkbox"></td><td>演習2の表に A1・A2・A3 の3行があり、4指標＋パラメータ数が入っている</td></tr>
-        <tr><td><input type="checkbox"></td><td>GW3 の <code>ex0.ipynb</code> が正しい順で最後まで実行され、<code>c1_d1_ex0_&lt;班&gt;.csv</code> に正解率が記録されている</td></tr>
-        <tr><td><input type="checkbox"></td><td>記入済みの穴埋めシート（PDF または写真）が失敗記録に添付されている</td></tr>
-        <tr><td><input type="checkbox"></td><td>recorder の失敗記録・討議メモ（GW1〜3、演習1、演習2）がある</td></tr>
+        <tr><td><input type="checkbox"></td><td>GW3 の <code>ex0.ipynb</code> が正しい順で最後まで実行され、<code>c1_d1_ex0_&lt;グループ&gt;.csv</code> に正解率が記録されている</td></tr>
+        <tr><td><input type="checkbox"></td><td>グループで共有した記入済みの穴埋めシート（PDF または写真）が手元にある</td></tr>
+        <tr><td><input type="checkbox"></td><td>recorder から共有された失敗記録・討議メモ（GW1〜3、演習1、演習2）が手元にある</td></tr>
         <tr><td><input type="checkbox"></td><td><code>verify.py</code> が <code>OK: 提出物の形式に問題なし</code> を出した</td></tr>
-        <tr><td><input type="checkbox"></td><td>zip にしていない。ファイル名に班番号（<code>_12</code> など）が入ったまま、名前を変えていない</td></tr>
+        <tr><td><input type="checkbox"></td><td>zip にしていない。ファイル名にグループ番号（<code>_12</code> など）が入ったまま、名前を変えていない</td></tr>
       </table>
-      <div class="notion-submit"><div><strong>提出:</strong> 上記6ファイルを zip にせず、そのまま LMS の課題「第1回」へ implementer がアップロードする（最大8ファイル、拡張子 .csv／.txt）。演習2の CSV は<strong>第7回のベースライン</strong>になるので、自分のマシンにも保存しておくこと</div></div>
+      <div class="notion-submit"><div><strong>提出:</strong> 上記のファイルを zip にせず、そのまま <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の課題「第1回」へ<strong>各自がアップロード</strong>する（グループ全員が一人ずつ提出する）。演習2の CSV は<strong>第7回のベースライン</strong>になるので、自分のマシンにも保存しておくこと</div></div>
     </div>
 
     <div class="callout-tip">
       <h4>次回予告 ― 第2回「良いAIとは何を測ることか」と「勾配の観測」</h4>
-      <p style="font-size:0.9rem">前半は今日の演習2の表を使い、班で「良いAI」を一文で定義して3モデルの順位を出す。同じ数値から班ごとに違う順位が出ることを、質問カード交換で他班と比べる。後半は自分で学習を回し、<strong>層ごとの勾配の大きさ</strong>を記録して可視化する。今日並び替えたテンプレート⑩の学習ループがそのまま使われる。</p>
+      <p style="font-size:0.9rem">前半は今日の演習2の表を使い、グループで「良いAI」を一文で定義して3モデルの順位を出す。同じ数値からグループごとに違う順位が出ることを、質問カード交換で他グループと比べる。後半は自分で学習を回し、<strong>層ごとの勾配の大きさ</strong>を記録して可視化する。今日並び替えたテンプレート⑩の学習ループがそのまま使われる。</p>
     </div>
   </div>
 </section>

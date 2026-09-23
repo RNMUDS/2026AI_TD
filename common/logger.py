@@ -13,7 +13,7 @@ from .device import machine_string
 
 COLUMNS = ["timestamp", "group_id", "member_role", "course", "day", "exercise",
            "condition", "seed", "metric_name", "metric_value", "elapsed_sec", "device", "machine"]
-ROLES = ("implementer", "verifier", "recorder", "presenter", "collector")   # collector は 5 人班の 5 つ目の役割
+ROLES = ("implementer", "verifier", "recorder", "presenter", "collector")   # collector は 5 人グループの 5 つ目の役割
 
 
 class ResultLogger:
@@ -48,7 +48,7 @@ class ResultLogger:
 
 
 def read_results(course=None, day=None, exercise=None, root=None):
-    """results/ 以下の CSV を結合して DataFrame で返す（班横断集計用）．"""
+    """results/ 以下の CSV を結合して DataFrame で返す（グループ横断集計用）．"""
     root = Path(root) if root else RESULTS
     import re
     c, d, e = course or "c[0-9]", day or "d[0-9]", exercise or "ex[0-9]"

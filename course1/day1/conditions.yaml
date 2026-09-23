@@ -1,4 +1,4 @@
-# Ⅰ第1回 班別条件．この回は班別条件なし（演習3 の重み付けのみ班が自由に決める）．
+# Ⅰ第1回 グループ別条件．この回はグループ別条件なし（演習3 の重み付けのみグループが自由に決める）．
 course: c1
 day: d1
 exercises:
@@ -6,5 +6,5 @@ exercises:
   ex2: {condition: none, models: [A1, A2, A3], target_params: 300000}
   ex3: {condition: free_weights, metrics: [accuracy, loss, infer_ms_per_1000, peak_mem_mb]}
 groups:
-  # 27 班すべて同一条件
+  # 27 グループすべて同一条件
   all: {ex1: none, ex2: none, ex3: free_weights}
