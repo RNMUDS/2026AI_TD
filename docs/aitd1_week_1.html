@@ -962,7 +962,7 @@ model</pre>
   <details id="gw3-card-H">
     <summary>カード H（14 行）― クリックで開く</summary>
     <div class="answer-content">
-<pre>model
+<pre>model.eval()   # 評価モード（学習のときだけ働く Dropout などを止める）
 # テストデータ（学習に使っていない 1 万枚）で正解率を求める
 correct = 0
 total = 0
@@ -981,7 +981,7 @@ print(f&#x27;Accuracy: {correct / total * 100:.2f}% &#x27;)</pre>
   <details id="gw3-card-I">
     <summary>カード I（33 行）― クリックで開く</summary>
     <div class="answer-content">
-<pre># 乱数の種を固定して，何度実行しても同じ結果になるようにする
+<pre># 乱数の種を固定して，同じ条件の結果を再現しやすくする（機種や版が違うと一致しないこともある）
 random.seed(0)
 np.random.seed(0)
 torch.manual_seed(0)
@@ -1151,7 +1151,7 @@ from torchvision.datasets import ImageFolder</pre>
 # class0／class1 フォルダの画像を読み込む（ラベルはフォルダで決まる）
 full_dataset = ImageFolder(root=IMAGE_DIR)
 
-# 乱数の種を固定して，何度実行しても同じ結果になるようにする
+# 乱数の種を固定して，同じ条件の結果を再現しやすくする（機種や版が違うと一致しないこともある）
 random.seed(0)
 np.random.seed(0)
 torch.manual_seed(0)
@@ -1420,13 +1420,21 @@ model</pre>
       <h2>演習1 環境ベンチマーク ― <code>ex1.ipynb</code></h2>
     </div>
     <p style="font-size:0.95rem;color:#ccc;margin-bottom:0.4rem"><strong>目的：</strong>測り方しだいで数字が変わることを、自分のマシンで確かめる。上から実行し、TODO を埋める（実行1分）。</p>
-    <p style="font-size:0.9rem;color:#ccc;margin-bottom:1rem"><strong>なぜ：</strong>時間の数字は、同期を1行忘れるだけで数十倍ずれ、しかもエラーは出ない。このあと毎回、モデルの速さやメモリを比べるので、最初に「信じられる測り方」を身につける。</p>
+    <div class="callout-info" style="margin-bottom:1rem">
+      <h4>なぜ AI 開発で「速さを正しく測る」ことが必要か</h4>
+      <ul class="point-list">
+        <li><strong>学習時間を見積もる</strong>：ディープラーニングの学習は行列積の繰り返し。計算の速さ（B2）が分かれば、学習が数分で終わるか数時間かかるかを事前に読める（GW3 の試行①は教員機で46秒）</li>
+        <li><strong>生成 AI の応答の速さ</strong>：ChatGPT のような LLM が1語ずつ文章を返す速さは、主にメモリを読み書きする速さ（B1）で決まる</li>
+        <li><strong>モデルを選ぶ</strong>：「このモデルは30倍速い」が同期忘れによる誤りでも、エラーは出ない。誤った数字で選ぶと、実際には遅いモデルを使うことになる</li>
+      </ul>
+      <p style="font-size:0.85rem;color:#ccc;margin-top:0.4rem">この授業では毎回、モデルの速さとメモリを比べる。最初に「信じられる測り方」を身につける。</p>
+    </div>
 
     <div class="card standard">
       <div class="card-header"><h3>測る前に</h3></div>
       <ul class="point-list">
         <li><strong>同期しないと時間は測れない</strong>：Python（CPU）は GPU に計算を頼むとすぐ次の行へ進み、GPU は裏で計算を続ける。<strong>同期</strong>とは、CPU が GPU の計算の終わりを待って足並みをそろえること（<code>synchronize(device)</code>）<br>・同期なし：待たずに時計を読む → 「頼んだだけ」の時間になる<br>・同期あり：GPU の計算が終わるのを待ってから時計を読む → 本当の計算時間<br>・同期比 ＝ 同期ありの時間 ÷ 同期なしの時間</li>
-        <li>「速い」には2種類ある：<strong>読み書きの速さ</strong>（B1 帯域 GB/s）と<strong>計算の速さ</strong>（B2 演算 GFLOPS）</li>
+        <li>「速い」には2種類ある：<strong>読み書きの速さ</strong>（B1 実効メモリ帯域 GB/s）と<strong>計算の速さ</strong>（B2 行列積の実効演算性能 GFLOPS）。どちらもこのコードで測った<strong>実効値</strong>で、Apple の公称性能とは別</li>
         <li>最初の1回は遅く、1回だけの値はぶれる → ウォームアップして、<strong>2秒回した中央値</strong>を使う</li>
       </ul>
     </div>
@@ -1447,8 +1455,8 @@ model</pre>
         <tr><td>(1)–(2)</td><td>ライブラリの読み込み・機種情報の表示</td><td>実行するだけ</td></tr>
         <tr><td>(3)</td><td>計算に使う装置を選ぶ</td><td><strong style="color:#FFB800">TODO 1</strong>：<code>elif ...:</code> の <code>...</code> に、MPS が使えるかを調べる式を書く → 実行</td></tr>
         <tr><td>(4)</td><td>GPU の計算の終わりを待つ（同期あり）／待たない（同期なし）で時間を比べる</td><td><strong style="color:#FFB800">TODO 2</strong>：計測の前後に <code>synchronize(device)</code> を足す → 実行し、同期比を見る</td></tr>
-        <tr><td>(5)</td><td>B1 メモリ帯域を測る</td><td><strong style="color:#FFB800">TODO 3</strong>：<code>bytes_moved = ...</code> を書く → 実行し、公称値の何%かを見る</td></tr>
-        <tr><td>(6)</td><td>B2 演算性能を測る</td><td><strong style="color:#FFB800">TODO 4</strong>：<code>flops = ...</code> を書く → 実行</td></tr>
+        <tr><td>(5)</td><td>B1 実効メモリ帯域を測る</td><td><strong style="color:#FFB800">TODO 3</strong>：<code>bytes_moved = ...</code> を書く → 実行し、公称値の何%かを見る</td></tr>
+        <tr><td>(6)</td><td>B2 行列積の実効演算性能（float32）を測る</td><td><strong style="color:#FFB800">TODO 4</strong>：<code>flops = ...</code> を書く → 実行</td></tr>
         <tr><td>(7)–(10)</td><td>B3 学習時間・メモリを測り、CSV に記録する</td><td>実行するだけ（<code>results/</code> に CSV ができる）</td></tr>
         <tr><td>(11)</td><td>グループの値を並べる</td><td>実行し、下の討議に使う</td></tr>
       </table>
@@ -1569,7 +1577,8 @@ model</pre>
         <button type="button" id="fa-reset" class="copy-btn" style="position:static">↺ 最初から</button>
       </div>
       <ul class="point-list" style="margin-top:0.6rem">
-        <li>C の1マス：掛け算 4回 ＋ 足し算 4回 ＝ 8回（N＝4 のとき）</li>
+        <li>C の1マス：掛け算 4回 ＋ 足し算 3回 ＝ 7回（N＝4 のとき。4つの積を足す「＋」は3つ）</li>
+        <li>性能測定では、行列積の演算数を<strong>慣例として 2N³ と数える</strong>（厳密な値との差は N＝2048 で約 0.02%）。GFLOPS という数字にも「数え方の約束」がある</li>
         <li>アニメーションは N＝4 の例。ex1 の行列は <code>N = 2048</code></li>
         <li><strong>問い（TODO 4）</strong>：N×N の行列積1回の演算数を、<code>N</code> を使った式で書く</li>
       </ul>
@@ -1578,9 +1587,9 @@ model</pre>
         <div class="answer-content">
           <ol style="font-size:0.88rem;padding-left:1.4rem;line-height:1.9">
             <li>C の1マスを作るのに、掛け算は何回？ → 1行に N 個あるので <strong>N 回</strong></li>
-            <li>足し算は？ → 同じく <strong>N 回</strong>と数える。1マスで <strong>2N 回</strong></li>
-            <li>C のマスはいくつ？ → N 行 × N 列 ＝ <strong>N² 個</strong></li>
-            <li>掛けると 2N × N² ＝ 2N³。Python では <code>N ** 3</code> が N³</li>
+            <li>足し算は？ → N 個の積を足すので <strong>N − 1 回</strong>。1マスで <strong>2N − 1 回</strong></li>
+            <li>C のマスはいくつ？ → N 行 × N 列 ＝ <strong>N² 個</strong>。厳密には (2N − 1) × N² ＝ 2N³ − N²</li>
+            <li>性能測定の慣例では <strong>2N³</strong> と数える（N が大きいと N² は無視できる）。Python では <code>N ** 3</code> が N³</li>
           </ol>
         </div>
       </details>
@@ -1595,20 +1604,20 @@ model</pre>
       var ca = mk(25, A), cb = mk(275, B), cc = mk(550, null, true);
       var idx = 0, t = 0, playing = false, stepOnce = false, last = null, ops = 0, DUR = 1600;
       function clearHi() { for (var i = 0; i < N; i++) for (var j = 0; j < N; j++) { [ca, cb, cc].forEach(function (M) { M[i][j].r.setAttribute("stroke", "#555"); M[i][j].r.setAttribute("stroke-width", 1); }); } }
-      function show() { count.textContent = "演算数：" + ops + " 回（C のマス " + idx + " / " + N * N + "）"; }
+      function show() { count.textContent = "演算数（厳密）：" + ops + " 回（C のマス " + idx + " / " + N * N + "）"; }
       function frame(u) {
         var i = Math.floor(idx / N), j = idx % N; clearHi();
         for (var k = 0; k < N; k++) { ca[i][k].r.setAttribute("stroke", "#4FC3F7"); ca[i][k].r.setAttribute("stroke-width", 2.5); cb[k][j].r.setAttribute("stroke", "#4FC3F7"); cb[k][j].r.setAttribute("stroke-width", 2.5); }
         cc[i][j].r.setAttribute("stroke", "#FFB800"); cc[i][j].r.setAttribute("stroke-width", 2.5);
         var kk = Math.min(N, Math.floor(u * (N + 1))), parts = [];
         for (var k2 = 0; k2 < kk; k2++) parts.push(A[i][k2] + "×" + B[k2][j]);
-        calc.textContent = "C[" + i + "][" + j + "] = " + (parts.join(" ＋ ") || "…") + "   （掛け算 " + kk + " 回・足し算 " + kk + " 回）";
+        calc.textContent = "C[" + i + "][" + j + "] = " + (parts.join(" ＋ ") || "…") + "   （掛け算 " + kk + " 回・足し算 " + Math.max(kk - 1, 0) + " 回）";
       }
       function finish() {
         var i = Math.floor(idx / N), j = idx % N, v = 0; for (var k = 0; k < N; k++) v += A[i][k] * B[k][j];
-        cc[i][j].t.textContent = v; cc[i][j].r.setAttribute("fill", "#3a2f10"); ops += 2 * N; idx += 1; show();
-        if (idx >= N * N) { playing = false; clearHi(); document.getElementById("fa-play").textContent = "▶ 再生"; calc.textContent = "C の 16 マス × 8 回 ＝ 128 回 ＝ 2 × 4³"; note.textContent = "N＝4 で 2 × 4³。では N×N なら？ → TODO 4"; }
-        else note.textContent = "1マスあたり 掛け算 4 ＋ 足し算 4 ＝ 8 回";
+        cc[i][j].t.textContent = v; cc[i][j].r.setAttribute("fill", "#3a2f10"); ops += 2 * N - 1; idx += 1; show();
+        if (idx >= N * N) { playing = false; clearHi(); document.getElementById("fa-play").textContent = "▶ 再生"; calc.textContent = "C の 16 マス × 7 回 ＝ 112 回 ＝ 2 × 4³ − 4²（厳密な回数）"; note.textContent = "性能測定の慣例では 2 × 4³ ＝ 128 と数える。では N×N なら？ → TODO 4"; }
+        else note.textContent = "1マスあたり 掛け算 4 ＋ 足し算 3 ＝ 7 回";
       }
       function tick(ts) {
         if (!playing && !stepOnce) { last = null; return; }
@@ -1647,7 +1656,7 @@ t_sync <span class="op">=</span> (time.perf_counter() <span class="op">-</span> 
         <div class="answer-content">
 <pre>Python
 bytes_moved <span class="op">=</span> <span class="num">3</span> <span class="op">*</span> n <span class="op">*</span> <span class="num">4</span>   <span class="cmt"># 読み2 ＋ 書き1、float32 は4バイト</span>
-flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</span> N <span class="op">**</span> <span class="num">3</span>       <span class="cmt"># 乗算 N³ ＋ 加算 N³</span></pre>
+flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</span> N <span class="op">**</span> <span class="num">3</span>       <span class="cmt"># 慣例で 2N³（厳密には 2N³ − N²）</span></pre>
         </div>
       </details>
     </div>
@@ -1657,11 +1666,11 @@ flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</s
       <table style="font-size:0.82rem">
         <tr><th style="width:8rem">項目</th><th>OK</th><th>NG なら疑うこと</th></tr>
         <tr><td>同期比（あり÷なし）</td><td>MPS で10倍以上、同期ありは1回 1 ms 以上（ノートブックが OK／NG を表示する）。CPU はほぼ1倍</td><td>同期ありが 0.1 ms 程度・比が1倍前後 → TODO 2 の同期忘れ（エラーは出ない）</td></tr>
-        <tr><td>B1 帯域</td><td>公称値を超えない（ノートブックが%を表示する）。同じチップどうしは近い値</td><td>100%超・極端に小さい → TODO 3 の式</td></tr>
+        <tr><td>B1 帯域</td><td>公称値付近までが目安（ノートブックが%を表示する）。同じチップどうしは近い値</td><td>大きく超える（120%以上など）・極端に小さい → TODO 3 の式</td></tr>
         <tr><td>B2 演算</td><td>グループ内の他の機種と同じ桁</td><td>桁が違う → TODO 4 の式</td></tr>
         <tr><td>提出</td><td>CSV にグループ全員分の行、<code>verify.py</code> が OK</td><td>CSV を共有していない</td></tr>
       </table>
-      <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">参考（教員機 M4 Max）：同期あり 1.3 ms・同期比 25〜30倍、B1 419 GB/s（公称 546 の77%）、B2 11,581 GFLOPS、B3 3.6 ms/step</p>
+      <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">参考（教員機 Mac Studio M4 Max、いずれも実効値）：同期あり 1.3 ms・同期比 25〜30倍、B1 419 GB/s（公称 546 の77%）、B2 11,581 GFLOPS、B3 3.6 ms/step</p>
       <details style="margin-top:0.6rem">
         <summary>メモリ帯域の公称値（Apple 公表値）</summary>
         <div class="answer-content">
