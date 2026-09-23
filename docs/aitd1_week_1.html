@@ -559,7 +559,7 @@ a.sub-item:hover {
         <a href="#sec-roles" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">ノート</span>失敗記録・討議メモ</a>
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:1rem;font-size:0.85rem;color:#81D4FA">
-        <strong>手順:</strong> ① グループで共有（演習1 の各自の行・シート・メモ）→ ② 自分の <code>results/</code> に集める → ③ <code>python course1/day1/verify.py --group &lt;グループ番号&gt;</code> で OK を確認 → ④ <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の「第1回」へ<strong>自分で</strong>アップロード
+        <strong>手順:</strong> ① グループで共有（演習1 の各自の行・シート・メモ）→ ② 自分の <code>results/</code> に集める → ③ <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の「第1回」へ<strong>自分で</strong>アップロード
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:0.5rem;font-size:0.85rem;color:#FFB800">
         <strong>期限：</strong>次回の授業開始まで
@@ -1668,7 +1668,7 @@ flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</s
         <tr><td>同期比（あり÷なし）</td><td>MPS で10倍以上、同期ありは1回 1 ms 以上（ノートブックが OK／NG を表示する）。CPU はほぼ1倍</td><td>同期ありが 0.1 ms 程度・比が1倍前後 → TODO 2 の同期忘れ（エラーは出ない）</td></tr>
         <tr><td>B1 帯域</td><td>公称値付近までが目安（ノートブックが%を表示する）。同じチップどうしは近い値</td><td>大きく超える（120%以上など）・極端に小さい → TODO 3 の式</td></tr>
         <tr><td>B2 演算</td><td>グループ内の他の機種と同じ桁</td><td>桁が違う → TODO 4 の式</td></tr>
-        <tr><td>提出</td><td>CSV にグループ全員分の行、<code>verify.py</code> が OK</td><td>CSV を共有していない</td></tr>
+        <tr><td>提出</td><td>CSV にグループ全員分の行がある</td><td>CSV を共有していない</td></tr>
       </table>
       <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">参考（教員機 Mac Studio M4 Max、いずれも実効値）：同期あり 1.3 ms・同期比 25〜30倍、B1 419 GB/s（公称 546 の77%）、B2 11,581 GFLOPS、B3 3.6 ms/step</p>
       <details style="margin-top:0.6rem">
@@ -1715,8 +1715,6 @@ flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</s
     </div>
 
     <div class="card standard">
-<pre>Bash
-<span class="fn">python</span> course1/day1/verify.py --group 12   <span class="cmt"># OK が出るまで提出しない</span></pre>
       <table style="font-size:0.82rem">
         <tr><th style="width:5%"></th><th>確認項目</th></tr>
         <tr><td><input type="checkbox"></td><td>ex0_1〜ex0_3 の3ファイルを実行し、CSV に試行①②③の3回分がある</td></tr>
