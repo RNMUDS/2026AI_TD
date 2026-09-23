@@ -679,7 +679,7 @@ a.sub-item:hover {
     </div>
     <div class="callout-info">
       <h4>穴埋めシート</h4>
-      <p style="font-size:0.9rem"><a href="slides/aitd1_week1_groupwork.pdf" style="color:#4FC3F7"><strong>PDF（3ページ）</strong></a>をダウンロードし、プレビューで空欄の上に文字を載せる。完成版はグループで共有する（<a href="slides/aitd1_week1_groupwork.pptx" style="color:#4FC3F7">pptx 版</a>もある）。</p>
+      <p style="font-size:0.9rem"><a href="slides/aitd1_week1_groupwork.pdf" style="color:#4FC3F7"><strong>PDF（8ページ）</strong></a>をダウンロードし、プレビューで空欄の上に文字を載せる。完成版はグループで共有する（<a href="slides/aitd1_week1_groupwork.pptx" style="color:#4FC3F7">pptx 版</a>もある）。</p>
     </div>
 
     <div class="card group">
@@ -690,6 +690,19 @@ a.sub-item:hover {
         <li>深層学習でも人が決めているものは何か（3つ）</li>
         <li>3つは置き換わったのか、使い分けか。身近な例を1つ</li>
       </ol>
+    </div>
+
+    <div class="card group">
+      <div class="card-header"><h3>GW1-2〜6 図の穴埋め（シート2〜6ページ）</h3></div>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">黄色の欄を埋める。説明文と矢印が手がかり。</p>
+      <table style="font-size:0.85rem">
+        <tr><th style="width:5rem">番号</th><th>図</th><th>埋めるもの</th></tr>
+        <tr><td>GW1-2</td><td>データの分割</td><td>訓練・検証・テストのどれか</td></tr>
+        <tr><td>GW1-3</td><td>順伝播と誤差逆伝播</td><td>①〜④の名前</td></tr>
+        <tr><td>GW1-4</td><td>線形関数と非線形関数</td><td>線形か非線形か</td></tr>
+        <tr><td>GW1-5</td><td>学習と推論</td><td>段階の名前・重みの状態</td></tr>
+        <tr><td>GW1-6</td><td>学習の1ステップ</td><td>①〜④の名前と PyTorch のコード</td></tr>
+      </table>
     </div>
   </div>
 </section>
@@ -733,7 +746,7 @@ a.sub-item:hover {
       <h2>ディープラーニングプログラミングの流れ（10分）</h2>
     </div>
     <div class="card group">
-      <div class="card-header"><h3>GW2-1 12枚のカードを並べる（シート2ページ）</h3></div>
+      <div class="card-header"><h3>GW2-1 12枚のカードを並べる（シート7ページ）</h3></div>
       <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem"><strong>データ準備 → 学習設定 → 学習・評価</strong>の3フェーズに分けて並べ、①〜⑫を書く。この順が GW3 のコードの順になる。</p>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
         <li>「学習」が始まるのは何番目か</li>
@@ -741,7 +754,7 @@ a.sub-item:hover {
       </ol>
     </div>
     <div class="card group">
-      <div class="card-header"><h3>GW2-2 入力データはどんなテンソルになるか（シート3ページ）</h3></div>
+      <div class="card-header"><h3>GW2-2 入力データはどんなテンソルになるか（シート8ページ）</h3></div>
       <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">前処理とテンソルの形状を見て、右の8つの候補から入力データの種類を選ぶ。</p>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
         <li>N は何を表すか</li>
@@ -778,7 +791,7 @@ a.sub-item:hover {
         <li><strong>GW2-1 のシートを横に開き</strong>、①〜⑫の見出しに GW2-1 のカード名（例：ライブラリのインポート、損失関数の定義）を写す（下の表でもよい）。セルはフェーズごとにくくってある</li>
         <li>カード名ごとに、その仕事をするコードを A〜L から探す（コメントが手がかり）</li>
         <li>カードを開いてコピーし、その番号の見出しの下にある<strong>空のセル</strong>に貼る</li>
-        <li>上から実行（<strong>試行①</strong>）。<code>NameError: name 'c' is not defined</code> は「c を作るカードが前のセルにない」という意味。貼る場所を見直す</li>
+        <li>上から実行（<strong>試行①</strong>）</li>
         <li><strong>試行②</strong>：M〜Q で該当セルを上書きし、⑫を削除 → カーネルを再起動して実行</li>
         <li><strong>試行③</strong>：R で上書き → 再起動して実行</li>
       </ol>
@@ -1222,6 +1235,59 @@ data_transforms = {
   </details>
 </div>
 
+      <div class="callout-info" style="margin-top:0.8rem">
+        <h4>ヒント：何を差し替えるか</h4>
+<svg viewBox="0 0 960 430" style="width:100%;height:auto;display:block" role="img" aria-label="試行②で差し替えるテンプレートの図" font-family="Noto Sans JP, Hiragino Sans, sans-serif">
+<text x="480.0" y="28" text-anchor="middle" fill="#eee" font-size="18" font-weight="700">データを FashionMNIST → オリジナル画像 に替えると、どこが変わるか</text>
+<text x="160.0" y="58" text-anchor="middle" fill="#bbb" font-size="15" font-weight="700">データ準備フェーズ</text>
+<rect x="10" y="70" width="300" height="50" rx="8" fill="rgba(255,184,0,0.14)" stroke="#FFB800" stroke-width="2.2"/>
+<text x="24" y="103.0" fill="#FFB800" font-size="22" font-weight="700">①</text>
+<text x="58" y="90" fill="#FFB800" font-size="13" font-weight="700">差し替え</text>
+<text x="58" y="108" fill="#ddd" font-size="12.5">フォルダの画像を読む道具を追加</text>
+<rect x="10" y="132" width="300" height="50" rx="8" fill="rgba(255,184,0,0.14)" stroke="#FFB800" stroke-width="2.2"/>
+<text x="24" y="165.0" fill="#FFB800" font-size="22" font-weight="700">②</text>
+<text x="58" y="152" fill="#FFB800" font-size="13" font-weight="700">差し替え</text>
+<text x="58" y="170" fill="#ddd" font-size="12.5">大きさの違う写真を 64×64 にそろえる</text>
+<rect x="10" y="194" width="300" height="50" rx="8" fill="rgba(255,184,0,0.14)" stroke="#FFB800" stroke-width="2.2"/>
+<text x="24" y="227.0" fill="#FFB800" font-size="22" font-weight="700">③</text>
+<text x="58" y="214" fill="#FFB800" font-size="13" font-weight="700">差し替え</text>
+<text x="58" y="232" fill="#ddd" font-size="12.5">自分のフォルダから読み、7:3 に分ける</text>
+<rect x="10" y="256" width="300" height="50" rx="8" fill="rgba(255,184,0,0.14)" stroke="#FFB800" stroke-width="2.2"/>
+<text x="24" y="289.0" fill="#FFB800" font-size="22" font-weight="700">④</text>
+<text x="58" y="276" fill="#FFB800" font-size="13" font-weight="700">差し替え</text>
+<text x="58" y="294" fill="#ddd" font-size="12.5">枚数が少ないのでバッチを小さく</text>
+<text x="480.0" y="58" text-anchor="middle" fill="#bbb" font-size="15" font-weight="700">学習設定フェーズ</text>
+<rect x="330" y="70" width="300" height="50" rx="8" fill="#1c1c1c" stroke="#555" stroke-width="1"/>
+<text x="344" y="103.0" fill="#888" font-size="22" font-weight="700">⑤</text>
+<text x="378" y="100.0" fill="#888" font-size="13" font-weight="700">そのまま</text>
+<rect x="330" y="132" width="300" height="50" rx="8" fill="#1c1c1c" stroke="#555" stroke-width="1"/>
+<text x="344" y="165.0" fill="#888" font-size="22" font-weight="700">⑥</text>
+<text x="378" y="152" fill="#888" font-size="13" font-weight="700">そのまま</text>
+<text x="378" y="170" fill="#ddd" font-size="12.5">形は 3×64×64 になる</text>
+<rect x="330" y="194" width="300" height="50" rx="8" fill="rgba(255,184,0,0.14)" stroke="#FFB800" stroke-width="2.2"/>
+<text x="344" y="227.0" fill="#FFB800" font-size="22" font-weight="700">⑦</text>
+<text x="378" y="214" fill="#FFB800" font-size="13" font-weight="700">差し替え</text>
+<text x="378" y="232" fill="#ddd" font-size="12.5">分類するクラスが 10 → 2</text>
+<rect x="330" y="256" width="300" height="50" rx="8" fill="#1c1c1c" stroke="#555" stroke-width="1"/>
+<text x="344" y="289.0" fill="#888" font-size="22" font-weight="700">⑧</text>
+<text x="378" y="286.0" fill="#888" font-size="13" font-weight="700">そのまま</text>
+<rect x="330" y="318" width="300" height="50" rx="8" fill="#1c1c1c" stroke="#555" stroke-width="1"/>
+<text x="344" y="351.0" fill="#888" font-size="22" font-weight="700">⑨</text>
+<text x="378" y="348.0" fill="#888" font-size="13" font-weight="700">そのまま</text>
+<text x="800.0" y="58" text-anchor="middle" fill="#bbb" font-size="15" font-weight="700">学習・評価フェーズ</text>
+<rect x="650" y="70" width="300" height="50" rx="8" fill="#1c1c1c" stroke="#555" stroke-width="1"/>
+<text x="664" y="103.0" fill="#888" font-size="22" font-weight="700">⑩</text>
+<text x="698" y="100.0" fill="#888" font-size="13" font-weight="700">そのまま</text>
+<rect x="650" y="132" width="300" height="50" rx="8" fill="#1c1c1c" stroke="#555" stroke-width="1"/>
+<text x="664" y="165.0" fill="#888" font-size="22" font-weight="700">⑪</text>
+<text x="698" y="162.0" fill="#888" font-size="13" font-weight="700">そのまま</text>
+<rect x="650" y="194" width="300" height="50" rx="8" fill="rgba(239,83,80,0.12)" stroke="#EF5350" stroke-width="2.2" stroke-dasharray="6 4"/>
+<text x="664" y="227.0" fill="#EF5350" font-size="22" font-weight="700">⑫</text>
+<text x="698" y="214" fill="#EF5350" font-size="13" font-weight="700">削除</text>
+<text x="698" y="232" fill="#ddd" font-size="12.5">テストデータがないので削除</text>
+<text x="480.0" y="418" text-anchor="middle" fill="#aaa" font-size="13.5">差し替えカードは M〜Q の5枚。どのカードがどの番号かは、コードとコメントを読んで決める</text>
+</svg>
+      </div>
     </div>
     <div class="gw3-group gw3-t3">
       <h3>試行③ 差し替えカード R（シンプルな CNN × オリジナル画像）</h3>
