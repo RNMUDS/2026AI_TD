@@ -553,7 +553,7 @@ a.sub-item:hover {
       <h3>📤 提出ガイド（<strong>全員が個人で提出</strong>・zip にしない）</h3>
       <div class="submission-items">
         <a href="#sec-gw1" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">GW1・GW2</span>穴埋めシート（PDF）</a>
-        <a href="#sec-gw3" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">GW3</span>ex0.ipynb ／ c1_d1_ex0_&lt;グループ&gt;.csv</a>
+        <a href="#sec-gw3" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">GW3</span>ex0_1〜ex0_3 の3ファイル ／ c1_d1_ex0_&lt;グループ&gt;.csv</a>
         <a href="#sec-ex1" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-standard">演習1</span>c1_d1_ex1_&lt;グループ&gt;.csv</a>
         <a href="#sec-roles" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">ノート</span>失敗記録・討議メモ</a>
       </div>
@@ -745,15 +745,15 @@ a.sub-item:hover {
       <div class="section-num" style="background:#81D4FA">GW3</div>
       <h2>コードを組み立てる ― MLP と CNN（35分）</h2>
     </div>
-    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">教科書のコード12枚が、下のカード A〜L に<strong>順不同・番号なし</strong>で載っている。<code>ex0.ipynb</code> には①〜⑫の空のセルが並ぶ。</p>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">教科書のコード12枚が、下のカード A〜L に<strong>順不同・番号なし</strong>で載っている。ノートブックは試行ごとに1ファイルで、空のセルにカードを貼って組み立てる。</p>
 
     <div class="card" style="border-left:4px solid #81D4FA">
       <div class="card-header"><h3>3つの試行</h3></div>
       <table style="font-size:0.85rem">
-        <tr><th style="width:4rem">試行</th><th>データ</th><th>モデル</th><th>カード</th></tr>
-        <tr><td><strong style="color:#4FC3F7">①</strong></td><td>FashionMNIST（衣類 10 クラス）</td><td>MLP</td><td>A〜L を貼る</td></tr>
-        <tr><td><strong style="color:#FFB800">②</strong></td><td><strong>オリジナル画像</strong>（2 クラス × 100 枚）</td><td>MLP</td><td>M〜Q で上書き</td></tr>
-        <tr><td><strong style="color:#B388FF">③</strong></td><td><strong>オリジナル画像</strong></td><td><strong>シンプルな CNN</strong></td><td>R で上書き</td></tr>
+        <tr><th style="width:4rem">試行</th><th>ファイル（<code>course1/day1/</code>）</th><th>データ × モデル</th><th>カード</th></tr>
+        <tr><td><strong style="color:#4FC3F7">①</strong></td><td><code>ex0_1_mlp_fashion.ipynb</code></td><td>FashionMNIST（衣類 10 クラス）× MLP</td><td>A〜L を①〜⑫に貼る</td></tr>
+        <tr><td><strong style="color:#FFB800">②</strong></td><td><code>ex0_2_mlp_original.ipynb</code></td><td><strong>オリジナル画像</strong>（2 クラス × 100 枚）× MLP</td><td>①と同じカードを貼り、5つだけ M〜Q（⑫はない）</td></tr>
+        <tr><td><strong style="color:#B388FF">③</strong></td><td><code>ex0_3_cnn_original.ipynb</code></td><td><strong>オリジナル画像</strong> × <strong>シンプルな CNN</strong></td><td>②と同じカードを貼り、1つだけ R</td></tr>
       </table>
       <p style="font-size:0.85rem;color:#ccc;margin-top:0.5rem">②と③はデータが同じでモデルだけが違う。</p>
     </div>
@@ -761,13 +761,13 @@ a.sub-item:hover {
     <div class="card group">
       <div class="card-header"><h3>手順 ― カードを当てずっぽうに試さない。GW2-1 の流れから組み立てる</h3></div>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li><code>course1/day1/ex0.ipynb</code> を開き、<code>GROUP_ID</code> を書き換えて最初のセルを実行</li>
+        <li><strong>試行①</strong>：<code>ex0_1_mlp_fashion.ipynb</code> を開き、<code>GROUP_ID</code> を書き換えて最初のセルを実行</li>
         <li><strong>GW2-1 のシートを横に開き</strong>、①〜⑫の見出しに GW2-1 のカード名（例：ライブラリのインポート、損失関数の定義）を写す（下の表でもよい）。セルはフェーズごとにくくってある</li>
         <li>カード名ごとに、その仕事をするコードを A〜L から探す（コメントが手がかり）</li>
         <li>カードを開いてコピーし、その番号の見出しの下にある<strong>空のセル</strong>に貼る</li>
-        <li>上から実行（<strong>試行①</strong>）</li>
-        <li><strong>試行②</strong>：M〜Q で該当セルを上書きし、⑫を削除 → カーネルを再起動して実行</li>
-        <li><strong>試行③</strong>：R で上書き → 再起動して実行</li>
+        <li>上から最後の「記録」まで実行</li>
+        <li><strong>試行②</strong>：<code>ex0_2_mlp_original.ipynb</code> に、①と同じカードを貼る。データが変わる5つのセルには M〜Q を貼る（下のヒントの図）→ 実行</li>
+        <li><strong>試行③</strong>：<code>ex0_3_cnn_original.ipynb</code> に、②と同じカードを貼る。モデルのセル1つだけ R を貼る → 実行</li>
       </ol>
       <table style="font-size:0.82rem;margin-top:0.6rem">
         <tr><th style="width:4rem">番号</th><th>GW2-1 のカード名</th><th style="width:6rem">カード</th></tr>
@@ -1356,7 +1356,7 @@ model</pre>
 
     <div class="card group">
       <div class="card-header"><h3>課題（提出）：MLP と CNN を説明する</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem"><code>ex0.ipynb</code> の最後の欄に、それぞれ1〜2文で書く。</p>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem"><code>ex0_3_cnn_original.ipynb</code> の最後の欄に、それぞれ1〜2文で書く。</p>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
         <li><strong>MLP とは何か</strong>。画像をどんな形にしてから入力するか</li>
         <li><strong>CNN とは何か</strong>。畳み込み層とプーリング層はそれぞれ何をするか</li>
@@ -1443,7 +1443,7 @@ model</pre>
         <tr><th style="width:4rem">見出し</th><th>セルがすること</th><th>あなたがやること</th></tr>
         <tr><td>(0)</td><td>グループ番号の設定</td><td><code>GROUP_ID = 1</code> を自分のグループ番号に書き換えて実行</td></tr>
         <tr><td>(1)–(2)</td><td>ライブラリの読み込み・機種情報の表示</td><td>実行するだけ</td></tr>
-        <tr><td>(3)</td><td>計算に使う装置を選ぶ</td><td><strong style="color:#FFB800">TODO 1</strong>：<code>MPS_AVAILABLE = ...</code> の <code>...</code> を書く → 実行</td></tr>
+        <tr><td>(3)</td><td>計算に使う装置を選ぶ</td><td><strong style="color:#FFB800">TODO 1</strong>：<code>elif ...:</code> の <code>...</code> に、MPS が使えるかを調べる式を書く → 実行</td></tr>
         <tr><td>(4)</td><td>GPU の計算の終わりを待つ（同期あり）／待たない（同期なし）で時間を比べる</td><td><strong style="color:#FFB800">TODO 2</strong>：計測の前後に <code>synchronize(device)</code> を足す → 実行し、同期比を見る</td></tr>
         <tr><td>(5)</td><td>B1 メモリ帯域を測る</td><td><strong style="color:#FFB800">TODO 3</strong>：<code>bytes_moved = ...</code> を書く → 実行し、公称値の何%かを見る</td></tr>
         <tr><td>(6)</td><td>B2 演算性能を測る</td><td><strong style="color:#FFB800">TODO 4</strong>：<code>flops = ...</code> を書く → 実行</td></tr>
@@ -1452,22 +1452,113 @@ model</pre>
       </table>
     </div>
 
+    <div class="card standard" id="bytes-anim">
+      <div class="card-header"><h3>B1 帯域の前に：「動くバイト数」とは</h3></div>
+      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.5rem"><code>c = a + b</code> を計算するとき、GPU は数値を<strong>メモリから読み</strong>、足して、答えを<strong>メモリに書く</strong>。この読み書きした量が「動くバイト数」。float32 の数値は1つ <strong>4バイト</strong>。</p>
+      <svg id="ba-svg" viewBox="0 0 900 330" style="width:100%;height:auto;display:block;background:#161616;border-radius:10px" font-family="Noto Sans JP, Hiragino Sans, sans-serif" role="img" aria-label="c = a + b でメモリと GPU の間を動くバイト数のアニメーション">
+        <text x="30" y="32" fill="#bbb" font-size="15" font-weight="700">メモリ</text>
+        <text x="742" y="32" fill="#bbb" font-size="15" font-weight="700">GPU</text>
+        <rect x="712" y="110" width="160" height="110" rx="12" fill="#1f2a33" stroke="#4FC3F7" stroke-width="2" id="ba-gpu"/>
+        <text x="792" y="160" text-anchor="middle" fill="#4FC3F7" font-size="17" font-weight="700">足し算</text>
+        <text x="792" y="186" text-anchor="middle" fill="#aaa" font-size="13" id="ba-gpu-t">c = a + b</text>
+        <g id="ba-rows"></g>
+        <g id="ba-packets"></g>
+        <text x="30" y="292" fill="#eee" font-size="16" id="ba-count">動いたバイト数：0 バイト</text>
+        <text x="30" y="318" fill="#FFB800" font-size="14" id="ba-note">▶ を押すと、1要素ずつ読み書きが進む</text>
+      </svg>
+      <div style="display:flex;gap:0.5rem;margin:0.6rem 0 0.2rem;flex-wrap:wrap">
+        <button type="button" id="ba-play" class="copy-btn" style="position:static">▶ 再生</button>
+        <button type="button" id="ba-step" class="copy-btn" style="position:static">1要素だけ進める</button>
+        <button type="button" id="ba-reset" class="copy-btn" style="position:static">↺ 最初から</button>
+      </div>
+      <ul class="point-list" style="margin-top:0.6rem">
+        <li>1要素ごとに：a を読む 4バイト ＋ b を読む 4バイト ＋ c に書く 4バイト ＝ <strong>12バイト</strong></li>
+        <li>帯域（GB/s）＝ 動いたバイト数 ÷ かかった時間。1秒に何 GB 読み書きできたか</li>
+        <li><strong>問い（TODO 3）</strong>：ex1 の a・b・c は <code>n</code> 要素ずつある。1回の <code>c = a + b</code> で動くバイト数を、<code>n</code> を使った式で書く</li>
+      </ul>
+    </div>
+    <script>
+    (function () {
+      var N = 8, CELL = 58, X0 = 90, ROWS = [["a", 60, "読む"], ["b", 125, "読む"], ["c", 215, "書く"]];
+      var svg = document.getElementById("ba-svg"); if (!svg) return;
+      var NS = "http://www.w3.org/2000/svg";
+      function el(tag, attrs, parent, text) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; (parent || svg).appendChild(e); return e; }
+      var rows = document.getElementById("ba-rows"), packs = document.getElementById("ba-packets");
+      var cells = {};
+      ROWS.forEach(function (r) {
+        el("text", { x: 60, y: r[1] + 27, fill: "#ccc", "font-size": 18, "font-weight": 700, "text-anchor": "middle" }, rows, r[0]);
+        cells[r[0]] = [];
+        for (var i = 0; i < N; i++) {
+          var g = el("g", {}, rows);
+          var rc = el("rect", { x: X0 + i * CELL, y: r[1], width: CELL - 6, height: 40, rx: 5, fill: "#222", stroke: "#555" }, g);
+          var tx = el("text", { x: X0 + i * CELL + (CELL - 6) / 2, y: r[1] + 26, "text-anchor": "middle", fill: "#ddd", "font-size": 15 }, g, r[0] === "c" ? "" : "1");
+          cells[r[0]].push({ rect: rc, text: tx });
+        }
+      });
+      el("text", { x: X0, y: 205, fill: "#888", "font-size": 12 }, rows, "各マス＝数値1つ＝4バイト（float32）");
+      var count = document.getElementById("ba-count"), note = document.getElementById("ba-note"), gpu = document.getElementById("ba-gpu");
+      var idx = 0, t = 0, playing = false, stepOnce = false, last = null, bytes = 0, DUR = 1400;
+      function packet(label, color) { var g = el("g", { opacity: 0 }, packs); el("rect", { x: -26, y: -13, width: 52, height: 26, rx: 13, fill: color }, g); el("text", { x: 0, y: 5, "text-anchor": "middle", "font-size": 12, fill: "#111", "font-weight": 700 }, g, label); return g; }
+      var pa = packet("4B", "#81D4FA"), pb = packet("4B", "#81D4FA"), pc = packet("4B", "#FFB800");
+      function cx(i) { return X0 + i * CELL + (CELL - 6) / 2; }
+      function place(g, x, y, op) { g.setAttribute("transform", "translate(" + x + "," + y + ")"); g.setAttribute("opacity", op); }
+      function lerp(a, b, u) { return a + (b - a) * u; }
+      function ease(u) { return u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; }
+      function show() { count.textContent = "動いたバイト数：" + bytes + " バイト（" + idx + " / " + N + " 要素）"; }
+      function hilite(i, on) { ["a", "b", "c"].forEach(function (k) { cells[k][i].rect.setAttribute("stroke", on ? "#FFB800" : "#555"); cells[k][i].rect.setAttribute("stroke-width", on ? 2.5 : 1); }); }
+      function frame(u) {
+        var i = idx, gx = 712, gy = 165;
+        if (u < 0.4) { var v = ease(u / 0.4); place(pa, lerp(cx(i), gx, v), lerp(80, gy - 18, v), 1); place(pb, lerp(cx(i), gx, v), lerp(145, gy + 18, v), 1); place(pc, gx, gy, 0); gpu.setAttribute("fill", "#1f2a33"); }
+        else if (u < 0.55) { place(pa, gx, gy - 18, 0); place(pb, gx, gy + 18, 0); gpu.setAttribute("fill", "#27465a"); place(pc, gx, gy, 0); }
+        else { var w = ease((u - 0.55) / 0.45); gpu.setAttribute("fill", "#1f2a33"); place(pc, lerp(gx, cx(i), w), lerp(gy, 235, w), 1); }
+      }
+      function finishElement() {
+        place(pa, 0, 0, 0); place(pb, 0, 0, 0); place(pc, 0, 0, 0);
+        cells.c[idx].text.textContent = "2"; cells.c[idx].rect.setAttribute("fill", "#3a2f10"); hilite(idx, false);
+        bytes += 12; idx += 1; show();
+        if (idx >= N) { playing = false; document.getElementById("ba-play").textContent = "▶ 再生"; note.textContent = "8要素で 8 × 12 = 96 バイト。では n 要素なら？ → TODO 3"; }
+        else note.textContent = "1要素あたり 読み 4 ＋ 4、書き 4 ＝ 12 バイト";
+      }
+      function tick(ts) {
+        if (!playing && !stepOnce) { last = null; return; }
+        if (last == null) last = ts; t += (ts - last) / DUR; last = ts;
+        if (idx < N) { hilite(idx, true); if (t >= 1) { t = 0; finishElement(); if (stepOnce) { stepOnce = false; last = null; return; } } else frame(t); }
+        requestAnimationFrame(tick);
+      }
+      function reset() { playing = false; stepOnce = false; idx = 0; t = 0; bytes = 0; last = null; for (var i = 0; i < N; i++) { cells.c[i].text.textContent = ""; cells.c[i].rect.setAttribute("fill", "#222"); hilite(i, false); } place(pa, 0, 0, 0); place(pb, 0, 0, 0); place(pc, 0, 0, 0); show(); note.textContent = "▶ を押すと、1要素ずつ読み書きが進む"; document.getElementById("ba-play").textContent = "▶ 再生"; }
+      document.getElementById("ba-play").addEventListener("click", function () { if (idx >= N) reset(); playing = !playing; this.textContent = playing ? "⏸ 一時停止" : "▶ 再生"; if (playing) requestAnimationFrame(tick); });
+      document.getElementById("ba-step").addEventListener("click", function () { if (idx >= N) reset(); if (!playing && !stepOnce) { stepOnce = true; requestAnimationFrame(tick); } });
+      document.getElementById("ba-reset").addEventListener("click", reset);
+      reset();
+    })();
+    </script>
+
+
     <div class="card group">
       <div class="card-header"><h3>TODO のヒント</h3></div>
-      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.5rem 0 0.2rem">TODO 1：MPS が使えるか</p>
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.5rem 0 0.2rem">TODO 1：MPS が使えるか（1行上の cuda と同じ形）</p>
 <pre>Python
-MPS_AVAILABLE <span class="op">=</span> torch.backends.mps.is_available()</pre>
-      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 2：計測の前後で同期</p>
+<span class="kw">if</span> torch.cuda.is_available():            <span class="cmt"># NVIDIA の GPU が使えるか</span>
+    device <span class="op">=</span> torch.device(<span class="str">"cuda"</span>)
+<span class="kw">elif</span> torch.backends.mps.is_available():   <span class="cmt"># Apple の GPU（MPS）が使えるか</span>
+    device <span class="op">=</span> torch.device(<span class="str">"mps"</span>)</pre>
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 2：測りたい処理を synchronize で前後から挟む</p>
 <pre>Python
-synchronize(device)                <span class="cmt"># 前：先の計算を終わらせる</span>
-t0 <span class="op">=</span> time.perf_counter()
-<span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):
+synchronize(device)                <span class="cmt"># ① 前に頼んだ計算を終わらせる（スタートをそろえる）</span>
+t0 <span class="op">=</span> time.perf_counter()           <span class="cmt"># ② 時計スタート</span>
+<span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):               <span class="cmt"># ③ 測りたい処理</span>
     c <span class="op">=</span> a <span class="op">@</span> b
-synchronize(device)                <span class="cmt"># 後：完了を待ってから時計を読む</span></pre>
-      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 3・4：動いたバイト数と演算数</p>
+synchronize(device)                <span class="cmt"># ④ ③の計算が全部終わるまで待つ</span>
+t_sync <span class="op">=</span> (time.perf_counter() <span class="op">-</span> t0) <span class="op">/</span> <span class="num">10</span>   <span class="cmt"># ⑤ 時計ストップ</span></pre>
+      <p style="font-size:0.82rem;color:#999;margin:0.2rem 0 0">④を忘れると「頼んだだけ」の時間になる。①を忘れると、前の計算の残りが混ざる。</p>
+      <details style="margin-top:0.7rem">
+        <summary>TODO 3・4 の答え（上の問いを考えてから開く）</summary>
+        <div class="answer-content">
 <pre>Python
 bytes_moved <span class="op">=</span> <span class="num">3</span> <span class="op">*</span> n <span class="op">*</span> <span class="num">4</span>   <span class="cmt"># 読み2 ＋ 書き1、float32 は4バイト</span>
 flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</span> N <span class="op">**</span> <span class="num">3</span>       <span class="cmt"># 乗算 N³ ＋ 加算 N³</span></pre>
+        </div>
+      </details>
     </div>
 
     <div class="card standard">
@@ -1528,8 +1619,8 @@ flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</s
 <span class="fn">python</span> course1/day1/verify.py --group 12   <span class="cmt"># OK が出るまで提出しない</span></pre>
       <table style="font-size:0.82rem">
         <tr><th style="width:5%"></th><th>確認項目</th></tr>
-        <tr><td><input type="checkbox"></td><td>ex0 の CSV に試行①②③の3回分がある</td></tr>
-        <tr><td><input type="checkbox"></td><td>ex0.ipynb の課題（MLP と CNN の説明）を書いた</td></tr>
+        <tr><td><input type="checkbox"></td><td>ex0_1〜ex0_3 の3ファイルを実行し、CSV に試行①②③の3回分がある</td></tr>
+        <tr><td><input type="checkbox"></td><td>ex0_3 の課題（MLP と CNN の説明）を書いた</td></tr>
         <tr><td><input type="checkbox"></td><td>演習1 の CSV にグループ全員分の行がある</td></tr>
         <tr><td><input type="checkbox"></td><td>穴埋めシートと失敗記録・討議メモが手元にある</td></tr>
         <tr><td><input type="checkbox"></td><td>zip にせず、ファイル名を変えていない</td></tr>

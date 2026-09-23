@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""前週に各自実行．コーパスを assets/ に取得し，配布済みの学習済み重みを確認する．
+"""データを assets/ に取得する（第1回は FashionMNIST．第2回からはコーパスと学習済み重みも）．
 
   python setup/download_assets.py
 
@@ -28,9 +28,12 @@ def main():
     out = data.corpus_dir(cfg)
     npz, vj = out / "encoded.npz", out / "vocab.json"
 
-    # ---- 1) コーパス
+    week2 = (ASSETS / "weights").exists()      # 第2回の配布（学習済み重み）があるときだけコーパスと重みを扱う
+    # ---- 1) コーパス（第2回の演習2 で使う）
     t0 = time.perf_counter()
-    if npz.exists() and vj.exists():
+    if not week2:
+        print("[1/3] コーパス … 第2回で取得する（今回はスキップ）", flush=True)
+    elif npz.exists() and vj.exists():
         print(f"[1/3] コーパス（{c['name']}）は取得済み ... スキップ", flush=True)
     else:
         print(f"[1/3] コーパス（{c['name']}）を HuggingFace Hub から取得中（約 5MB，1〜2 分） ...", flush=True)
@@ -43,10 +46,11 @@ def main():
                   "自宅回線でやり直してください．解決しない場合は授業当日に教員が配布します．")
             return 1
         print(f"      完了 ({time.perf_counter() - t0:.1f} 秒)", flush=True)
-    d = dict(__import__("numpy").load(npz))
-    vocab_n = len(json.loads(vj.read_text()))
-    print(f"      訓練 {len(d['X_train']):,} 文 / 検証 {len(d['X_dev']):,} 文 / テスト {len(d['X_test']):,} 文 "
-          f"/ 語彙 {vocab_n:,} 語 / 系列長 {d['X_test'].shape[1]}  （{npz.name} {mb(npz)}）", flush=True)
+    if week2:
+        d = dict(__import__("numpy").load(npz))
+        vocab_n = len(json.loads(vj.read_text()))
+        print(f"      訓練 {len(d['X_train']):,} 文 / 検証 {len(d['X_dev']):,} 文 / テスト {len(d['X_test']):,} 文 "
+              f"/ 語彙 {vocab_n:,} 語 / 系列長 {d['X_test'].shape[1]}  （{npz.name} {mb(npz)}）", flush=True)
 
     # ---- 2) FashionMNIST（GW3 の教科書コード用．torchvision が assets/data に取得する，約 30MB）
     t0 = time.perf_counter()
@@ -66,6 +70,15 @@ def main():
             return 1
         print(f"      完了 ({time.perf_counter() - t0:.1f} 秒)", flush=True)
     print(f"      訓練 60,000 枚 / テスト 10,000 枚（28×28 グレースケール，10 クラス）", flush=True)
+
+    cable = ASSETS / "cable1"
+    n_img = len(list(cable.glob("class*/*.jpg")))
+    print(f"      オリジナル画像（assets/cable1）: {n_img} 枚" + ("" if n_img else "  ← 見つからない．git pull する"), flush=True)
+    if not week2:
+        print("[3/3] 学習済み重み … 第2回で配布する（今回はスキップ）", flush=True)
+        print("\n===== 完了 =====")
+        print("GW3（FashionMNIST とオリジナル画像）の準備ができています．")
+        return 0
 
     # ---- 3) 学習済み重み
     w = ASSETS / "weights"

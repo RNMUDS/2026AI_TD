@@ -9,8 +9,8 @@ uv venv --python 3.12              # 初回のみ
 source .venv/bin/activate          # ターミナルを開き直すたびに
 uv pip install -r requirements.txt # 初回のみ
 python setup/check_env.py          # 環境診断
-python setup/download_assets.py    # コーパスの取得（重みは同梱）
-code .                             # VS Code で course1/day1/ex1.ipynb を開き，カーネルに .venv を選ぶ
+python setup/download_assets.py    # データの取得（FashionMNIST）
+code .                             # VS Code で course1/day1/ のノートブックを開き，カーネルに .venv を選ぶ
 ```
 
 - `common/` … 全14回で使い回す共通基盤（使用デバイスの選択・乱数固定・CSV 記録・モデル定義）
