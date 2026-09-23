@@ -502,7 +502,8 @@ a.sub-item:hover {
   <div class="container">
     <div class="card" style="border-left:4px solid #4FC3F7;background:linear-gradient(135deg,#141414,#111a24)">
       <div class="card-header"><h3>📌 授業の目的</h3></div>
-      <p style="font-size:1.05rem;margin-bottom:0.7rem">問いは1つ：<strong style="color:#4FC3F7">「その数字は信じられるか」</strong></p>
+      <p style="font-size:1.05rem;margin-bottom:0.4rem">問いは1つ：<strong style="color:#4FC3F7">「その数字は信じられるか」</strong></p>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.7rem">AI は「正解率 90%」「0.1秒で答える」といった数字で選ばれ、世に出る。しかしその数字は、測り方・データの分け方・乱数・1回だけの実行で簡単に変わる。信じられない数字で選べば、本番で精度が出ない、遅い AI ができる。LLM がコードを書く時代でも、出てきた数字を疑い、確かめるのは人の仕事である。</p>
       <ul class="point-list" style="margin-bottom:1rem">
         <li>毎回、自分のマシンでモデルを動かして数字を出す</li>
         <li>グループごとに条件を分担し、<strong>他グループの実測値と比べる</strong>（LLM からは得られない数字）</li>
@@ -1418,7 +1419,8 @@ model</pre>
       <div class="section-num" style="background:#FFB800">2</div>
       <h2>演習1 環境ベンチマーク ― <code>ex1.ipynb</code></h2>
     </div>
-    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem"><strong>目的：</strong>測り方しだいで数字が変わることを、自分のマシンで確かめる。上から実行し、TODO を埋める（実行1分）。</p>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:0.4rem"><strong>目的：</strong>測り方しだいで数字が変わることを、自分のマシンで確かめる。上から実行し、TODO を埋める（実行1分）。</p>
+    <p style="font-size:0.9rem;color:#ccc;margin-bottom:1rem"><strong>なぜ：</strong>時間の数字は、同期を1行忘れるだけで数十倍ずれ、しかもエラーは出ない。このあと毎回、モデルの速さやメモリを比べるので、最初に「信じられる測り方」を身につける。</p>
 
     <div class="card standard">
       <div class="card-header"><h3>測る前に</h3></div>
@@ -1474,8 +1476,21 @@ model</pre>
       <ul class="point-list" style="margin-top:0.6rem">
         <li>1要素ごとに：a を読む 4バイト ＋ b を読む 4バイト ＋ c に書く 4バイト ＝ <strong>12バイト</strong></li>
         <li>帯域（GB/s）＝ 動いたバイト数 ÷ かかった時間。1秒に何 GB 読み書きできたか</li>
-        <li><strong>問い（TODO 3）</strong>：ex1 の a・b・c は <code>n</code> 要素ずつある。1回の <code>c = a + b</code> で動くバイト数を、<code>n</code> を使った式で書く</li>
+        <li>アニメーションは8要素の例。ex1 の a・b・c は <code>n = 64 * 1024 * 1024</code>（約6,700万）要素ずつ</li>
+        <li><strong>問い（TODO 3）</strong>：1回の <code>c = a + b</code> で動くバイト数を、<code>n</code> を使った式で書く</li>
       </ul>
+      <details style="margin-top:0.4rem">
+        <summary>ヒント（順に考える）</summary>
+        <div class="answer-content">
+          <ol style="font-size:0.88rem;padding-left:1.4rem;line-height:1.9">
+            <li>1要素で、読むのは何個？ 書くのは何個？ → 読み2個・書き1個 ＝ <strong>3個</strong></li>
+            <li>数値1個は何バイト？ → float32 は <strong>4バイト</strong></li>
+            <li>要素は何個ある？ → <strong>n 個</strong></li>
+            <li>3つを掛けると <code>bytes_moved = ○ * ○ * ○</code></li>
+          </ol>
+          <p style="font-size:0.82rem;color:#999">帯域の計算に使う時間は (5) の「ms/回」。1 ms ＝ 0.001 秒。</p>
+        </div>
+      </details>
     </div>
     <script>
     (function () {
@@ -1534,6 +1549,82 @@ model</pre>
     </script>
 
 
+    <div class="card standard" id="flops-anim">
+      <div class="card-header"><h3>B2 演算の前に：行列積の「演算数」とは</h3></div>
+      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.5rem"><code>C = A @ B</code>（行列積）では、C の1マスを作るのに、A の<strong>横1行</strong>と B の<strong>縦1列</strong>を1つずつ掛けて、全部足す。掛け算1回・足し算1回をそれぞれ「演算1回」と数える。</p>
+      <svg id="fa-svg" viewBox="0 0 900 360" style="width:100%;height:auto;display:block;background:#161616;border-radius:10px" font-family="Noto Sans JP, Hiragino Sans, sans-serif" role="img" aria-label="行列積の演算数を数えるアニメーション">
+        <text x="95" y="30" text-anchor="middle" fill="#bbb" font-size="16" font-weight="700">A（4×4）</text>
+        <text x="345" y="30" text-anchor="middle" fill="#bbb" font-size="16" font-weight="700">B（4×4）</text>
+        <text x="620" y="30" text-anchor="middle" fill="#bbb" font-size="16" font-weight="700">C = A @ B</text>
+        <text x="220" y="125" text-anchor="middle" fill="#888" font-size="26">×</text>
+        <text x="480" y="125" text-anchor="middle" fill="#888" font-size="26">＝</text>
+        <g id="fa-grid"></g>
+        <text x="30" y="262" fill="#81D4FA" font-size="15" id="fa-calc"> </text>
+        <text x="30" y="298" fill="#eee" font-size="16" id="fa-count">演算数：0 回</text>
+        <text x="30" y="330" fill="#FFB800" font-size="14" id="fa-note">▶ を押すと、C のマスを1つずつ計算する</text>
+      </svg>
+      <div style="display:flex;gap:0.5rem;margin:0.6rem 0 0.2rem;flex-wrap:wrap">
+        <button type="button" id="fa-play" class="copy-btn" style="position:static">▶ 再生</button>
+        <button type="button" id="fa-step" class="copy-btn" style="position:static">1マスだけ進める</button>
+        <button type="button" id="fa-reset" class="copy-btn" style="position:static">↺ 最初から</button>
+      </div>
+      <ul class="point-list" style="margin-top:0.6rem">
+        <li>C の1マス：掛け算 4回 ＋ 足し算 4回 ＝ 8回（N＝4 のとき）</li>
+        <li>アニメーションは N＝4 の例。ex1 の行列は <code>N = 2048</code></li>
+        <li><strong>問い（TODO 4）</strong>：N×N の行列積1回の演算数を、<code>N</code> を使った式で書く</li>
+      </ul>
+      <details style="margin-top:0.4rem">
+        <summary>ヒント（順に考える）</summary>
+        <div class="answer-content">
+          <ol style="font-size:0.88rem;padding-left:1.4rem;line-height:1.9">
+            <li>C の1マスを作るのに、掛け算は何回？ → 1行に N 個あるので <strong>N 回</strong></li>
+            <li>足し算は？ → 同じく <strong>N 回</strong>と数える。1マスで <strong>2N 回</strong></li>
+            <li>C のマスはいくつ？ → N 行 × N 列 ＝ <strong>N² 個</strong></li>
+            <li>掛けると 2N × N² ＝ 2N³。Python では <code>N ** 3</code> が N³</li>
+          </ol>
+        </div>
+      </details>
+    </div>
+    <script>
+    (function () {
+      var N = 4, S = 36, NS = "http://www.w3.org/2000/svg", svg = document.getElementById("fa-svg"); if (!svg) return;
+      var grid = document.getElementById("fa-grid"), calc = document.getElementById("fa-calc"), count = document.getElementById("fa-count"), note = document.getElementById("fa-note");
+      function el(tag, a, parent, text) { var e = document.createElementNS(NS, tag); for (var k in a) e.setAttribute(k, a[k]); if (text != null) e.textContent = text; (parent || svg).appendChild(e); return e; }
+      var A = [[1,2,0,1],[0,1,2,1],[1,0,1,2],[2,1,0,1]], B = [[1,0,1,0],[0,1,0,1],[1,1,0,0],[0,0,1,1]];
+      function mk(ox, M, empty) { var cells = []; for (var i = 0; i < N; i++) { cells.push([]); for (var j = 0; j < N; j++) { var r = el("rect", { x: ox + j * S, y: 45 + i * S, width: S - 4, height: S - 4, rx: 4, fill: "#222", stroke: "#555" }, grid); var t = el("text", { x: ox + j * S + (S - 4) / 2, y: 45 + i * S + 22, "text-anchor": "middle", fill: "#ddd", "font-size": 14 }, grid, empty ? "" : M[i][j]); cells[i].push({ r: r, t: t }); } } return cells; }
+      var ca = mk(25, A), cb = mk(275, B), cc = mk(550, null, true);
+      var idx = 0, t = 0, playing = false, stepOnce = false, last = null, ops = 0, DUR = 1600;
+      function clearHi() { for (var i = 0; i < N; i++) for (var j = 0; j < N; j++) { [ca, cb, cc].forEach(function (M) { M[i][j].r.setAttribute("stroke", "#555"); M[i][j].r.setAttribute("stroke-width", 1); }); } }
+      function show() { count.textContent = "演算数：" + ops + " 回（C のマス " + idx + " / " + N * N + "）"; }
+      function frame(u) {
+        var i = Math.floor(idx / N), j = idx % N; clearHi();
+        for (var k = 0; k < N; k++) { ca[i][k].r.setAttribute("stroke", "#4FC3F7"); ca[i][k].r.setAttribute("stroke-width", 2.5); cb[k][j].r.setAttribute("stroke", "#4FC3F7"); cb[k][j].r.setAttribute("stroke-width", 2.5); }
+        cc[i][j].r.setAttribute("stroke", "#FFB800"); cc[i][j].r.setAttribute("stroke-width", 2.5);
+        var kk = Math.min(N, Math.floor(u * (N + 1))), parts = [];
+        for (var k2 = 0; k2 < kk; k2++) parts.push(A[i][k2] + "×" + B[k2][j]);
+        calc.textContent = "C[" + i + "][" + j + "] = " + (parts.join(" ＋ ") || "…") + "   （掛け算 " + kk + " 回・足し算 " + kk + " 回）";
+      }
+      function finish() {
+        var i = Math.floor(idx / N), j = idx % N, v = 0; for (var k = 0; k < N; k++) v += A[i][k] * B[k][j];
+        cc[i][j].t.textContent = v; cc[i][j].r.setAttribute("fill", "#3a2f10"); ops += 2 * N; idx += 1; show();
+        if (idx >= N * N) { playing = false; clearHi(); document.getElementById("fa-play").textContent = "▶ 再生"; calc.textContent = "C の 16 マス × 8 回 ＝ 128 回 ＝ 2 × 4³"; note.textContent = "N＝4 で 2 × 4³。では N×N なら？ → TODO 4"; }
+        else note.textContent = "1マスあたり 掛け算 4 ＋ 足し算 4 ＝ 8 回";
+      }
+      function tick(ts) {
+        if (!playing && !stepOnce) { last = null; return; }
+        if (last == null) last = ts; t += (ts - last) / DUR; last = ts;
+        if (idx < N * N) { if (t >= 1) { t = 0; finish(); if (stepOnce) { stepOnce = false; last = null; return; } } else frame(t); }
+        requestAnimationFrame(tick);
+      }
+      function reset() { playing = false; stepOnce = false; idx = 0; t = 0; ops = 0; last = null; clearHi(); for (var i = 0; i < N; i++) for (var j = 0; j < N; j++) { cc[i][j].t.textContent = ""; cc[i][j].r.setAttribute("fill", "#222"); } calc.textContent = " "; show(); note.textContent = "▶ を押すと、C のマスを1つずつ計算する"; document.getElementById("fa-play").textContent = "▶ 再生"; }
+      document.getElementById("fa-play").addEventListener("click", function () { if (idx >= N * N) reset(); playing = !playing; this.textContent = playing ? "⏸ 一時停止" : "▶ 再生"; if (playing) requestAnimationFrame(tick); });
+      document.getElementById("fa-step").addEventListener("click", function () { if (idx >= N * N) reset(); if (!playing && !stepOnce) { stepOnce = true; requestAnimationFrame(tick); } });
+      document.getElementById("fa-reset").addEventListener("click", reset);
+      reset();
+    })();
+    </script>
+
+
     <div class="card group">
       <div class="card-header"><h3>TODO のヒント</h3></div>
       <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.5rem 0 0.2rem">TODO 1：MPS が使えるか（1行上の cuda と同じ形）</p>
@@ -1552,7 +1643,7 @@ synchronize(device)                <span class="cmt"># ④ ③の計算が全部
 t_sync <span class="op">=</span> (time.perf_counter() <span class="op">-</span> t0) <span class="op">/</span> <span class="num">10</span>   <span class="cmt"># ⑤ 時計ストップ</span></pre>
       <p style="font-size:0.82rem;color:#999;margin:0.2rem 0 0">④を忘れると「頼んだだけ」の時間になる。①を忘れると、前の計算の残りが混ざる。</p>
       <details style="margin-top:0.7rem">
-        <summary>TODO 3・4 の答え（上の問いを考えてから開く）</summary>
+        <summary>TODO 3・4 の答え（上のヒントで書いてから確かめる）</summary>
         <div class="answer-content">
 <pre>Python
 bytes_moved <span class="op">=</span> <span class="num">3</span> <span class="op">*</span> n <span class="op">*</span> <span class="num">4</span>   <span class="cmt"># 読み2 ＋ 書き1、float32 は4バイト</span>
