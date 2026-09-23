@@ -397,6 +397,15 @@ footer {
   .section-num { width: 2rem; height: 2rem; font-size: 0.85rem; }
 }
 
+/* ============ GW3 カードの色分け（試行ごと） ============ */
+.gw3-group { border-left: 4px solid var(--gw3c); padding: 0.6rem 0 0.2rem 0.9rem; margin: 1.2rem 0; border-radius: 4px; background: linear-gradient(90deg, color-mix(in srgb, var(--gw3c) 10%, transparent), transparent 40%); }
+.gw3-group > h3 { color: var(--gw3c); font-size: 1rem; margin: 0 0 0.6rem; }
+.gw3-group details { border-left: 3px solid var(--gw3c); }
+.gw3-group details summary { color: var(--gw3c); }
+.gw3-t1 { --gw3c: #4FC3F7; }
+.gw3-t2 { --gw3c: #FFB800; }
+.gw3-t3 { --gw3c: #B388FF; }
+
 /* ============ COPY BUTTON ============ */
 pre { position: relative; }
 .copy-btn {
@@ -411,6 +420,8 @@ pre { position: relative; }
   font-family: 'Noto Sans JP', sans-serif;
   transition: all 0.2s;
   z-index: 2;
+  user-select: none;          /* 手で範囲選択してもボタンの文字が入らないように */
+  -webkit-user-select: none;
 }
 .copy-btn:hover { background: #4FC3F7; color: white; border-color: #4FC3F7; }
 .copy-btn.copied { background: #4FC3F7; color: white; border-color: #4FC3F7; }
@@ -553,7 +564,7 @@ a.sub-item:hover {
         <strong>手順:</strong> ① グループで共有（演習1 の各自の行・シート・メモ）→ ② 自分の <code>results/</code> に集める → ③ <code>python course1/day1/verify.py --group &lt;グループ番号&gt;</code> で OK を確認 → ④ <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の「第1回」へ<strong>自分で</strong>アップロード
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:0.5rem;font-size:0.85rem;color:#FFB800">
-        <strong>期限:</strong> 授業当日中（遅くとも第2回の開始まで）
+        <strong>期限：</strong>次回の授業開始まで
       </div>
     </div>
   </div>
@@ -589,10 +600,6 @@ a.sub-item:hover {
       <h2>環境構築（25分）</h2>
     </div>
     <p style="font-size:0.95rem;color:#ccc;margin-bottom:0.6rem">uv → Python 3.12 → フォルダ取得 → 仮想環境 → 診断。全員が手順⑤まで終えたら GW1 へ。</p>
-    <div style="background:#1a1a1a;border:1px solid #333;border-radius:0.4rem;padding:0.6rem 0.8rem;margin:0.3rem 0 1rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:#999">
-      ~/AI_TD/　　　　← 授業用フォルダ（コマンドはすべてここで実行）<br>　├ .venv/　　　← 仮想環境<br>　├ course1/day1/ ← 今日のノートブック<br>　├ assets/　　　← データと学習済み重み<br>　└ results/　　 ← 自分の CSV（提出物）
-    </div>
-
     <div class="card standard">
       <div class="card-header"><h3>手順① uv をインストール</h3></div>
 <pre>Bash
@@ -614,6 +621,10 @@ a.sub-item:hover {
 <span class="fn">git</span> clone https://github.com/RNMUDS/2026AI_TD.git AI_TD   <span class="cmt"># 初回のみ</span>
 <span class="fn">cd</span> AI_TD
 <span class="fn">git</span> pull             <span class="cmt"># 2回目以降は最新に更新するだけ</span></pre>
+    </div>
+
+    <div style="background:#1a1a1a;border:1px solid #333;border-radius:0.4rem;padding:0.6rem 0.8rem;margin:0.3rem 0 1rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:#999">
+      ~/AI_TD/　　　　← 授業用フォルダ（コマンドはすべてここで実行）<br>　├ .venv/　　　← 仮想環境<br>　├ course1/day1/ ← 今日のノートブック<br>　├ assets/　　　← データと学習済み重み<br>　└ results/　　 ← 自分の CSV（提出物）
     </div>
 
     <div class="card standard">
@@ -753,9 +764,9 @@ a.sub-item:hover {
       <div class="card-header"><h3>3つの試行</h3></div>
       <table style="font-size:0.85rem">
         <tr><th style="width:4rem">試行</th><th>データ</th><th>モデル</th><th>カード</th></tr>
-        <tr><td><strong>①</strong></td><td>FashionMNIST（衣類 10 クラス）</td><td>MLP</td><td>A〜L を貼る</td></tr>
-        <tr><td><strong>②</strong></td><td><strong>オリジナル画像</strong>（2 クラス × 100 枚）</td><td>MLP</td><td>M〜Q で上書き</td></tr>
-        <tr><td><strong>③</strong></td><td><strong>オリジナル画像</strong></td><td><strong>シンプルな CNN</strong></td><td>R で上書き</td></tr>
+        <tr><td><strong style="color:#4FC3F7">①</strong></td><td>FashionMNIST（衣類 10 クラス）</td><td>MLP</td><td>A〜L を貼る</td></tr>
+        <tr><td><strong style="color:#FFB800">②</strong></td><td><strong>オリジナル画像</strong>（2 クラス × 100 枚）</td><td>MLP</td><td>M〜Q で上書き</td></tr>
+        <tr><td><strong style="color:#B388FF">③</strong></td><td><strong>オリジナル画像</strong></td><td><strong>シンプルな CNN</strong></td><td>R で上書き</td></tr>
       </table>
       <p style="font-size:0.85rem;color:#ccc;margin-top:0.5rem">②と③はデータが同じでモデルだけが違う。</p>
     </div>
@@ -764,27 +775,27 @@ a.sub-item:hover {
       <div class="card-header"><h3>手順 ― カードを当てずっぽうに試さない。GW2-1 の流れから組み立てる</h3></div>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
         <li><code>course1/day1/ex0.ipynb</code> を開き、<code>GROUP_ID</code> を書き換えて最初のセルを実行</li>
-        <li><strong>GW2-1 のシートを横に開き</strong>、①〜⑫の見出しにカード名とフェーズを写す（下の表でもよい）</li>
+        <li><strong>GW2-1 のシートを横に開き</strong>、①〜⑫の見出しに GW2-1 のカード名（例：ライブラリのインポート、損失関数の定義）を写す（下の表でもよい）。セルはフェーズごとにくくってある</li>
         <li>カード名ごとに、その仕事をするコードを A〜L から探す（コメントが手がかり）</li>
-        <li>カードを開いてコピーし、その番号のセルに貼る</li>
-        <li>上から実行（<strong>試行①</strong>）。<code>NameError</code> なら貼る場所を見直す</li>
+        <li>カードを開いてコピーし、その番号の見出しの下にある<strong>空のセル</strong>に貼る</li>
+        <li>上から実行（<strong>試行①</strong>）。<code>NameError: name 'c' is not defined</code> は「c を作るカードが前のセルにない」という意味。貼る場所を見直す</li>
         <li><strong>試行②</strong>：M〜Q で該当セルを上書きし、⑫を削除 → カーネルを再起動して実行</li>
         <li><strong>試行③</strong>：R で上書き → 再起動して実行</li>
       </ol>
       <table style="font-size:0.82rem;margin-top:0.6rem">
-        <tr><th style="width:4rem">番号</th><th>GW2-1 のカード名</th><th style="width:8rem">フェーズ</th><th style="width:6rem">カード</th></tr>
-        <tr><td><strong>①</strong></td><td></td><td></td><td></td></tr>
-        <tr><td><strong>②</strong></td><td></td><td></td><td></td></tr>
-        <tr><td><strong>③</strong></td><td></td><td></td><td></td></tr>
-        <tr><td><strong>④</strong></td><td></td><td></td><td></td></tr>
-        <tr><td><strong>⑤</strong></td><td></td><td></td><td></td></tr>
-        <tr><td><strong>⑥</strong></td><td></td><td></td><td></td></tr>
-        <tr><td><strong>⑦</strong></td><td></td><td></td><td></td></tr>
-        <tr><td><strong>⑧</strong></td><td></td><td></td><td></td></tr>
-        <tr><td><strong>⑨</strong></td><td></td><td></td><td></td></tr>
-        <tr><td><strong>⑩</strong></td><td></td><td></td><td></td></tr>
-        <tr><td><strong>⑪</strong></td><td></td><td></td><td></td></tr>
-        <tr><td><strong>⑫</strong></td><td></td><td></td><td></td></tr>
+        <tr><th style="width:4rem">番号</th><th>GW2-1 のカード名</th><th style="width:6rem">カード</th></tr>
+        <tr><td><strong>①</strong></td><td></td><td></td></tr>
+        <tr><td><strong>②</strong></td><td></td><td></td></tr>
+        <tr><td><strong>③</strong></td><td></td><td></td></tr>
+        <tr><td><strong>④</strong></td><td></td><td></td></tr>
+        <tr><td><strong>⑤</strong></td><td></td><td></td></tr>
+        <tr><td><strong>⑥</strong></td><td></td><td></td></tr>
+        <tr><td><strong>⑦</strong></td><td></td><td></td></tr>
+        <tr><td><strong>⑧</strong></td><td></td><td></td></tr>
+        <tr><td><strong>⑨</strong></td><td></td><td></td></tr>
+        <tr><td><strong>⑩</strong></td><td></td><td></td></tr>
+        <tr><td><strong>⑪</strong></td><td></td><td></td></tr>
+        <tr><td><strong>⑫</strong></td><td></td><td></td></tr>
       </table>
       <div class="callout-info">
         <h4>手がかり</h4>
@@ -796,7 +807,8 @@ a.sub-item:hover {
       </div>
     </div>
 
-    <div class="card-header" style="margin-top:1.2rem"><h3>カード A〜L（クリックで開く）</h3></div>
+    <div class="gw3-group gw3-t1">
+      <h3>試行① カード A〜L（MLP × FashionMNIST・クリックで開く）</h3>
 <div class="gw3-cards">
   <details id="gw3-card-A">
     <summary>カード A（2 行）― クリックで開く</summary>
@@ -1075,7 +1087,9 @@ import numpy as np</pre>
   </details>
 </div>
 
-    <div class="card-header" style="margin-top:1.2rem"><h3>試行② 差し替えカード M〜Q</h3></div>
+    </div>
+    <div class="gw3-group gw3-t2">
+      <h3>試行② 差し替えカード M〜Q（MLP × オリジナル画像）</h3>
 <div class="gw3-cards">
   <details id="gw3-card-M">
     <summary>カード M（24 行）― クリックで開く</summary>
@@ -1208,7 +1222,9 @@ data_transforms = {
   </details>
 </div>
 
-    <div class="card-header" style="margin-top:1.2rem"><h3>試行③ 差し替えカード R</h3></div>
+    </div>
+    <div class="gw3-group gw3-t3">
+      <h3>試行③ 差し替えカード R（シンプルな CNN × オリジナル画像）</h3>
 <div class="gw3-cards">
   <details id="gw3-card-R">
     <summary>カード R（54 行）― クリックで開く</summary>
@@ -1271,6 +1287,7 @@ model</pre>
   </details>
 </div>
 
+    </div>
 
     <div class="card group">
       <div class="card-header"><h3>結果を記録する</h3></div>
@@ -1302,7 +1319,6 @@ model</pre>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
         <li>データを替えたとき、モデルを替えたとき、差し替えたのはどのセルか</li>
         <li>②→③で何ポイント変わったか。検証は60枚（1枚 ≒ 1.7ポイント）。「上がった」と言えるか</li>
-        <li><code>NameError</code> はどのセルが先に必要だったか</li>
       </ol>
       <div class="notion-submit"><div><strong>プレゼン1:</strong> 代表が結論を2分 → 他のメンバーが1分ずつ</div></div>
     </div>
@@ -1519,7 +1535,10 @@ document.querySelectorAll('pre').forEach(function(pre) {
   btn.className = 'copy-btn';
   btn.textContent = 'コピー';
   btn.addEventListener('click', function() {
-    var code = pre.textContent.replace(/^(Python|JavaScript|HTML|Bash|JSON|Terminal|Directory Tree|\.zshrc|Notion テンプレート)( ── [^\n]+)?\n/, '');
+    // ボタン自身の文字（「コピー」）を含めないよう，ボタンを除いた複製から本文を取る
+    var clone = pre.cloneNode(true);
+    clone.querySelectorAll('.copy-btn').forEach(function(b) { b.remove(); });
+    var code = clone.textContent.replace(/^(Python|JavaScript|HTML|Bash|JSON|Terminal|Directory Tree|\.zshrc|Notion テンプレート)( ── [^\n]+)?\n/, '');
     navigator.clipboard.writeText(code).then(function() {
       btn.textContent = 'コピーしました';
       btn.classList.add('copied');
