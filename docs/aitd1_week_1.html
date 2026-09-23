@@ -567,7 +567,7 @@ a.sub-item:hover {
         <a href="#sec-ex1" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-standard">演習1</span>c1_d1_ex1_&lt;班&gt;.csv（班員全員分の行）</a>
         <a href="#sec-ex2" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">演習2</span>c1_d1_ex2_&lt;班&gt;.csv ／ table_c1_d1_ex2_&lt;班&gt;.csv</a>
         <a href="#sec-ex3" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">演習3</span>c1_d1_ex3_&lt;班&gt;.csv ／ c1_d1_ex3_definition_&lt;班&gt;.txt</a>
-        <a href="#sec-cards" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-group">グループ</span>c1_d1_ex3_questions_&lt;班&gt;.txt（質問カード）</a>
+        <a href="#sec-cards" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-group">グループ</span>c1_d1_ex3_questions_&lt;班&gt;.txt（recorder の質問カード）</a>
         <a href="#sec-roles" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">ノート</span>recorder の失敗記録・討議メモ</a>
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:1rem;font-size:0.85rem;color:#81D4FA">
@@ -619,7 +619,7 @@ a.sub-item:hover {
         <tr><td>10–20</td><td>役割割当。「同期しないと時間は測れない」の3分解説</td><td>講義</td></tr>
         <tr><td>20–35</td><td><a href="#sec-ex1" style="color:#4FC3F7">演習1</a> 環境ベンチマーク（実行1分以内）</td><td>個人 → 班</td></tr>
         <tr><td>35–40</td><td><strong>グループディスカッション1</strong>（ex1 ブロック(11) の4つの問い。全員が発言）</td><td><span class="tag tag-group">討議</span></td></tr>
-        <tr><td>40–50</td><td><strong>グループ内プレゼン1</strong>（1人2分、スライド禁止、画面を見せて話す）</td><td><span class="tag tag-group">発表</span></td></tr>
+        <tr><td>40–50</td><td><strong>グループ内プレゼン1</strong>（presenter 2分 → 他の3名 1分ずつ → 質疑。スライド禁止、画面を見せて話す）</td><td><span class="tag tag-group">発表</span></td></tr>
         <tr><td>50–70</td><td><a href="#sec-ex2" style="color:#4FC3F7">演習2</a> 学習済み3モデルの4指標同時測定。<strong>実行前に予測を記入</strong></td><td>個人 → 班</td></tr>
         <tr><td>70–75</td><td><strong>グループディスカッション2</strong>（ex2 ブロック(12)。外れた予測から話す）</td><td><span class="tag tag-group">討議</span></td></tr>
         <tr><td>75–85</td><td><strong>グループ内プレゼン2</strong></td><td><span class="tag tag-group">発表</span></td></tr>
@@ -763,35 +763,35 @@ a.sub-item:hover {
         <tr><th style="width:9rem">役割</th><th>責務</th><th style="width:12rem">今日の提出物</th></tr>
         <tr><td><strong style="color:#4FC3F7">implementer</strong></td><td>コードを書く。<strong>他の3名はコードを書かない</strong>（助言はしてよい）</td><td>ノートブック・CSV</td></tr>
         <tr><td><strong style="color:#FFB800">verifier</strong></td><td>結果を疑い、隣で<strong>条件を変えて再実行</strong>する（バッチサイズ、繰り返し回数、指標の向き）</td><td>比較表（何を変えたら何が変わったか）</td></tr>
-        <tr><td><strong style="color:#81D4FA">recorder</strong></td><td>出たエラーと直し方、討議で割れた点を残す</td><td>失敗記録・討議メモ（形式自由）</td></tr>
-        <tr><td><strong style="color:#B388FF">auditor</strong></td><td>演習中に<strong>他班への質問を3問</strong>作る</td><td>質問カード（3問）</td></tr>
+        <tr><td><strong style="color:#81D4FA">recorder</strong>（記録・質問係）</td><td>出たエラーと直し方、討議で割れた点を記録し、そこから<strong>他班への質問を3問</strong>作る</td><td>失敗記録・討議メモ・質問カード（3問）</td></tr>
+        <tr><td><strong style="color:#B388FF">presenter</strong>（進行・発表係）</td><td>討議の司会と時間管理。班の結論を<strong>一文</strong>にまとめ、グループ内プレゼンと全体共有で班を代表して話す。質問カード交換で他班3〜4班分の実測値を集める</td><td>班の結論（一文）・集めた他班データ</td></tr>
       </table>
       <div class="callout-info">
         <h4>班が3人または5人のとき</h4>
         <ul class="point-list">
-          <li><strong>3人班</strong>：recorder と auditor を1人が兼任する（ノートブックの <code>MEMBER_ROLE</code> は <code>"recorder"</code>）。3役を日替わりで回すと、7回で全員が各役割を2回以上経験する</li>
-          <li><strong>5人班</strong>：5つ目の役割 <strong style="color:#4FC3F7">collector（収集係）</strong>を置く。質問カード交換で他班3〜4班分の実測値（演習2の表と演習3の順位・重み）を集め、討議とプレゼンの時間管理も担う。<code>MEMBER_ROLE</code> は <code>"collector"</code></li>
+          <li><strong>3人班</strong>：presenter を verifier が兼任する（ノートブックの <code>MEMBER_ROLE</code> は <code>"verifier"</code>）。3役を日替わりで回すと、7回で全員が各役割を2回以上経験する</li>
+          <li><strong>5人班</strong>：5つ目の役割 <strong style="color:#4FC3F7">collector（収集係）</strong>を置き、他班3〜4班分の実測値（演習2の表と演習3の順位・重み）の収集を presenter から引き取る。<code>MEMBER_ROLE</code> は <code>"collector"</code></li>
           <li>どちらの場合も <strong>implementer は1人のまま</strong>。コードを書く人を増やすと、読んで判断する側が減る</li>
-          <li>グループ内プレゼンは1人2分なので、3人班は6分、5人班は10分。余った時間は討議に回す</li>
+          <li>グループ内プレゼンは presenter 2分＋他の各1分なので、3人班は4分、5人班は6分。余った時間は質疑に回す</li>
         </ul>
       </div>
     </div>
 
     <div class="card group">
       <div class="card-header"><h3>② グループ内プレゼンの型（各10分、スライド禁止、画面を見せて話す）</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">1人2分。話す順は implementer → verifier → recorder → auditor。成功した点より、<strong>行き詰まった点や予測が外れた点</strong>に報告の価値がある。</p>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem"><strong>presenter が班の結論を2分</strong>で話し、続いて implementer・verifier・recorder が<strong>1分ずつ補足</strong>する（合計5分）。残り5分は質疑。成功した点より、<strong>行き詰まった点や予測が外れた点</strong>に報告の価値がある。</p>
       <table style="font-size:0.85rem">
         <tr><th style="width:9rem">役割</th><th>話すこと</th></tr>
         <tr><td>implementer</td><td>どの TODO で行き詰まったか。同期を入れる前後で数値がどう変わったか</td></tr>
         <tr><td>verifier</td><td>条件を変えて何が変わったか（繰り返し回数、バッチサイズ、指標の向き）</td></tr>
-        <tr><td>recorder</td><td>出たエラーと直し方。討議で割れた点をどう決めたか</td></tr>
-        <tr><td>auditor</td><td>他班に投げる質問3問と、その根拠</td></tr>
+        <tr><td>recorder</td><td>出たエラーと直し方。討議で割れた点と、そこから作った他班への質問3問</td></tr>
+        <tr><td>presenter</td><td>班の結論（一文）と、その根拠となる数値。先頭で2分</td></tr>
       </table>
     </div>
 
     <div class="card group">
       <div class="card-header"><h3>③ 質問カードの評価基準（第1回に配布、以後毎回使う）</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">auditor が作る質問は、受け取った班が10分で答え、質問元が3段階で採点する。<strong>検索でも LLM でも答えられない質問</strong>が最高評価。</p>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">recorder が作る質問は、受け取った班が10分で答え、質問元が3段階で採点する。<strong>検索でも LLM でも答えられない質問</strong>が最高評価。</p>
       <table style="font-size:0.85rem">
         <tr><th style="width:5rem">段階</th><th>基準</th><th>例</th></tr>
         <tr><td><strong style="color:#4FC3F7">3</strong></td><td>相手の<strong>実測値</strong>を要求する。検索でも生成でも答えられない</td><td>「あなたの班の重みで正解率の重みを 0.1 下げたとき1位は変わりますか。変わるなら何から何へ」</td></tr>
@@ -960,14 +960,14 @@ flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</s
 
     <div class="card group" id="disc1">
       <div class="card-header"><h3>グループディスカッション1（5分）→ グループ内プレゼン1（1人2分）</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">班の4台の数値を並べる（ノートブックのブロック 11 が自分の行を出す。他の3台は画面を見せ合う）。<strong>全員が1回は発言</strong>。recorder は結論を3行で残す。</p>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">presenter が進行し、班の4台の数値を並べる（ノートブックのブロック 11 が自分の行を出す。他の3台は画面を見せ合う）。<strong>全員が1回は発言</strong>。recorder は結論を3行で残す。</p>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
         <li>同期あり／なしの比は班内で<strong>何倍から何倍まで</strong>あったか。なぜ機種で違うか</li>
         <li>帯域は公称値の<strong>何%</strong>出たか。待ち時間用課題に書いた予測と比べてどうか</li>
         <li>B1（帯域）と B2（演算）で、定常とバーストの差が大きいのは<strong>どちら</strong>か。その理由は</li>
         <li>班で最も遅いマシンを基準にすると、今日の演習2は<strong>何倍</strong>の時間がかかる見込みか</li>
       </ol>
-      <div class="notion-submit"><div><strong>記録（recorder）:</strong> 討議メモの4行（範囲・%・B1/B2・倍率）を失敗記録に残す。プレゼン1 は implementer → verifier → recorder → auditor の順</div></div>
+      <div class="notion-submit"><div><strong>記録（recorder）:</strong> 討議メモの4行（範囲・%・B1/B2・倍率）を失敗記録に残す。プレゼン1 は presenter が班の結論を2分 → 他の3名が1分ずつ</div></div>
     </div>
   </div>
 </section>
@@ -1056,7 +1056,7 @@ times.append(time.perf_counter() <span class="op">-</span> t0)</pre>
         <li>パラメータ数が同じなのに推論中のピークメモリが違うのは<strong>なぜ</strong>か（各モデルの <code>forward</code> を見て答える）</li>
         <li>正解率の差 0.4 ポイントは「差がある」と言えるか。言えないなら、<strong>何を測れば</strong>言えるようになるか（→ 第4回で扱う）</li>
       </ol>
-      <div class="notion-submit"><div><strong>プレゼン2:</strong> verifier は条件を変えた再実験（バッチサイズ、繰り返し回数、同期の有無）で何が変わったかを画面で見せる。recorder は「外れた予測／理由の仮説／次に測るべきもの」を記録</div></div>
+      <div class="notion-submit"><div><strong>プレゼン2:</strong> presenter が「外れた予測とその理由」を2分で話し、verifier は条件を変えた再実験（バッチサイズ、繰り返し回数、同期の有無）で何が変わったかを画面で見せる。recorder は「外れた予測／理由の仮説／次に測るべきもの」を記録</div></div>
     </div>
   </div>
 </section>
@@ -1076,7 +1076,7 @@ times.append(time.perf_counter() <span class="op">-</span> t0)</pre>
       <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin:0.5rem 0 1rem">
         <div style="flex:1;min-width:12rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #FFB800;border-radius:0.5rem;padding:0.9rem">
           <div style="color:#FFB800;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem">(a) 各自1分</div>
-          <div style="font-size:0.88rem">「このモデルを<strong>誰が、どこで</strong>使うか」を1つ挙げる。例：スマホのレビュー判定／研究用の最高正解率／教室の全員が同時に使うデモ</div>
+          <div style="font-size:0.88rem">presenter の進行で、「このモデルを<strong>誰が、どこで</strong>使うか」を1つ挙げる。例：スマホのレビュー判定／研究用の最高正解率／教室の全員が同時に使うデモ</div>
         </div>
         <div style="flex:1;min-width:12rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #FFB800;border-radius:0.5rem;padding:0.9rem">
           <div style="color:#FFB800;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem">(b) 班で1つに絞る</div>
@@ -1143,13 +1143,13 @@ WEIGHTS <span class="op">=</span> {<span class="str">"accuracy"</span>: <span cl
     </div>
 
     <div class="card group">
-      <div class="card-header"><h3>グループ内プレゼン3（1人2分）― ブロック 9 の出力を画面に出して話す</h3></div>
+      <div class="card-header"><h3>グループ内プレゼン3（presenter 2分 → 他の3名 1分ずつ）― ブロック 9 の出力を画面に出して話す</h3></div>
       <table style="font-size:0.85rem">
         <tr><th style="width:9rem">役割</th><th>話すこと</th></tr>
-        <tr><td>implementer</td><td>定義と重みの根拠。「なぜ正解率より速度が重いのか」</td></tr>
+        <tr><td>presenter</td><td>班の定義（一文）と順位。先頭で2分</td></tr>
+        <tr><td>implementer</td><td>重みの根拠。「なぜ正解率より速度が重いのか」</td></tr>
         <tr><td>verifier</td><td>重みか正規化を変えたとき順位がどう動いたか（ブロック 7 の表）</td></tr>
-        <tr><td>recorder</td><td>討議で割れた点と、どう決めたか</td></tr>
-        <tr><td>auditor</td><td>他班に投げる質問3問（評価基準の段階3を狙う）</td></tr>
+        <tr><td>recorder</td><td>討議で割れた点と、そこから作った他班への質問3問（評価基準の段階3を狙う）</td></tr>
       </table>
     </div>
 
@@ -1171,11 +1171,11 @@ WEIGHTS <span class="op">=</span> {<span class="str">"accuracy"</span>: <span cl
     <div class="card group">
       <div class="card-header"><h3>質問カード交換の手順 ― ここで他班の実測値を集める</h3></div>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li>auditor はブロック 10 の <code>questions</code> に3問を書き、実行して <code>c1_d1_ex3_questions_&lt;班&gt;.txt</code> を出す</li>
+        <li>recorder はブロック 10 の <code>questions</code> に3問を書き、実行して <code>c1_d1_ex3_questions_&lt;班&gt;.txt</code> を出す</li>
         <li>掲示された割当（巡回置換。自班には戻らない）に従い、<strong>同じ教室内の別班</strong>へ渡す</li>
         <li>受け取った班は<strong>自班の実測値を使って</strong>10分で答える。定義を問うだけの質問には、段階1である旨を伝えてよい</li>
         <li>質問元が3段階で採点し、recorder が記録する</li>
-        <li>回答を受け取る際に、<strong>その班の演習2の表（3モデル × 4指標）と演習3の順位・重み</strong>を受け取る。口頭でも AirDrop でもよい。<strong>3〜4班分</strong>あればレポートの比較に十分である</li>
+        <li>presenter（5人班は collector）は、回答を受け取る際に<strong>その班の演習2の表（3モデル × 4指標）と演習3の順位・重み</strong>を受け取る。口頭でも AirDrop でもよい。<strong>3〜4班分</strong>あればレポートの比較に十分である</li>
       </ol>
       <div class="callout-info">
         <h4>レポートで比べるもの（自班 ＋ 集めた3〜4班）</h4>
