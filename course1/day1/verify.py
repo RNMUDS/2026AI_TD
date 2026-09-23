@@ -12,7 +12,7 @@ from common import RESULTS  # noqa: E402
 from common.logger import COLUMNS  # noqa: E402
 
 REQ = {
-    "ex0": {"test_accuracy", "epochs", "train_sec"},
+    "ex0": {"test_accuracy", "epochs", "train_sec", "val_acc_best"},
     "ex1": {"bandwidth_gbps", "matmul_gflops", "train_step_ms", "memory_gb"},
     "ex2": {"accuracy", "loss", "infer_ms_per_1000", "peak_mem_mb", "params"},
 }
@@ -34,6 +34,11 @@ def check(group, root=RESULTS):
         if missing:
             problems.append(f"{p.name}: 指標が足りない {sorted(missing)}")
         info[ex] = len(df)
+        if ex == "ex0":
+            trials = set(df["condition"])
+            need_trials = {"FashionMNIST_MLP", "Cable1_MLP", "Cable1_CNN"}   # GW3 の試行①②③
+            if not need_trials <= trials:
+                problems.append(f"{p.name}: GW3 の試行が足りない {sorted(need_trials - trials)}")
         if ex == "ex2":
             models = set(df.loc[df["metric_name"] == "accuracy", "condition"])
             if models != {"A1", "A2", "A3"}:

@@ -27,9 +27,10 @@ def _timeit(fn, device, iters, warmup=3):
 def timed_loop(fn, device, min_sec=2.0, min_iters=5, warmup=2):
     """fn を最低 min_sec 秒回し，1 回あたりの時間を (中央値, 初回) で返す．
 
-    ファンレスの M3 Air は最初の数百 ms だけ GPU がブースト（実測 2.6 TFLOPS）し，
-    1 秒ほどで定常値（約 1.05 TFLOPS）に落ちる．短い計測は過大な値を出すため，
-    定常値は 2 秒以上回した中央値で取り，初回の値は「バースト」として別に返す．
+    GPU は最初の実行に準備（カーネルの読み込みなど）の時間が入るため，warmup 回は捨てる．
+    1 回だけの値はぶれるので，代表値は 2 秒以上回した中央値で取る．
+    （M4 Max で 20 秒連続実行して確認：中央値は最初から一定で，初回の 1 回はむしろ約半分の速さ．
+    ファンレス機の熱による低下は数十秒〜数分の連続負荷で起こるもので，2 秒の計測にはほぼ効かない）
     """
     for _ in range(warmup):
         fn()
@@ -46,7 +47,7 @@ def timed_loop(fn, device, min_sec=2.0, min_iters=5, warmup=2):
 
 
 def warm_up(device, sec=2.0):
-    """GPU を sec 秒間回してブースト状態を抜けさせる．時間を比較する測定の直前に呼ぶ．"""
+    """GPU を sec 秒間回して最初の遅い実行を済ませる．時間を比較する測定の直前に呼ぶ．"""
     a = torch.randn(1024, 1024, device=device)
     t0 = time.perf_counter()
     while time.perf_counter() - t0 < sec:
@@ -55,7 +56,7 @@ def warm_up(device, sec=2.0):
 
 
 def bandwidth_gbps(device, n=64 * 1024 * 1024, min_sec=2.0):
-    """戻り値: (定常 GB/s, バースト GB/s, 1回の秒数)"""
+    """戻り値: (中央値の GB/s, 初回 1 回の GB/s, 1回の秒数)"""
     a = torch.ones(n, device=device)
     b = torch.ones(n, device=device)
     med, first, _ = timed_loop(lambda: torch.add(a, b), device, min_sec)
@@ -64,7 +65,7 @@ def bandwidth_gbps(device, n=64 * 1024 * 1024, min_sec=2.0):
 
 
 def matmul_gflops(device, n=2048, min_sec=2.0):
-    """戻り値: (定常 GFLOPS, バースト GFLOPS, 1回の秒数)"""
+    """戻り値: (中央値の GFLOPS, 初回 1 回の GFLOPS, 1回の秒数)"""
     a = torch.randn(n, n, device=device)
     b = torch.randn(n, n, device=device)
     med, first, _ = timed_loop(lambda: a @ b, device, min_sec)

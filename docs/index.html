@@ -475,8 +475,8 @@ a.sub-item:hover {
   <div class="container">
     <div class="hero-badge">人工知能(AI)テクノロジデザインⅠ（AI_TD1）─ 2026年度 3学期</div>
     <p style="font-size:0.85rem;opacity:0.7;margin-bottom:0.3rem">武蔵野大学データサイエンス学部　中村 亮太</p>
-    <h1>その数字は信じられるか ― 小型言語モデルで学ぶ深層学習の実験方法論</h1>
-    <p>自分のマシンで小型の言語モデルを動かし、正解率・損失・速度・メモリを自分で測る。グループごとに違う条件を担当し、他グループの実測値と比較して「差があると言えるか」を判定する方法を身につける。</p>
+    <h1>その数字は信じられるか ― 深層学習の実験方法論</h1>
+    <p>自分のマシンでモデルを動かして測り、他グループの実測値と比べて「差があると言えるか」を判定する。</p>
   </div>
 </header>
 
@@ -484,17 +484,12 @@ a.sub-item:hover {
   <div class="container">
     <div class="card" style="border-left:4px solid #4FC3F7;background:linear-gradient(135deg,#141414,#111a24)">
       <div class="card-header"><h3>📌 科目の概要</h3></div>
-      <ul class="point-list" style="margin-bottom:1rem">
+      <ul class="point-list">
         <li>150分 × 7回（3学期・木曜3〜4限・有明 5-501/502）。2年次必修</li>
-        <li>受講者は自分の MacBook Air（Apple Silicon）で PyTorch（MPS）を動かす。クラウド GPU は使わない</li>
-        <li>4名1グループのグループワーク。役割（implementer／verifier／recorder／presenter）を毎回交代する</li>
-        <li>毎回、グループ別条件（ジグソー）で実験する。レポートは<strong>自グループの実測と、質問カード交換で集めた3〜4グループの実測値</strong>を比較して作成する。提出されたグループの分を教員が統合した図を配る</li>
-        <li>各演習の後に<strong>グループディスカッション</strong>と<strong>グループ内プレゼン</strong>を必ず行う。授業の後半はグループ間の質問カード交換</li>
+        <li>各自の MacBook Air（Apple Silicon）で PyTorch を動かす</li>
+        <li>4名1グループ。役割は毎回交代</li>
+        <li>教科書『データサイエンティストのためのディープラーニングプログラミング』（サイエンス社）のコードを参照する</li>
       </ul>
-      <div class="callout-info">
-        <h4>教科書との関係</h4>
-        <p style="font-size:0.9rem">『データサイエンティストのためのディープラーニングプログラミング』（中村亮太、サイエンス社）は、モデル構築のプログラミングパターン（学習ループ・データセット・転移学習・デプロイ）の参照用として使う。授業の題材は画像分類ではなく小型言語モデルで、演習は GitHub から取得する授業用フォルダ <code>AI_TD</code> で進める。</p>
-      </div>
     </div>
   </div>
 </section>
@@ -502,28 +497,13 @@ a.sub-item:hover {
 <section id="sec-goal">
   <div class="container">
     <div class="section-header"><div class="section-num" style="background:#4FC3F7">1</div><h2>到達目標</h2></div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(15.5rem,1fr));gap:0.6rem">
-      <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #4FC3F7;border-radius:0.5rem;padding:0.8rem 0.9rem">
-        <div style="font-weight:800;font-size:0.92rem;color:#4FC3F7;margin-bottom:0.25rem">① 正しく測る</div>
-        <div style="font-size:0.84rem;color:#ccc">GPU の同期・ウォームアップ・中央値を使い、正解率・損失・速度・メモリを同じ関数で測れる。損失曲線を読んで「どこで止めるか」を判断できる</div>
-      </div>
-      <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #FFB800;border-radius:0.5rem;padding:0.8rem 0.9rem">
-        <div style="font-weight:800;font-size:0.92rem;color:#FFB800;margin-bottom:0.25rem">② 差を疑う</div>
-        <div style="font-size:0.84rem;color:#ccc">同一条件をシード5回で実行し、平均と標準偏差を出し、「差 ÷ ばらつき」で差があると言えるかを判定できる</div>
-      </div>
-      <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #81D4FA;border-radius:0.5rem;padding:0.8rem 0.9rem">
-        <div style="font-weight:800;font-size:0.92rem;color:#81D4FA;margin-bottom:0.25rem">③ 公平に比べる</div>
-        <div style="font-size:0.84rem;color:#ccc">パラメータ数を揃えたアーキテクチャ比較を設計・実行し、データ量で解決できない壁（語順を捨てるモデルは語順課題を解けない）を実測で示せる</div>
-      </div>
-      <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #B388FF;border-radius:0.5rem;padding:0.8rem 0.9rem">
-        <div style="font-weight:800;font-size:0.92rem;color:#B388FF;margin-bottom:0.25rem">④ 言葉にする</div>
-        <div style="font-size:0.84rem;color:#ccc">ショートカット学習やスケーリング則を自分の実測から説明し、他グループに「実測値を要求する質問」を作れる</div>
-      </div>
-    </div>
-    <div class="callout-tip" style="margin-top:1rem">
-      <h4>シラバス上の到達目標との対応</h4>
-      <p style="font-size:0.88rem">「先端AIテクノロジの特徴・課題を把握できる」（①③④）／「Python で課題に適したAIモデルをデザイン・実装できる」（①③）／「構築したモデルの適用範囲と有効性を論理的に説明できる」（②④）／「チームで協力して進められる」（毎回のグループワーク）</p>
-    </div>
+    <table style="font-size:0.88rem">
+      <tr><th style="width:9rem">目標</th><th>できること</th></tr>
+      <tr><td><strong style="color:#4FC3F7">① 正しく測る</strong></td><td>同期・ウォームアップ・中央値で4指標を測れる</td></tr>
+      <tr><td><strong style="color:#FFB800">② 差を疑う</strong></td><td>シード5回の平均と標準偏差で差を判定できる</td></tr>
+      <tr><td><strong style="color:#81D4FA">③ 公平に比べる</strong></td><td>パラメータ数を揃えて構造を比べ、解けない壁を示せる</td></tr>
+      <tr><td><strong style="color:#B388FF">④ 言葉にする</strong></td><td>実測値を根拠に質問し、説明できる</td></tr>
+    </table>
   </div>
 </section>
 
@@ -531,16 +511,16 @@ a.sub-item:hover {
   <div class="container">
     <div class="section-header"><div class="section-num" style="background:#FFB800">2</div><h2>授業計画（全7回）</h2></div>
     <table style="font-size:0.88rem">
-      <tr><th style="width:4rem">回</th><th style="width:12rem">テーマ</th><th>前半</th><th>後半</th><th style="width:12rem">グループ別条件</th></tr>
-      <tr><td><a href="aitd1_week_1.html" style="color:#4FC3F7;font-weight:700">1</a></td><td>AIの性能を測る</td><td>環境ベンチマーク（同期しないと時間は測れない）／学習済み3モデルの4指標同時測定</td><td>「良いAI」をグループで定義し順位を出す／質問カード交換</td><td>なし（条件は共通）</td></tr>
-      <tr><td>2</td><td>勾配の観測</td><td>層別勾配ノルム記録の実装と可視化</td><td>学習率ジグソー：発散境界を実測</td><td>学習率 1e-5〜1e-1 の9水準 × 3グループ</td></tr>
-      <tr><td>3</td><td>過学習と評価指標</td><td>過学習を意図的に作り、正則化3手法を群別実験</td><td>損失と評価指標の乖離。3指標で順位が入れ替わる例</td><td>weight decay／Dropout／データ拡張 各4水準</td></tr>
-      <tr><td><strong style="color:#FFB800">4 ★</strong></td><td>再現性と分散（科目の要）</td><td>同一条件をシード5通りで自動実行</td><td>差 ÷ 標準偏差で「差があると言えるか」。登壇発表</td><td>なし。以後すべての実験でシード5回が既定</td></tr>
-      <tr><td>5</td><td>アーキテクチャ比較</td><td>3アーキ × 3タスク × 3データ量 ＝ 27セルの担当セルを実行</td><td>投稿された分で格子を投影。「MLP は語順を原理的に解けない」を実測で確認</td><td>1グループ1セル（副担当で欠測対策）</td></tr>
-      <tr><td>6</td><td>ショートカット学習</td><td>相関トークンを混入したデータで学習</td><td>反転テスト／勾配記録を再利用した寄与度可視化／不変性学習</td><td>相関強度 0.50／0.70／0.90／1.00</td></tr>
-      <tr><td>7</td><td>スケーリング則</td><td>幅 × データ量 ＝ 16セルのジグソー</td><td>両対数プロット統合 → 大きい4セルを伏せて外挿 → 開示して誤差を測る</td><td>16セルをグループで分担（重複割当）</td></tr>
+      <tr><th style="width:4rem">回</th><th style="width:11rem">テーマ</th><th>やること</th></tr>
+      <tr><td><a href="aitd1_week_1.html" style="color:#4FC3F7;font-weight:700">1</a></td><td>AIの性能を測る</td><td>コードを組み立てる（MLP・CNN）／環境ベンチマーク／3モデルの4指標</td></tr>
+      <tr><td>2</td><td>勾配の観測</td><td>「良いAI」の定義と順位／層別勾配ノルム／学習率ジグソー</td></tr>
+      <tr><td>3</td><td>過学習と評価指標</td><td>過学習を作る／正則化3手法</td></tr>
+      <tr><td><strong style="color:#FFB800">4 ★</strong></td><td>再現性と分散</td><td>シード5回／差 ÷ 標準偏差（以後の既定）</td></tr>
+      <tr><td>5</td><td>アーキテクチャ比較</td><td>27セルの格子を分担して埋める</td></tr>
+      <tr><td>6</td><td>ショートカット学習</td><td>相関トークン／反転テスト</td></tr>
+      <tr><td>7</td><td>スケーリング則</td><td>16セル／外挿して当てる</td></tr>
     </table>
-    <p style="font-size:0.82rem;color:#999;margin-top:0.5rem">※ 4学期のⅡ（第8〜14回）は「他人が使えるか」を貫く問いとして、評価データの自作・LoRA・RAG・API化・因果判定へ進む。</p>
+    <p style="font-size:0.82rem;color:#999;margin-top:0.5rem">※ 4学期のⅡ（第8〜14回）は「他人が使えるか」を問う。</p>
   </div>
 </section>
 
@@ -548,20 +528,11 @@ a.sub-item:hover {
   <div class="container">
     <div class="section-header"><div class="section-num" style="background:#81D4FA">3</div><h2>進め方とルール</h2></div>
     <div class="card group">
-      <div class="card-header"><h3>毎回の型</h3></div>
       <ul class="point-list">
-        <li><strong>実行 → グループディスカッション（5〜10分）→ グループ内プレゼン（presenter 2分＋他の各1分）</strong>を演習ごとに1セット。スライドは作らない。画面を見せて話す</li>
-        <li>結果を見る前に<strong>予測を書く</strong>。外れた予測がプレゼンの材料になる</li>
-        <li>各グループの recorder が質問3問を作り、別グループへ渡して10分で回答、3段階で採点する。「相手の実測値を要求する質問」が最高評価。このやり取りで presenter が<strong>3〜4グループ分の実測値</strong>を集める</li>
-        <li>すべての計測結果は共通形式の CSV に記録し、教員が提出された分を1枚の図に統合して投影する。統合 CSV は授業後に LMS へ置く</li>
-      </ul>
-    </div>
-    <div class="card standard">
-      <div class="card-header"><h3>評価と提出</h3></div>
-      <ul class="point-list">
-        <li>成績は課題提出 100%（必須課題・任意課題・授業内課題・グループワークの主体性）</li>
-        <li>毎回、グループで共有したデータ（CSV・定義・質問カード・失敗記録）から<strong>各自が自分の提出ファイルを作り、個人で</strong> <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> に提出する。授業当日中の提出を目指す</li>
-        <li>LLM（大規模言語モデル）の利用は制限しない。ただし自グループの実測値は LLM からは得られない。「作れたか」ではなく「読み解いて説明できるか」を見る</li>
+        <li>演習ごとに <strong>予測 → 実行 → 討議 → グループ内プレゼン</strong>（スライドなし）</li>
+        <li>質問カード交換で、他グループの実測値を集める</li>
+        <li>成績は課題提出 100%。データはグループで共有し、<strong>各自が</strong> <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> に提出する</li>
+        <li>LLM の利用は自由。ただし自分で読み、測って確かめる</li>
       </ul>
     </div>
   </div>

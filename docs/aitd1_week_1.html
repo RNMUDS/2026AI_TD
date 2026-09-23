@@ -469,7 +469,7 @@ a.sub-item:hover {
   <a href="#sec-flow">本日の流れ</a>
   <a href="#sec-prep">0. 環境構築</a>
   <a href="#sec-gw1" class="nav-assignment">GW1 討議</a>
-  <a href="#sec-lecture">1. AIは何を学習するのか</a>
+  <a href="#sec-lecture">1. 良いAIとは</a>
   <a href="#sec-gw2" class="nav-assignment">GW2 並び替え</a>
   <a href="#sec-gw3" class="nav-assignment">GW3 コードを組み立てる</a>
   <a href="#sec-roles">4. 役割とルール</a>
@@ -484,10 +484,7 @@ a.sub-item:hover {
     <div class="hero-badge">人工知能(AI)テクノロジデザインⅠ（AI_TD1）─ 2026年度 3学期</div>
     <p style="font-size:0.85rem;opacity:0.7;margin-bottom:0.3rem">武蔵野大学データサイエンス学部　中村 亮太</p>
     <h1>第1回: AIは何を学習し、どう組み立て、どう測るか</h1>
-    <p>前半は「ディープラーニングの本質」を図と表で討議し、教科書のコードテンプレート①〜⑫を並び替えてモデルを組み立てる。後半は自分のマシンの速さと、同じ大きさの3つのAIモデルを「正解率・損失・速度・メモリ」の4指標で測る。</p>
-    <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:0.3rem;padding:0.4rem 0.8rem;margin-top:1rem;font-size:0.7rem;display:inline-block;max-width:100%;overflow-wrap:anywhere">
-      <strong>第1回のメイン:</strong> 本質（GW1 討議）→ 型（GW2 並び替え・GW3 コードを組み立てる）→ 測定（演習1・演習2）。各課題の後にグループディスカッションとグループ内プレゼン
-    </div>
+    <p>本質（GW1）→ 型（GW2・GW3：コードを組み立て、MLP と CNN を比べる）→ 測定（演習1・2：マシンとモデルを測る）。</p>
   </div>
 </header>
 
@@ -495,63 +492,44 @@ a.sub-item:hover {
 <section id="sec-purpose" style="padding-top:2.5rem;padding-bottom:0">
   <div class="container">
     <div class="card" style="border-left:4px solid #4FC3F7;background:linear-gradient(135deg,#141414,#111a24)">
-      <div class="card-header"><h3>📌 授業の目的：何をするのか（はじめに読もう）</h3></div>
-
-      <p style="font-size:1.05rem;margin-bottom:0.7rem">この科目を貫く問いは <strong style="color:#4FC3F7">「その数字は信じられるか」</strong>。</p>
+      <div class="card-header"><h3>📌 授業の目的</h3></div>
+      <p style="font-size:1.05rem;margin-bottom:0.7rem">問いは1つ：<strong style="color:#4FC3F7">「その数字は信じられるか」</strong></p>
       <ul class="point-list" style="margin-bottom:1rem">
-        <li>ディープラーニングの授業は「正解率 92%」のような数字を出して終わりがちだが、<strong>その数値がどの程度変動するか</strong>を測定した経験を持つ学生は少ない</li>
-        <li>この科目では毎回、自分のマシンで<strong>小型の言語モデルを動かして数字を出し</strong>、グループごとに違う条件を担当して、<strong>他グループの実測値と比較する</strong></li>
-        <li>レポートは<strong>自グループの実測と、質問カード交換で集めた3〜4グループの実測値</strong>を比較して作成する。提出されたグループの分を教員が統合した図を配る。LLM からは自グループや他グループの実測値は得られない</li>
+        <li>毎回、自分のマシンでモデルを動かして数字を出す</li>
+        <li>グループごとに条件を分担し、<strong>他グループの実測値と比べる</strong>（LLM からは得られない数字）</li>
       </ul>
-
-      <p style="font-size:0.9rem;color:#999;margin:1.2rem 0 0.5rem">7回の流れは次の3ステップ。</p>
       <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin:0.5rem 0 1rem">
-        <div style="flex:1;min-width:14rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #4FC3F7;border-radius:0.5rem;padding:0.9rem">
-          <div style="color:#4FC3F7;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem">STEP 1 ─ 測る</div>
-          <div style="font-size:0.88rem"><strong>性能・勾配・過学習を自分で測る</strong>。測定手順の誤りが数値を系統的に歪めることを確認する。<span style="color:#999">（第1〜3回）</span></div>
+        <div style="flex:1;min-width:12rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #4FC3F7;border-radius:0.5rem;padding:0.8rem">
+          <div style="color:#4FC3F7;font-weight:900;font-size:0.95rem">STEP 1 測る</div>
+          <div style="font-size:0.85rem">性能・勾配・過学習<span style="color:#999">（第1〜3回）</span></div>
         </div>
-        <div style="flex:1;min-width:14rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #FFB800;border-radius:0.5rem;padding:0.9rem">
-          <div style="color:#FFB800;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem">STEP 2 ─ 疑う</div>
-          <div style="font-size:0.88rem"><strong>同じ条件を5回回して分散を見る</strong>。「差がある」と言えるかを判定する作法を身につける。<span style="color:#999">（第4回 ★科目の要）</span></div>
+        <div style="flex:1;min-width:12rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #FFB800;border-radius:0.5rem;padding:0.8rem">
+          <div style="color:#FFB800;font-weight:900;font-size:0.95rem">STEP 2 疑う</div>
+          <div style="font-size:0.85rem">5回回して「差がある」と言えるか<span style="color:#999">（第4回 ★）</span></div>
         </div>
-        <div style="flex:1;min-width:14rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #B388FF;border-radius:0.5rem;padding:0.9rem">
-          <div style="color:#B388FF;font-weight:900;font-size:0.95rem;margin-bottom:0.3rem">STEP 3 ─ 比べる</div>
-          <div style="font-size:0.88rem"><strong>アーキテクチャ・ショートカット・スケーリング</strong>をグループで分担した格子で比べ、原理的に解けない壁を実測で見る。<span style="color:#999">（第5〜7回）</span></div>
-        </div>
-      </div>
-
-      <h4 style="color:#4FC3F7;font-weight:700;font-size:1.05rem;margin:1.5rem 0 0.3rem">🎯 到達目標（7回終了時にできること）</h4>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(15.5rem,1fr));gap:0.6rem">
-        <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #4FC3F7;border-radius:0.5rem;padding:0.8rem 0.9rem">
-          <div style="font-weight:800;font-size:0.92rem;color:#4FC3F7;margin-bottom:0.25rem">① 正しく測る</div>
-          <div style="font-size:0.84rem;color:#ccc">GPU の同期・ウォームアップ・中央値を使って、正解率・損失・速度・メモリを同じ関数で測れる</div>
-        </div>
-        <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #FFB800;border-radius:0.5rem;padding:0.8rem 0.9rem">
-          <div style="font-weight:800;font-size:0.92rem;color:#FFB800;margin-bottom:0.25rem">② 差を疑う</div>
-          <div style="font-size:0.84rem;color:#ccc">シード複数回の平均と標準偏差を出し、「差 ÷ ばらつき」で差があると言えるかを判定できる</div>
-        </div>
-        <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #81D4FA;border-radius:0.5rem;padding:0.8rem 0.9rem">
-          <div style="font-weight:800;font-size:0.92rem;color:#81D4FA;margin-bottom:0.25rem">③ 公平に比べる</div>
-          <div style="font-size:0.84rem;color:#ccc">パラメータ数を揃えたアーキテクチャ比較を設計・実行し、データ量で解決できない壁を説明できる</div>
-        </div>
-        <div style="background:#1a1a1a;border:1px solid #333;border-left:3px solid #B388FF;border-radius:0.5rem;padding:0.8rem 0.9rem">
-          <div style="font-weight:800;font-size:0.92rem;color:#B388FF;margin-bottom:0.25rem">④ 言葉にする</div>
-          <div style="font-size:0.84rem;color:#ccc">自グループの実測値を根拠に、他グループに「実測値を要求する質問」を作り、順位が割れた理由を説明できる</div>
+        <div style="flex:1;min-width:12rem;background:#1a1a1a;border:1px solid #333;border-top:3px solid #B388FF;border-radius:0.5rem;padding:0.8rem">
+          <div style="color:#B388FF;font-weight:900;font-size:0.95rem">STEP 3 比べる</div>
+          <div style="font-size:0.85rem">構造・ショートカット・スケーリング<span style="color:#999">（第5〜7回）</span></div>
         </div>
       </div>
-
-      <details style="margin-top:1.2rem">
-        <summary>📅 全7回の計画 ― クリックで開く</summary>
+      <details>
+        <summary>🎯 到達目標と全7回の計画 ― クリックで開く</summary>
         <div class="answer-content">
+          <ul class="point-list" style="margin-bottom:0.8rem">
+            <li><strong>正しく測る</strong>：同期・ウォームアップ・中央値で4指標を測れる</li>
+            <li><strong>差を疑う</strong>：複数シードの平均と標準偏差で差を判定できる</li>
+            <li><strong>公平に比べる</strong>：パラメータ数を揃えて構造を比べられる</li>
+            <li><strong>言葉にする</strong>：実測値を根拠に質問し、説明できる</li>
+          </ul>
           <table style="font-size:0.85rem">
-            <tr><th style="width:4rem">回</th><th>テーマ</th><th>やること</th><th>グループ別条件（ジグソー）</th></tr>
-            <tr><td><strong style="color:#4FC3F7">1</strong></td><td>AIの性能を測る</td><td>環境ベンチマーク／学習済み3モデルの4指標同時測定／「良いAI」の定義と順位</td><td>なし（条件は共通）</td></tr>
-            <tr><td>2</td><td>勾配の観測</td><td>層別勾配ノルムの記録と可視化／学習率ジグソーで発散境界を実測</td><td>学習率 9水準 × 3グループ</td></tr>
-            <tr><td>3</td><td>過学習と評価指標</td><td>過学習を意図的に作る／正則化3手法／損失と評価指標の乖離</td><td>weight decay／Dropout／データ拡張</td></tr>
-            <tr><td><strong style="color:#FFB800">4 ★</strong></td><td>再現性と分散</td><td>同一条件をシード5回で自動実行／差÷標準偏差／登壇発表</td><td>なし（以後シード5回が既定）</td></tr>
-            <tr><td>5</td><td>アーキテクチャ比較</td><td>3アーキ × 3タスク × 3データ量 ＝ 27セルの格子をグループで分担して埋める</td><td>1グループ1セル</td></tr>
-            <tr><td>6</td><td>ショートカット学習</td><td>相関トークン混入データで学習／反転テスト／寄与度の可視化</td><td>相関強度 4水準</td></tr>
-            <tr><td>7</td><td>スケーリング則</td><td>幅 × データ量 16セル／両対数プロット／伏せたセルを外挿して当てる</td><td>16セルをグループで分担（重複割当）</td></tr>
+            <tr><th style="width:4rem">回</th><th>テーマ</th><th>やること</th></tr>
+            <tr><td><strong style="color:#4FC3F7">1</strong></td><td>AIの性能を測る</td><td>コードの組み立て／環境ベンチマーク／3モデルの4指標</td></tr>
+            <tr><td>2</td><td>勾配の観測</td><td>層別勾配ノルム／学習率ジグソー</td></tr>
+            <tr><td>3</td><td>過学習と評価指標</td><td>過学習を作る／正則化3手法</td></tr>
+            <tr><td><strong style="color:#FFB800">4 ★</strong></td><td>再現性と分散</td><td>シード5回／差÷標準偏差</td></tr>
+            <tr><td>5</td><td>アーキテクチャ比較</td><td>27セルの格子を分担</td></tr>
+            <tr><td>6</td><td>ショートカット学習</td><td>相関トークン／反転テスト</td></tr>
+            <tr><td>7</td><td>スケーリング則</td><td>16セル／外挿して当てる</td></tr>
           </table>
         </div>
       </details>
@@ -563,19 +541,19 @@ a.sub-item:hover {
 <section style="padding-top:2rem;padding-bottom:0">
   <div class="container">
     <div class="submission-box">
-      <h3>📤 提出ガイド（<strong>一人ひとりが個人で提出</strong>。グループで共有したデータから自分の提出ファイルを作り、そのまま Open-LMS にアップロード。zip にしない）</h3>
+      <h3>📤 提出ガイド（<strong>全員が個人で提出</strong>・zip にしない）</h3>
       <div class="submission-items">
-        <a href="#sec-gw1" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">GW1・GW2</span>記入済みの穴埋めシート（グループで共有した PDF または写真）</a>
-        <a href="#sec-gw3" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">GW3</span>並び替えた ex0.ipynb ／ c1_d1_ex0_&lt;グループ&gt;.csv</a>
-        <a href="#sec-ex1" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-standard">演習1</span>c1_d1_ex1_&lt;グループ&gt;.csv（グループ全員分の行）</a>
+        <a href="#sec-gw1" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">GW1・GW2</span>穴埋めシート（PDF）</a>
+        <a href="#sec-gw3" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">GW3</span>ex0.ipynb ／ c1_d1_ex0_&lt;グループ&gt;.csv</a>
+        <a href="#sec-ex1" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-standard">演習1</span>c1_d1_ex1_&lt;グループ&gt;.csv</a>
         <a href="#sec-ex2" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">演習2</span>c1_d1_ex2_&lt;グループ&gt;.csv ／ table_c1_d1_ex2_&lt;グループ&gt;.csv</a>
-        <a href="#sec-roles" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">ノート</span>失敗記録・討議メモ（recorder が作り、グループで共有）</a>
+        <a href="#sec-roles" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">ノート</span>失敗記録・討議メモ</a>
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:1rem;font-size:0.85rem;color:#81D4FA">
-        <strong>提出方法:</strong> ① グループで共有する：演習1 の CSV（各自の行）、穴埋めシート、失敗記録・討議メモを、グループ内で AirDrop・Slack などで全員に配る → ② 自分で提出ファイルを作る：共有された演習1 の行を自分の <code>results/</code> に集め、GW3 の <code>ex0.ipynb</code> と演習2 は<strong>自分のマシンで実行した結果</strong>を使う → ③ <code>python course1/day1/verify.py --group &lt;グループ番号&gt;</code> を実行し「OK」を確認 → ④ <strong>自分で</strong> <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の課題「第1回」へ、<code>results/</code> の上記ファイルと <code>ex0.ipynb</code> を<strong>そのまま個別に</strong>アップロードする（zip にまとめない。代表者がまとめて出すのではなく、<strong>全員がそれぞれ提出</strong>する）
+        <strong>手順:</strong> ① グループで共有（演習1 の各自の行・シート・メモ）→ ② 自分の <code>results/</code> に集める → ③ <code>python course1/day1/verify.py --group &lt;グループ番号&gt;</code> で OK を確認 → ④ <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の「第1回」へ<strong>自分で</strong>アップロード
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:0.5rem;font-size:0.85rem;color:#FFB800">
-        <strong>提出期限:</strong> 授業当日中を目指す（遅くとも第2回授業開始まで）。演習2 の CSV は第7回のベースラインになるので保存しておくこと
+        <strong>期限:</strong> 授業当日中（遅くとも第2回の開始まで）
       </div>
     </div>
   </div>
@@ -585,47 +563,19 @@ a.sub-item:hover {
 <section id="sec-flow" style="padding-top:1rem;padding-bottom:0">
   <div class="container">
     <div class="card" style="border-left:4px solid #4FC3F7">
-      <div class="card-header"><h3>本日の授業の流れ（150分）</h3></div>
-      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.6rem">流れは<strong style="color:#4FC3F7">本質（討議）→ 型（並び替えとコードの組み立て）→ 測定</strong>。計算はどれも1分以内に終わるので、時間の大半は討議と組み立てに使う。</p>
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin:0.5rem 0">
-        <div style="flex:1;min-width:8rem;background:#1A1A1A;border:2px solid #4FC3F7;border-radius:0.4rem;padding:0.6rem;text-align:center">
-          <div style="font-size:1rem;font-weight:900;color:#4FC3F7">① 導入・環境構築</div>
-          <div style="font-size:0.85rem;font-weight:700;color:#E0E0E0;margin:0.3rem 0">0–35分</div>
-          <div style="font-size:0.65rem;color:#999">今日の問い／uv で Python 環境を作る</div>
-        </div>
-        <div style="flex:1;min-width:8rem;background:#1A1A1A;border:2px solid #81D4FA;border-radius:0.4rem;padding:0.6rem;text-align:center">
-          <div style="font-size:1rem;font-weight:900;color:#81D4FA">② 本質 GW1</div>
-          <div style="font-size:0.85rem;font-weight:700;color:#E0E0E0;margin:0.3rem 0">35–50分</div>
-          <div style="font-size:0.65rem;color:#999">AIの3つのアプローチを表と図で討議</div>
-        </div>
-        <div style="flex:1;min-width:8rem;background:#1A1A1A;border:2px solid #81D4FA;border-radius:0.4rem;padding:0.6rem;text-align:center">
-          <div style="font-size:1rem;font-weight:900;color:#81D4FA">③ 型 GW2・GW3</div>
-          <div style="font-size:0.85rem;font-weight:700;color:#E0E0E0;margin:0.3rem 0">50–105分</div>
-          <div style="font-size:0.65rem;color:#999">流れを並び替える → コードを並び替えてモデルを作る → プレゼン</div>
-        </div>
-        <div style="flex:1;min-width:8rem;background:#1A1A1A;border:2px solid #FFB800;border-radius:0.4rem;padding:0.6rem;text-align:center">
-          <div style="font-size:1rem;font-weight:900;color:#FFB800">④ 測定 演習1・2</div>
-          <div style="font-size:0.85rem;font-weight:700;color:#E0E0E0;margin:0.3rem 0">105–140分</div>
-          <div style="font-size:0.65rem;color:#999">役割とルール → 環境ベンチマーク → 3モデルの4指標同時測定</div>
-        </div>
-        <div style="flex:1;min-width:8rem;background:#1A1A1A;border:2px solid #B388FF;border-radius:0.4rem;padding:0.6rem;text-align:center">
-          <div style="font-size:1rem;font-weight:900;color:#B388FF">⑤ 全体共有</div>
-          <div style="font-size:0.85rem;font-weight:700;color:#E0E0E0;margin:0.3rem 0">140–150分</div>
-          <div style="font-size:0.65rem;color:#999">提出確認・次回予告（順位づけと質問カードは第2回）</div>
-        </div>
-      </div>
-      <table style="font-size:0.82rem;margin-top:1rem">
-        <tr><th style="width:6rem">時間</th><th>内容</th><th style="width:10rem">形式</th></tr>
-        <tr><td>0–10</td><td>今日の問いの掲示。グループの確認</td><td>講義</td></tr>
-        <tr><td>10–35</td><td><a href="#sec-prep" style="color:#4FC3F7">環境構築</a>：uv → Python 3.12 → git clone → 仮想環境 → 環境診断・データ取得。先に終わったグループは GW1 に進む</td><td>個人（グループで助け合う）</td></tr>
-        <tr><td>35–50</td><td><a href="#sec-gw1" style="color:#4FC3F7"><strong>GW1 グループディスカッション</strong></a>：穴埋めシート（AIの3つのアプローチの表）</td><td><span class="tag tag-group">討議</span></td></tr>
-        <tr><td>50–60</td><td><a href="#sec-gw2" style="color:#4FC3F7"><strong>GW2 並び替え</strong></a>：プログラミングの流れ12枚のカードを3フェーズに並べる。形状から入力データの種類を埋める</td><td><span class="tag tag-group">討議</span></td></tr>
-        <tr><td>60–95</td><td><a href="#sec-gw3" style="color:#4FC3F7"><strong>GW3 コードを組み立てる</strong></a>：シャッフルされた12セルに番号を付け、並び替えて実行する（実行は約30秒）。討議5分</td><td>グループ</td></tr>
-        <tr><td>95–105</td><td><strong>グループ内プレゼン1</strong>（代表1人が2分 → 他のメンバーが1分ずつ → 質疑）：GW1〜3 の結論</td><td><span class="tag tag-group">発表</span></td></tr>
-        <tr><td>105–110</td><td><a href="#sec-roles" style="color:#4FC3F7"><strong>役割とルール</strong></a>：ここから測定に入る。役割割当（implementer／verifier／recorder／presenter）</td><td>講義</td></tr>
-        <tr><td>110–118</td><td><a href="#sec-ex1" style="color:#4FC3F7">演習1</a> 環境ベンチマーク（実行1分）→ 討議（同期・帯域・演算）</td><td>個人 → グループ</td></tr>
-        <tr><td>118–140</td><td><a href="#sec-ex2" style="color:#4FC3F7">演習2</a> 学習済み3モデルの4指標同時測定。<strong>実行前に予測を記入</strong> → 実行 → 討議（外れた予測から）</td><td>個人 → グループ</td></tr>
-        <tr><td>140–150</td><td><strong>全体共有</strong>：教員が GW3 の正解率と演習2 の表を投影。提出確認・次回予告（第2回冒頭で「良いAI」の定義と順位づけ、質問カード交換）</td><td>全体</td></tr>
+      <div class="card-header"><h3>本日の流れ（150分）</h3></div>
+      <table style="font-size:0.82rem">
+        <tr><th style="width:6rem">時間</th><th>内容</th><th style="width:8rem">形式</th></tr>
+        <tr><td>0–10</td><td>今日の問い・グループ確認</td><td>講義</td></tr>
+        <tr><td>10–35</td><td><a href="#sec-prep" style="color:#4FC3F7">環境構築</a></td><td>個人</td></tr>
+        <tr><td>35–50</td><td><a href="#sec-gw1" style="color:#4FC3F7"><strong>GW1</strong></a> AIの3つのアプローチ</td><td><span class="tag tag-group">討議</span></td></tr>
+        <tr><td>50–60</td><td><a href="#sec-gw2" style="color:#4FC3F7"><strong>GW2</strong></a> プログラミングの流れ・テンソル</td><td><span class="tag tag-group">討議</span></td></tr>
+        <tr><td>60–95</td><td><a href="#sec-gw3" style="color:#4FC3F7"><strong>GW3</strong></a> コードを組み立てる（MLP → CNN）</td><td>グループ</td></tr>
+        <tr><td>95–105</td><td>グループ内プレゼン1</td><td><span class="tag tag-group">発表</span></td></tr>
+        <tr><td>105–110</td><td><a href="#sec-roles" style="color:#4FC3F7">役割とルール</a></td><td>講義</td></tr>
+        <tr><td>110–118</td><td><a href="#sec-ex1" style="color:#4FC3F7">演習1</a> 環境ベンチマーク</td><td>個人 → グループ</td></tr>
+        <tr><td>118–140</td><td><a href="#sec-ex2" style="color:#4FC3F7">演習2</a> 3モデルの4指標</td><td>個人 → グループ</td></tr>
+        <tr><td>140–150</td><td>全体共有・次回予告</td><td>全体</td></tr>
       </table>
     </div>
   </div>
@@ -636,111 +586,74 @@ a.sub-item:hover {
   <div class="container">
     <div class="section-header">
       <div class="section-num" style="background:#4FC3F7">0</div>
-      <h2>環境構築（授業内 25分）── Homebrew → uv → Python → 仮想環境</h2>
+      <h2>環境構築（25分）</h2>
     </div>
-    <p style="font-size:0.95rem;color:#ccc;margin-bottom:0.6rem">環境構築の全体の流れは <strong>Homebrew で uv を導入 → uv で Python 3.12 をインストール → 授業用フォルダ AI_TD を取得 → uv venv で仮想環境を作る → その中に uv pip install で PyTorch などを追加 → 環境診断</strong>。第1回の授業内で行う（事前課題はない）。所要は15〜25分で、PyTorch と FashionMNIST のダウンロードに数分かかる。グループの中で先に終わった人が隣を手伝い、グループ全員が手順⑤まで終わったら GW1 に進む。</p>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:0.6rem">uv → Python 3.12 → フォルダ取得 → 仮想環境 → 診断。全員が手順⑤まで終えたら GW1 へ。</p>
     <div style="background:#1a1a1a;border:1px solid #333;border-radius:0.4rem;padding:0.6rem 0.8rem;margin:0.3rem 0 1rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:#999">
-      ~（ホーム）<br>└ AI_TD/　　　　　　← 授業用フォルダ（以降のコマンドはすべてここで実行）<br>　　├ .venv/　　　　　← 仮想環境（自動生成、中身を触らない）<br>　　├ common/　　　　← 全14回で使い回す共通基盤<br>　　├ course1/day1/　← 今日の ex1.ipynb / ex2.ipynb / ex3.ipynb<br>　　├ assets/　　　　← コーパスと学習済み重み（download_assets.py が置く）<br>　　├ results/　　　← 自分の CSV がここに出る（提出物）<br>　　└ docs/　　　　　← 授業ページの元ファイル（読まなくてよい）
+      ~/AI_TD/　　　　← 授業用フォルダ（コマンドはすべてここで実行）<br>　├ .venv/　　　← 仮想環境<br>　├ course1/day1/ ← 今日のノートブック<br>　├ assets/　　　← データと学習済み重み<br>　└ results/　　 ← 自分の CSV（提出物）
     </div>
 
     <div class="card standard">
       <div class="card-header"><h3>手順① uv をインストール</h3></div>
-      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">uv は Python のバージョン管理・仮想環境・パッケージ管理を1つのツールで行う。すでに導入済みなら (2) の確認だけでよい。Homebrew が無い場合は先に <a href="https://brew.sh/ja/" style="color:#4FC3F7">brew.sh</a> の手順で入れる。</p>
 <pre>Bash
-<span class="cmt"># (1) Homebrew で uv をインストール</span>
-<span class="fn">brew</span> install uv
-
-<span class="cmt"># (2) インストール確認（uv 0.10.x のようにバージョンが出れば成功）</span>
-<span class="fn">uv</span> --version</pre>
+<span class="fn">brew</span> install uv      <span class="cmt"># Homebrew が無ければ先に brew.sh から入れる</span>
+<span class="fn">uv</span> --version        <span class="cmt"># バージョンが出れば成功</span></pre>
     </div>
 
     <div class="card standard">
       <div class="card-header"><h3>手順② Python 3.12 をインストール</h3></div>
 <pre>Bash
-<span class="cmt"># (1) Python 3.12 を uv 経由でインストール</span>
 <span class="fn">uv</span> python install 3.12
-
-<span class="cmt"># (2) 確認（Python 3.12.x と出れば成功）</span>
-<span class="fn">uv</span> run python -V</pre>
+<span class="fn">uv</span> run python -V     <span class="cmt"># Python 3.12.x と出れば成功</span></pre>
     </div>
 
     <div class="card standard">
       <div class="card-header"><h3>手順③ 授業用フォルダを取得</h3></div>
-      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">授業のコードは GitHub から取得する。フォルダ名・ファイル名に日本語は使わない。</p>
 <pre>Bash
-<span class="cmt"># (1) ホームへ移動し、授業用フォルダを AI_TD という名前で取得（初回のみ）</span>
 <span class="fn">cd</span>
-<span class="fn">git</span> clone https://github.com/RNMUDS/2026AI_TD.git AI_TD
-
-<span class="cmt"># (2) 以降のコマンドはすべて AI_TD の中で実行する</span>
+<span class="fn">git</span> clone https://github.com/RNMUDS/2026AI_TD.git AI_TD   <span class="cmt"># 初回のみ</span>
 <span class="fn">cd</span> AI_TD
-
-<span class="cmt"># 2回目以降（次回の授業前）は、AI_TD の中で git pull すると最新の資料とコードに更新される</span>
-<span class="fn">git</span> pull</pre>
-      <p style="font-size:0.82rem;color:#999;margin:0.2rem 0 0">※ <code>git: command not found</code> と出た場合は <code>brew install git</code> を実行してから (2) をやり直す。</p>
+<span class="fn">git</span> pull             <span class="cmt"># 2回目以降は最新に更新するだけ</span></pre>
     </div>
 
     <div class="card standard">
-      <div class="card-header"><h3>手順④ 仮想環境を作り、ライブラリを入れる</h3></div>
-      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">仮想環境はプロジェクトごとに独立した Python 環境。他の授業で作った環境とは別に作るので、互いに影響しない。</p>
+      <div class="card-header"><h3>手順④ 仮想環境とライブラリ</h3></div>
 <pre>Bash
-<span class="cmt"># (1) AI_TD の直下に仮想環境を作る（Python 3.12 を指定）</span>
 <span class="fn">uv</span> venv --python 3.12
-
-<span class="cmt"># (2) 仮想環境を有効化（プロンプトの先頭に (.venv) が付けば成功）</span>
-<span class="fn">source</span> .venv/bin/activate
-
-<span class="cmt"># (3) PyTorch・pandas・matplotlib・Jupyter などをまとめて入れる（数分かかる）</span>
-<span class="fn">uv</span> pip install -r requirements.txt</pre>
-      <p style="font-size:0.82rem;color:#999;margin:0.2rem 0 0">※ ターミナルを開き直したら、毎回 <code>cd ~/AI_TD</code> と <code>source .venv/bin/activate</code> をやり直す。</p>
+<span class="fn">source</span> .venv/bin/activate          <span class="cmt"># 先頭に (.venv) が付けば成功</span>
+<span class="fn">uv</span> pip install -r requirements.txt  <span class="cmt"># 数分かかる</span></pre>
+      <p style="font-size:0.82rem;color:#999;margin:0.2rem 0 0">※ ターミナルを開き直したら <code>cd ~/AI_TD</code> と <code>source .venv/bin/activate</code> をやり直す。</p>
     </div>
 
     <div class="card standard">
       <div class="card-header"><h3>手順⑤ 環境診断とデータ取得</h3></div>
 <pre>Bash
-<span class="cmt"># (1) 環境診断：チップ・メモリ・MPS が使えるか・簡易ベンチ</span>
-<span class="fn">python</span> setup/check_env.py
-
-<span class="cmt"># (2) コーパス（SST-2，約 5MB）と FashionMNIST（約 30MB）を取得し，配布済みの学習済み重みを確認</span>
-<span class="fn">python</span> setup/download_assets.py</pre>
-      <div class="callout-info">
-        <h4>check_env.py の出力で見るところ</h4>
-        <ul class="point-list">
-          <li><code>"mps_available": true</code> なら Apple GPU が使える。<code>false</code>（Intel Mac など）でも CPU で完走できるが、時間の目安は対象外</li>
-          <li><code>"problems": []</code> であること。<code>import error</code> が出たら仮想環境が有効か（プロンプトの <code>(.venv)</code>）を確認し、手順④ (3) をやり直す</li>
-          <li><code>bench</code> の3つの数値（帯域 GB/s・演算 GFLOPS・学習 ms/step）は演習1で自分で測り直す。ここではメモだけ</li>
-        </ul>
-      </div>
+<span class="fn">python</span> setup/check_env.py        <span class="cmt"># "problems": [] なら OK</span>
+<span class="fn">python</span> setup/download_assets.py  <span class="cmt"># データの取得</span></pre>
     </div>
 
     <div class="card standard">
       <div class="card-header"><h3>手順⑥ VS Code でノートブックを開く</h3></div>
-      <p style="font-size:0.88rem;color:#ccc;margin-bottom:0.3rem">ノートブック（<code>.ipynb</code>）は VS Code で開く。未導入なら <a href="https://code.visualstudio.com/" style="color:#4FC3F7">code.visualstudio.com</a> から入れる。初回だけ拡張機能を2つ入れる。</p>
 <pre>Bash
-<span class="cmt"># (1) AI_TD フォルダを VS Code で開く（. は現在のフォルダ）</span>
 <span class="fn">code</span> .</pre>
       <ol style="font-size:0.88rem;color:#ccc;padding-left:1.4rem;line-height:1.9">
-        <li>左端の「拡張機能」（四角が4つのアイコン）で <strong>Python</strong> と <strong>Jupyter</strong>（どちらも Microsoft 製）をインストールする。初回のみ</li>
-        <li>左のエクスプローラーで <code>course1/day1/ex1.ipynb</code> をクリックして開く</li>
-        <li>右上の「カーネルの選択」→「Python 環境」→ パスに <code>.venv/bin/python</code> を含む <strong>Python 3.12（.venv）</strong> を選ぶ</li>
-        <li>最初のセルの左にある ▶ を押す。<code>作業フォルダ: /Users/…/AI_TD</code> と表示されれば成功。以降は上から順にセルを実行する（Shift + Enter で次のセルへ）</li>
+        <li>拡張機能 <strong>Python</strong> と <strong>Jupyter</strong> を入れる（初回のみ）</li>
+        <li><code>course1/day1/</code> のノートブックを開く</li>
+        <li>右上「カーネルの選択」→ <strong>.venv（Python 3.12）</strong></li>
+        <li>最初のセルを実行し、<code>作業フォルダ: …/AI_TD</code> と出れば成功</li>
       </ol>
-      <div class="callout-tip">
-        <h4>カーネルの一覧に .venv が出ないとき</h4>
-        <p style="font-size:0.88rem">ターミナルで <code>source .venv/bin/activate</code> のあと <code>uv pip install ipykernel</code> を実行し、VS Code を開き直す（<code>code .</code>）。それでも出なければ、⌘ + Shift + P →「Python: Select Interpreter」で <code>.venv/bin/python</code> を選んでからノートブックを開く。</p>
-      </div>
     </div>
 
     <div class="callout-warning">
-      <h4>問題が生じたとき（主な症状と対処）</h4>
+      <h4>困ったとき</h4>
       <table style="font-size:0.82rem">
-        <tr><th>症状</th><th>原因</th><th>対処</th></tr>
-        <tr><td><code>uv: command not found</code></td><td>Homebrew のパスが通っていない</td><td>ターミナルを開き直す。それでも出なければ <code>brew doctor</code> の指示に従う</td></tr>
-        <tr><td><code>ModuleNotFoundError: torch</code></td><td>仮想環境が有効でない、または別の Python で実行している</td><td><code>source .venv/bin/activate</code> をやり直す。VS Code はカーネルに <code>.venv/bin/python</code> を選ぶ</td></tr>
-        <tr><td>MPS が false（Apple Silicon なのに）</td><td>PyTorch が古い</td><td><code>uv pip install --upgrade torch</code>（2.8 以上）</td></tr>
-        <tr><td><code>download_assets.py</code> が止まる</td><td>学内ネットワークの制限、または Hugging Face Hub に届かない</td><td>自宅回線でやり直す。それでも不可なら授業当日に教員が USB で配る</td></tr>
-        <tr><td>ノートブックの最初のセルで <code>作業フォルダ:</code> が出ない</td><td>別の場所から開いている</td><td><code>~/AI_TD</code> の中で <code>code .</code> を実行し、その VS Code からノートブックを開く</td></tr>
-        <tr><td>セルを実行すると <code>ModuleNotFoundError</code></td><td>カーネルが .venv 以外の Python になっている</td><td>右上の「カーネルの選択」で <code>.venv/bin/python</code> を選び直す</td></tr>
+        <tr><th>症状</th><th>対処</th></tr>
+        <tr><td><code>uv: command not found</code></td><td>ターミナルを開き直す。だめなら <code>brew doctor</code></td></tr>
+        <tr><td><code>git: command not found</code></td><td><code>brew install git</code></td></tr>
+        <tr><td><code>ModuleNotFoundError</code></td><td><code>source .venv/bin/activate</code>。VS Code はカーネルを <code>.venv</code> に</td></tr>
+        <tr><td>カーネル一覧に .venv が無い</td><td><code>uv pip install ipykernel</code> → VS Code を開き直す</td></tr>
+        <tr><td>MPS が false</td><td><code>uv pip install --upgrade torch</code></td></tr>
+        <tr><td>ダウンロードが止まる</td><td>別の回線で再実行。だめなら教員へ</td></tr>
       </table>
     </div>
   </div>
@@ -751,30 +664,22 @@ a.sub-item:hover {
   <div class="container">
     <div class="section-header">
       <div class="section-num" style="background:#81D4FA">GW1</div>
-      <h2>グループディスカッション「AIは何を学習するのか」（15分）</h2>
+      <h2>AIは何を学習するのか（15分）</h2>
     </div>
-    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">穴埋めシート（下のリンクから PDF をダウンロード）の GW1 のページを埋める。教科書1章の内容を、答えを見ずに自分たちの言葉で再構成する。</p>
     <div class="callout-info">
-      <h4>穴埋めシート（PDF をダウンロードして使う）</h4>
-      <p style="font-size:0.9rem">グループで1部、<a href="slides/aitd1_week1_groupwork.pdf" style="color:#4FC3F7"><strong>穴埋めシート（PDF、3ページ）</strong></a> をダウンロードする。記入は次のどちらでもよい。</p>
-      <ul class="point-list" style="margin-top:0.4rem">
-        <li><strong>PDF に注釈で書く</strong>：Mac の「プレビュー」や iPad で開き、黄色の欄にテキスト注釈を入れる。チップ（人が設計／データから学習）は、欄に文字で書けばよい</li>
-        <li><strong>印刷して手書き</strong>：教室のプリンタでグループ1部を印刷し、ペンで記入する。終わったらスマートフォンで撮影する</li>
-      </ul>
-      <p style="font-size:0.85rem;color:#ccc;margin-top:0.5rem">完成したシート（PDF または写真）はグループ全員に共有し、<strong>各自が自分の提出物に含める</strong>。Google スライドで共同編集したいグループは <a href="slides/aitd1_week1_groupwork.pptx" style="color:#4FC3F7">pptx 版</a> を Google ドライブにアップロードして「Google スライドで開く」を使ってよい。</p>
+      <h4>穴埋めシート</h4>
+      <p style="font-size:0.9rem"><a href="slides/aitd1_week1_groupwork.pdf" style="color:#4FC3F7"><strong>PDF（3ページ）</strong></a>をダウンロードし、プレビューで空欄の上に文字を載せる。完成版はグループで共有する（<a href="slides/aitd1_week1_groupwork.pptx" style="color:#4FC3F7">pptx 版</a>もある）。</p>
     </div>
 
     <div class="card group">
       <div class="card-header"><h3>GW1-1 AIの3つのアプローチ ― 表を完成させる</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">ルールベース／従来の機械学習／深層学習について、「主な時期」「特徴量（どこに注目するか）」「判定ルール（どう判定するか）」「代表的な手法」を埋める。特徴量と判定ルールの欄には<strong>「人が設計」か「データから学習」</strong>のチップを貼る。</p>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">ルールベース／機械学習／深層学習の表を埋める。特徴量と判定ルールは「人が設計」か「データから学習」か。</p>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li>「人が設計」から「データから学習」へ移ったのは、表の<strong>どの欄が先</strong>か</li>
-        <li>深層学習でも<strong>人が決めているもの</strong>は何か（3つ）</li>
-        <li>3つのアプローチは置き換わったのか、使い分けられているのか。身近な例を1つ挙げる</li>
+        <li>「データから学習」へ先に移ったのはどの欄か</li>
+        <li>深層学習でも人が決めているものは何か（3つ）</li>
+        <li>3つは置き換わったのか、使い分けか。身近な例を1つ</li>
       </ol>
     </div>
-
-
   </div>
 </section>
 
@@ -783,70 +688,28 @@ a.sub-item:hover {
   <div class="container">
     <div class="section-header">
       <div class="section-num" style="background:#4FC3F7">1</div>
-      <h2>AIは何を学習するのか、良いAIとは何を測ることか（3分講義 ＋ 読み物）</h2>
+      <h2>良いAIとは何を測ることか（3分講義）</h2>
     </div>
 
     <div class="concept-box">
       <h4>今日の問い</h4>
-      <p style="font-size:0.95rem">「良いAI」と聞いて、正解率を思い浮かべるなら、それは4つの評価軸の1つを選んだにすぎない。今日は<strong>正解率・損失・速度・メモリ</strong>の4つを<strong>同じ関数で</strong>測り、「どれを重く見るか」をグループで決めてもらう。同じ数値から違う結論が出るはずで、そこが本日の中心的な論点である。</p>
-    </div>
-
-    <div class="card standard">
-      <div class="card-header"><h3>教科書のコードテンプレートとの対応（毎回この番号で進める）</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">教科書 2.3 節の「コードテンプレート①〜⑫」を全14回の共通の骨格にする。章が進むと同じ番号に接尾辞が付く（⑦-CNN、⑦-転移学習、③-オリジナルデータセット）のと同じ流儀で、この授業では「⑬-計測」「⑬-記録」を1つ足す。今日のノートブックの各ブロックにはテンプレート番号を付けてある。</p>
-      <table style="font-size:0.82rem">
-        <tr><th style="width:5rem">番号</th><th>教科書の内容</th><th>第1回での扱い</th></tr>
-        <tr><td>①</td><td>ライブラリのインポート</td><td>そのまま。計測モジュール <code>common</code> を追加</td></tr>
-        <tr><td>②③</td><td>データ変換／乱数固定とデータセット作成</td><td>②-テキスト（トークン化と固定長化）、③の乱数固定3行は毎回書く（第4回で検証）</td></tr>
-        <tr><td>④⑥</td><td>DataLoader／ミニバッチの形状確認</td><td>④-計測用（転送時間を混ぜないため先にデバイスへ載せる）、⑥はそのまま</td></tr>
-        <tr><td>⑤</td><td>使用デバイスの選択（cuda → mps → cpu）</td><td>そのまま。<code>get_device()</code> は⑤にメモリ上限を足したもの</td></tr>
-        <tr><td>⑦</td><td>モデル定義</td><td>⑦-学習済みモデル（8章「学習済みモデルのロード」と同じ手順）</td></tr>
-        <tr><td>⑧⑫</td><td>損失関数／テストデータでの評価</td><td>⑫-4指標：教科書の3行（<code>torch.max</code>、<code>total</code>、<code>correct</code>）に損失・時間・メモリを加える</td></tr>
-        <tr><td>⑨⑩⑪</td><td>最適化関数／学習ループ／推移グラフ</td><td>第1回は学習しないので使わない。第2回から主役になる</td></tr>
-        <tr><td>⑬</td><td>（授業で追加）計測・記録</td><td>同期、帯域、演算、ピークメモリ、共通形式 CSV への記録</td></tr>
-      </table>
+      <p style="font-size:0.95rem">正解率は4つの評価軸の1つにすぎない。<strong>正解率・損失・速度・メモリ</strong>を同じ関数で測る。</p>
     </div>
 
     <div class="card standard">
       <div class="card-header"><h3>4つの評価軸</h3></div>
       <table style="font-size:0.85rem">
-        <tr><th style="width:10rem">指標</th><th>何を測るか</th><th style="width:7rem">向き</th></tr>
-        <tr><td><strong>正解率 accuracy</strong></td><td>正解した割合。分かりやすいが、正解と不正解の「境目の近さ」は見えない</td><td>高いほど良い</td></tr>
-        <tr><td><strong>損失 loss</strong></td><td>正解ラベルに対する<strong>確信の低さ</strong>（交差エントロピー）。当たっていても自信がなければ大きくなる</td><td>低いほど良い</td></tr>
-        <tr><td><strong>推論時間</strong></td><td>1000文を流す時間（スループット）と、1文だけ入れたときの時間（レイテンシ）。<strong>この2つは別物</strong></td><td>短いほど良い</td></tr>
-        <tr><td><strong>メモリ</strong></td><td>重みの大きさ（今日は3モデルで同じ）と、推論中に途中の計算結果が占めるピーク（モデルで違う）</td><td>少ないほど良い</td></tr>
+        <tr><th style="width:9rem">指標</th><th>何を測るか</th><th style="width:6rem">向き</th></tr>
+        <tr><td><strong>正解率</strong></td><td>正解した割合</td><td>高いほど良い</td></tr>
+        <tr><td><strong>損失</strong></td><td>正解に対する自信のなさ</td><td>低いほど良い</td></tr>
+        <tr><td><strong>推論時間</strong></td><td>まとめて流す時間と1件の時間（別物）</td><td>短いほど良い</td></tr>
+        <tr><td><strong>メモリ</strong></td><td>重みの大きさと、推論中のピーク</td><td>少ないほど良い</td></tr>
       </table>
-      <div class="analogy">
-        同一の製品を複数の評価者が採点する場合、価格・性能・耐久性・保守性のどれを重視するかは評価者によって異なる。「最も良い製品」は評価基準の重みを定めた時点で決まる。演習3はその重みをグループで決定する作業である。
-      </div>
     </div>
 
     <div class="card standard">
-      <div class="card-header"><h3>同期しないと時間は測れない（演習1の主眼）</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">GPU（Apple Silicon では MPS）は命令を受け取るとすぐ制御を返し、裏で計算を続ける。<code>time.perf_counter()</code> で囲むだけでは<strong>命令を送った時間</strong>しか測れない。計測の前後で <code>synchronize(device)</code> を呼び、計算の完了を待ってから時計を読む。</p>
-      <div class="analogy">
-        処理を依頼した時刻と処理が完了した時刻は異なる。完了時刻を測るには完了を待つ必要がある。同期はこの「完了を待つ」操作に相当する。
-      </div>
-      <div class="callout-danger">
-        <h4>どの程度の差が生じるか</h4>
-        <p style="font-size:0.9rem">M3 MacBook Air の実測では、同期なしと同期ありの時間比は <strong>70〜225倍</strong>。同期を欠いた計測は、計算の完了時間ではなく命令の発行時間を測っている。</p>
-      </div>
-    </div>
-
-    <div class="card standard">
-      <div class="card-header"><h3>「速い」には2種類ある ― 帯域律速と演算律速</h3></div>
-      <ul class="point-list">
-        <li><strong>帯域律速</strong>：大きなベクトルの加算 <code>c = a + b</code> は計算より<strong>メモリの読み書き</strong>が律速になる。1回の加算で動くのは「a を読む ＋ b を読む ＋ c を書く」＝ 3 × 要素数 × 4 バイト</li>
-        <li><strong>演算律速</strong>：N×N の行列積は 2N³ 回の浮動小数点演算を行う。こちらは<strong>計算</strong>が律速になる</li>
-        <li>どちらが支配的かは処理の種類によって変わる。したがって「このマシンは速い」という主張は、対象とする処理を明示しなければ意味を持たない</li>
-      </ul>
-      <div class="analogy">
-        データを供給する速さ（帯域）と、供給されたデータを処理する速さ（演算）は独立した能力である。供給が遅ければ、演算能力が高くても待ち時間が生じる。
-      </div>
-      <div class="callout-info">
-        <h4>もう1つの落とし穴：ファンレスの MacBook Air はブーストする</h4>
-        <p style="font-size:0.9rem">最初の数百 ms だけ GPU が速く（実測 2.6 TFLOPS）、1秒ほどで定常値（約 1.05 TFLOPS）に落ちる。短時間の計測は過大な値を与える。演習では<strong>最低2秒回して中央値</strong>を定常値とし、初回の値は「バースト」として別に見る。</p>
-      </div>
+      <div class="card-header"><h3>同期しないと時間は測れない</h3></div>
+      <p style="font-size:0.9rem;color:#ccc">GPU は命令を受け取るとすぐ戻り、裏で計算を続ける。時計を読む前に <code>synchronize(device)</code> で完了を待つ。</p>
     </div>
   </div>
 </section>
@@ -856,22 +719,22 @@ a.sub-item:hover {
   <div class="container">
     <div class="section-header">
       <div class="section-num" style="background:#81D4FA">GW2</div>
-      <h2>並び替え「ディープラーニングプログラミングの流れ」（10分）</h2>
+      <h2>ディープラーニングプログラミングの流れ（10分）</h2>
     </div>
     <div class="card group">
-      <div class="card-header"><h3>GW2-1 12枚のカードを3つのフェーズに並べる</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">シート2ページ目にある12枚のカード（ライブラリのインポート、データの前処理、…、モデル性能評価）を、<strong>データ準備 → 学習設定 → 学習・評価</strong>の3つのフェーズに分け、正しい順に並べる。番号は書いていない。並べ終えたら①〜⑫の番号を書き込む。これが教科書 2.3 節の<strong>コードテンプレート①〜⑫</strong>と同じ順序になる。</p>
+      <div class="card-header"><h3>GW2-1 12枚のカードを並べる（シート2ページ）</h3></div>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem"><strong>データ準備 → 学習設定 → 学習・評価</strong>の3フェーズに分けて並べ、①〜⑫を書く。この順が GW3 のコードの順になる。</p>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li>「学習」が始まるのは何番目のカードからか。それより前は何をしているか</li>
-        <li>データが画像からテキストに変わったとき、差し替えるカードはどれか（→ 演習2 で確認する）</li>
+        <li>「学習」が始まるのは何番目か</li>
+        <li>データをオリジナル画像に替えるなら、差し替えるカードはどれか（→ GW3）</li>
       </ol>
     </div>
     <div class="card group">
-      <div class="card-header"><h3>GW2-2 入力データはどんなテンソルになるか</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">シート3ページ目の表には、8種類の入力データの「前処理」と「テンソルの形状」が書いてある。それを手がかりに、右に並んだ<strong>8つの候補</strong>（画像、テキスト、音声、動画、グラフなど）から選んで、左の<strong>入力データ</strong>の列を埋める。今日扱う画像 FashionMNIST とテキスト SST-2 がどの行かを必ず確認する。どんなデータも<strong>前処理で数値化 → テンソル → ディープラーニングモデル → 出力</strong>の同じ流れに乗る。</p>
+      <div class="card-header"><h3>GW2-2 入力データはどんなテンソルになるか（シート3ページ）</h3></div>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">前処理とテンソルの形状を見て、右の8つの候補から入力データの種類を選ぶ。</p>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li>N は何を表すか。N を変えると何が変わるか（時間か、正解率か）</li>
-        <li>画像とテキストで「モデルに入る直前の形状」はどう違うか。それでも同じ学習ループで回るのはなぜか</li>
+        <li>N は何を表すか</li>
+        <li>FashionMNIST（白黒 28×28）とオリジナル画像（カラー 64×64）で、形状はどう違うか</li>
       </ol>
     </div>
   </div>
@@ -882,52 +745,566 @@ a.sub-item:hover {
   <div class="container">
     <div class="section-header">
       <div class="section-num" style="background:#81D4FA">GW3</div>
-      <h2>コードを組み立ててモデルを作る（35分）― <code>course1/day1/ex0.ipynb</code></h2>
+      <h2>コードを組み立てる ― MLP と CNN（35分）</h2>
     </div>
-    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">教科書 2.3 節のコードテンプレート①〜⑫（FashionMNIST を MLP で分類する完成コード）が、<strong>順番をばらばらにして、番号を伏せて</strong>ノートブックに入っている。GW2 で並べた流れを手がかりに、コードを読んで番号を付け、正しい順に並べ替えて実行する。実行は3エポックで30秒ほど。</p>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">教科書のコード12枚が、下のカード A〜L に<strong>順不同・番号なし</strong>で載っている。<code>ex0.ipynb</code> には①〜⑫の空のセルが並ぶ。</p>
+
+    <div class="card" style="border-left:4px solid #81D4FA">
+      <div class="card-header"><h3>3つの試行</h3></div>
+      <table style="font-size:0.85rem">
+        <tr><th style="width:4rem">試行</th><th>データ</th><th>モデル</th><th>カード</th></tr>
+        <tr><td><strong>①</strong></td><td>FashionMNIST（衣類 10 クラス）</td><td>MLP</td><td>A〜L を貼る</td></tr>
+        <tr><td><strong>②</strong></td><td><strong>オリジナル画像</strong>（2 クラス × 100 枚）</td><td>MLP</td><td>M〜Q で上書き</td></tr>
+        <tr><td><strong>③</strong></td><td><strong>オリジナル画像</strong></td><td><strong>シンプルな CNN</strong></td><td>R で上書き</td></tr>
+      </table>
+      <p style="font-size:0.85rem;color:#ccc;margin-top:0.5rem">②と③はデータが同じでモデルだけが違う。</p>
+    </div>
 
     <div class="card group">
-      <div class="card-header"><h3>手順</h3></div>
+      <div class="card-header"><h3>手順 ― カードを当てずっぽうに試さない。GW2-1 の流れから組み立てる</h3></div>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li>VS Code で <code>course1/day1/ex0.ipynb</code> を開き、最初のセルの <code>GROUP_ID</code> を自分のグループ番号にして実行する（<code>MEMBER_ROLE</code> はそのままでよい。役割は測定の前に決める）</li>
-        <li>12個のセルを上から読み、各セルの <code># コードテンプレート ?</code> の <code>?</code> に①〜⑫を書き込む。<strong>1人が書き、他のメンバーはコードを読んで根拠を言う</strong></li>
-        <li>セルを正しい順に並べ替える（セル左のつまみをドラッグ、またはセルを選んで Alt + ↑／↓）</li>
-        <li>上から順に実行する。順番が違うと <code>NameError</code> などで止まる。<strong>どのセルがどのセルに依存しているか</strong>をエラーから読み取り、記録しておく</li>
-        <li>最後まで通ったら、学習曲線（⑪）とテストデータの正解率（⑫）を確認し、最終セルで CSV に記録する</li>
+        <li><code>course1/day1/ex0.ipynb</code> を開き、<code>GROUP_ID</code> を書き換えて最初のセルを実行</li>
+        <li><strong>GW2-1 のシートを横に開き</strong>、①〜⑫の見出しにカード名とフェーズを写す（下の表でもよい）</li>
+        <li>カード名ごとに、その仕事をするコードを A〜L から探す（コメントが手がかり）</li>
+        <li>カードを開いてコピーし、その番号のセルに貼る</li>
+        <li>上から実行（<strong>試行①</strong>）。<code>NameError</code> なら貼る場所を見直す</li>
+        <li><strong>試行②</strong>：M〜Q で該当セルを上書きし、⑫を削除 → カーネルを再起動して実行</li>
+        <li><strong>試行③</strong>：R で上書き → 再起動して実行</li>
       </ol>
+      <table style="font-size:0.82rem;margin-top:0.6rem">
+        <tr><th style="width:4rem">番号</th><th>GW2-1 のカード名</th><th style="width:8rem">フェーズ</th><th style="width:6rem">カード</th></tr>
+        <tr><td><strong>①</strong></td><td></td><td></td><td></td></tr>
+        <tr><td><strong>②</strong></td><td></td><td></td><td></td></tr>
+        <tr><td><strong>③</strong></td><td></td><td></td><td></td></tr>
+        <tr><td><strong>④</strong></td><td></td><td></td><td></td></tr>
+        <tr><td><strong>⑤</strong></td><td></td><td></td><td></td></tr>
+        <tr><td><strong>⑥</strong></td><td></td><td></td><td></td></tr>
+        <tr><td><strong>⑦</strong></td><td></td><td></td><td></td></tr>
+        <tr><td><strong>⑧</strong></td><td></td><td></td><td></td></tr>
+        <tr><td><strong>⑨</strong></td><td></td><td></td><td></td></tr>
+        <tr><td><strong>⑩</strong></td><td></td><td></td><td></td></tr>
+        <tr><td><strong>⑪</strong></td><td></td><td></td><td></td></tr>
+        <tr><td><strong>⑫</strong></td><td></td><td></td><td></td></tr>
+      </table>
       <div class="callout-info">
-        <h4>読むときの手がかり</h4>
+        <h4>手がかり</h4>
         <ul class="point-list">
-          <li>他のセルで<strong>定義されていない名前</strong>を使っているセルは、そのセルより後に来る（例：<code>train_loader</code> を使う⑩は、それを作る④より後）</li>
-          <li><code>import</code> だけのセルが最初、<code>Accuracy:</code> を表示するセルが最後</li>
-          <li>教科書の <code>no02.ipynb</code> を持っている人は、答えを見る前に自分たちの並びと比べる</li>
+          <li>学習・評価の前に、データ・モデル・損失関数・最適化手法がそろっている必要がある</li>
+          <li>別のカードで作った名前を使うカードは、それより後</li>
+          <li>LLM に順番を聞く前に、まず自分で読む</li>
         </ul>
-      </div>
-      <div class="callout-warning">
-        <h4>LLM の使い方</h4>
-        <p style="font-size:0.9rem">「正しい順に並べて」と LLM に頼めば答えは出る。しかし演習2以降で必要なのは、このコードが何をしているかを自分で説明できることである。先に読み、迷ったセルだけ「このセルは何をしているか」を LLM に聞く。</p>
       </div>
     </div>
 
-    <div class="card standard">
-      <div class="card-header"><h3>M3 MacBook Air の参考値</h3></div>
-      <table style="font-size:0.82rem">
-        <tr><th>項目</th><th>参考値</th></tr>
-        <tr><td>学習時間（3エポック、MPS）</td><td>約 15〜30 秒</td></tr>
-        <tr><td>テストデータの正解率</td><td>約 86〜87%（3エポック。教科書の10エポックでは約 88%）</td></tr>
-        <tr><td>訓練／検証／テストの件数</td><td>48,000 ／ 12,000 ／ 10,000 枚</td></tr>
+    <div class="card-header" style="margin-top:1.2rem"><h3>カード A〜L（クリックで開く）</h3></div>
+<div class="gw3-cards">
+  <details id="gw3-card-A">
+    <summary>カード A（2 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># 損失関数：予測と正解のずれを測る（分類で標準の交差エントロピー）
+criterion = nn.CrossEntropyLoss()</pre>
+    </div>
+  </details>
+  <details id="gw3-card-B">
+    <summary>カード B（4 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># 前処理：画像をテンソル（0〜1 の数値の配列）に変換する
+data_transform = transforms.Compose([
+    transforms.ToTensor(),
+])</pre>
+    </div>
+  </details>
+  <details id="gw3-card-C">
+    <summary>カード C（13 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># ミニバッチを 1 つ取り出し，形（枚数・チャネル・高さ・幅）を確かめる
+imgs, _ = next(iter(train_loader))
+c, h, w = imgs[0].shape
+print(&quot;ミニバッチサイズ:&quot;, len(imgs))
+print(&quot;チャネル数:&quot;, c)
+print(&quot;画像の高さ:&quot;, h)
+print(&quot;画像の幅:&quot;, w)
+print(imgs.shape)
+
+# 取り出した画像を並べて表示する
+img = torchvision.utils.make_grid(imgs)
+img = transforms.functional.to_pil_image(img)
+display(img)</pre>
+    </div>
+  </details>
+  <details id="gw3-card-D">
+    <summary>カード D（8 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># 計算に使う装置を選ぶ：NVIDIA の GPU → Apple の GPU（mps）→ CPU の順
+if torch.cuda.is_available():
+    device = torch.device(&quot;cuda&quot;)
+elif torch.backends.mps.is_available():
+    device = torch.device(&quot;mps&quot;)
+else:
+    device = torch.device(&quot;cpu&quot;)
+print(f&quot;使用デバイス: {device}&quot;)</pre>
+    </div>
+  </details>
+  <details id="gw3-card-E">
+    <summary>カード E（69 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre>EPOCHS = 20          # 授業では試行①②③とも 20 エポックにそろえる
+# エポックごとの損失と正解率を記録するリスト
+train_loss_list = []
+val_loss_list = []
+train_acc_list = []
+val_acc_list = []
+
+# 学習時間を測る（授業で追加）
+import time
+_t0 = time.perf_counter()
+# EPOCHS 回，訓練データ全体を繰り返し学習する
+for epoch in range(EPOCHS):
+    # 訓練モードにする
+    model.train()
+    train_loss = 0.0
+    train_correct = 0
+    train_total = 0
+
+    for images, labels in tqdm(train_loader, desc=f&#x27;Epoch {epoch+1}/{EPOCHS} [Train]&#x27;, leave=False):
+        images, labels = images.to(device), labels.to(device)
+
+        # 前回の勾配を消す → 予測 → 損失を計算 → 誤差逆伝播で勾配を求める → 重みを更新
+        optimizer.zero_grad()
+        outputs = model(images)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+        
+        train_loss += loss.item() * images.size(0)
+        # 最も確率の高いクラスを予測とし，正解の数を数える
+        _, predicted = torch.max(outputs.data, 1)
+        train_total += labels.size(0)
+        train_correct += (predicted == labels).sum().item()
+    
+    train_loss /= train_total
+    train_accuracy = 100.0 * train_correct / train_total
+    train_loss_list.append(train_loss)
+    train_acc_list.append(train_accuracy)
+    
+    # 評価モードにする：ここからは検証データで確かめる（重みは更新しない）
+    model.eval()
+    val_loss = 0.0
+    val_correct = 0
+    val_total = 0
+    
+    # 勾配を計算しない（評価だけなので速く，メモリも少なくて済む）
+    with torch.no_grad():
+        for images, labels in tqdm(val_loader, desc=f&#x27;Epoch {epoch+1}/{EPOCHS} [Val]&#x27;, leave=False):
+            images, labels = images.to(device), labels.to(device)
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+
+            val_loss += loss.item() * images.size(0)
+            _, predicted = torch.max(outputs.data, 1)
+            val_total += labels.size(0)
+            val_correct += (predicted == labels).sum().item()
+    
+    val_loss /= val_total
+    val_accuracy = 100.0 * val_correct / val_total
+    val_loss_list.append(val_loss)
+    val_acc_list.append(val_accuracy)
+
+    # エポックごとの損失と正解率を表示する
+    print(f&#x27;Epoch {epoch+1}/{EPOCHS},&#x27;
+          f&#x27;Train Loss: {train_loss:.4f}, Train Acc: {train_accuracy:.2f}%,&#x27;
+          f&#x27;Val Loss: {val_loss:.4f}, Val Acc: {val_accuracy:.2f}%  &#x27;)
+
+train_sec = time.perf_counter() - _t0
+print(f&#x27;学習時間: {train_sec:.1f} 秒&#x27;)</pre>
+    </div>
+  </details>
+  <details id="gw3-card-F">
+    <summary>カード F（6 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># 一度にまとめて流す枚数（ミニバッチの大きさ）
+BATCH_SIZE = 64
+# データをミニバッチに分けて順に取り出す仕組み（訓練用は毎回並びを混ぜる）
+train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
+test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)</pre>
+    </div>
+  </details>
+  <details id="gw3-card-G">
+    <summary>カード G（24 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># 入力の数 = チャネル × 高さ × 幅（画像を 1 列に並べたときの長さ）
+INPUT_SIZE = c * h * w
+# 中間層（隠れ層）のニューロンの数
+HIDDEN_SIZE1 = 512
+HIDDEN_SIZE2 = 256
+# 出力の数 = 分類するクラスの数
+OUTPUT_SIZE = 10
+
+# 層を上から順に積み重ねてモデルを作る
+model = nn.Sequential(
+    # 画像（または特徴マップ）を 1 列のベクトルに伸ばす
+    nn.Flatten(),
+    # 全結合層：すべての入力とつながる
+    nn.Linear(INPUT_SIZE, HIDDEN_SIZE1),
+    # 活性化関数：負の値を 0 にする
+    nn.ReLU(),
+    nn.Linear(HIDDEN_SIZE1, HIDDEN_SIZE2),
+    nn.ReLU(),
+    nn.Linear(HIDDEN_SIZE2, OUTPUT_SIZE)
+)
+# モデルを計算装置に載せる
+model.to(device)
+
+model</pre>
+    </div>
+  </details>
+  <details id="gw3-card-H">
+    <summary>カード H（14 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre>model
+# テストデータ（学習に使っていない 1 万枚）で正解率を求める
+correct = 0
+total = 0
+# 勾配を計算しない（評価だけなので速く，メモリも少なくて済む）
+with torch.no_grad():
+    for images, labels in test_loader:
+        images, labels = images.to(device), labels.to(device)
+        outputs = model(images)
+        # 最も確率の高いクラスを予測とし，正解の数を数える
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+print(f&#x27;Accuracy: {correct / total * 100:.2f}% &#x27;)</pre>
+    </div>
+  </details>
+  <details id="gw3-card-I">
+    <summary>カード I（33 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># 乱数の種を固定して，何度実行しても同じ結果になるようにする
+random.seed(0)
+np.random.seed(0)
+torch.manual_seed(0)
+torch.cuda.manual_seed(0)
+if torch.backends.mps.is_available():
+    torch.mps.manual_seed(0)
+
+# FashionMNIST の訓練用データ（6 万枚）を読み込む（初回はダウンロードする）
+train_val_dataset = datasets.FashionMNIST(
+    root=str(ROOT / &#x27;assets&#x27; / &#x27;data&#x27;), 
+    train=True, 
+    download=True, 
+    transform=data_transform
+)
+# テスト用データ（1 万枚．学習には使わない）を読み込む
+test_dataset = datasets.FashionMNIST(
+    root=str(ROOT / &#x27;assets&#x27; / &#x27;data&#x27;),
+    train=False,
+    download=True,
+    transform=data_transform
+)
+
+# 訓練用データを 8:2 に分け，2 割を検証用にする
+train_size = int(0.8 * len(train_val_dataset))
+val_size = len(train_val_dataset) - train_size
+train_dataset, val_dataset = random_split(
+    train_val_dataset, 
+    [train_size, val_size]
+)
+print(f&quot;訓練データ数: {len(train_dataset)} 枚)&quot;)
+print(f&quot;検証データ数: {len(val_dataset)} 枚)&quot;)
+print(f&quot;テストデータ数: {len(test_dataset)} 枚)&quot;)</pre>
+    </div>
+  </details>
+  <details id="gw3-card-J">
+    <summary>カード J（2 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># 最適化手法：損失が小さくなる向きに重みを少しずつ動かす（学習率 0.001）
+optimizer = optim.Adam(model.parameters(), lr=0.001)</pre>
+    </div>
+  </details>
+  <details id="gw3-card-K">
+    <summary>カード K（25 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre>import seaborn as sns
+# グラフを描く道具
+import matplotlib.pyplot as plt
+# 損失と正解率の推移をグラフにする（訓練と検証を比べる）
+epochs = range(1, len(train_loss_list) + 1)
+plt.figure(figsize=(10, 5))
+
+sns.lineplot(x=epochs, y=train_loss_list, label=&#x27;Train Loss&#x27;)
+sns.lineplot(x=epochs, y=val_loss_list, label=&#x27;Val Loss&#x27;)
+plt.title(&#x27;Loss over epochs&#x27;)
+plt.xlabel(&#x27;Epochs&#x27;)
+plt.ylabel(&#x27;Loss&#x27;)
+plt.legend()
+plt.grid(True)
+plt.show()
+
+plt.figure(figsize=(10, 5))
+sns.lineplot(x=epochs, y=train_acc_list, label=&#x27;Train Accuracy&#x27;)
+sns.lineplot(x=epochs, y=val_acc_list, label=&#x27;Val Accuracy&#x27;)
+plt.title(&#x27;Accuracy over epochs&#x27;)
+plt.xlabel(&#x27;Epochs&#x27;)
+plt.ylabel(&#x27;Accuracy (%)&#x27;)
+plt.legend()
+plt.grid(True)
+plt.show()</pre>
+    </div>
+  </details>
+  <details id="gw3-card-L">
+    <summary>カード L（15 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># PyTorch 本体と，ニューラルネットワーク・最適化・画像処理の部品を読み込む
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torchvision
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader, random_split
+
+# グラフを描く道具
+import matplotlib.pyplot as plt
+import seaborn as sns
+# 処理の進み具合をバーで表示する道具
+from tqdm import tqdm
+import random
+import numpy as np</pre>
+    </div>
+  </details>
+</div>
+
+    <div class="card-header" style="margin-top:1.2rem"><h3>試行② 差し替えカード M〜Q</h3></div>
+<div class="gw3-cards">
+  <details id="gw3-card-M">
+    <summary>カード M（24 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># 入力の数 = チャネル × 高さ × 幅（画像を 1 列に並べたときの長さ）
+INPUT_SIZE = c * h * w
+# 中間層（隠れ層）のニューロンの数
+HIDDEN_SIZE1 = 512
+HIDDEN_SIZE2 = 256
+# 出力の数 = 分類するクラスの数
+OUTPUT_SIZE = 2
+
+# 層を上から順に積み重ねてモデルを作る
+model = nn.Sequential(
+    # 画像（または特徴マップ）を 1 列のベクトルに伸ばす
+    nn.Flatten(),
+    # 全結合層：すべての入力とつながる
+    nn.Linear(INPUT_SIZE, HIDDEN_SIZE1),
+    # 活性化関数：負の値を 0 にする
+    nn.ReLU(),
+    nn.Linear(HIDDEN_SIZE1, HIDDEN_SIZE2),
+    nn.ReLU(),
+    nn.Linear(HIDDEN_SIZE2, OUTPUT_SIZE)
+)
+# モデルを計算装置に載せる
+model.to(device)
+
+model</pre>
+    </div>
+  </details>
+  <details id="gw3-card-N">
+    <summary>カード N（5 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># 一度にまとめて流す枚数（ミニバッチの大きさ）
+BATCH_SIZE = 8
+# データをミニバッチに分けて順に取り出す仕組み（訓練用は毎回並びを混ぜる）
+train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)</pre>
+    </div>
+  </details>
+  <details id="gw3-card-O">
+    <summary>カード O（20 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># PyTorch 本体と，ニューラルネットワーク・最適化・画像処理の部品を読み込む
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torchvision
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader, random_split
+
+from torch.utils.data import Dataset
+# グラフを描く道具
+import matplotlib.pyplot as plt
+import seaborn as sns
+# 処理の進み具合をバーで表示する道具
+from tqdm import tqdm
+import random
+import numpy as np
+
+# 追加
+# フォルダごとに分けた画像を読み込む道具（フォルダ名がクラスになる）
+from torchvision.datasets import ImageFolder</pre>
+    </div>
+  </details>
+  <details id="gw3-card-P">
+    <summary>カード P（44 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre>IMAGE_DIR = str(ROOT / &#x27;assets&#x27; / &#x27;cable1&#x27;)   # オリジナル画像（2 クラス × 100 枚）
+
+# class0／class1 フォルダの画像を読み込む（ラベルはフォルダで決まる）
+full_dataset = ImageFolder(root=IMAGE_DIR)
+
+# 乱数の種を固定して，何度実行しても同じ結果になるようにする
+random.seed(0)
+np.random.seed(0)
+torch.manual_seed(0)
+torch.cuda.manual_seed(0)
+if torch.backends.mps.is_available():
+    torch.mps.manual_seed(0)
+
+# 全 200 枚を 7:3 に分け，訓練用と検証用にする
+train_size = int(0.7 * len(full_dataset))
+val_size = len(full_dataset) - train_size
+
+train_subset, val_subset = random_split(
+    full_dataset, [train_size, val_size]
+)
+
+# 分けたデータに，訓練用・検証用それぞれの前処理をかけるための入れ物
+class CustomDataset(torch.utils.data.Dataset):
+    def __init__(self, subset, transform):
+        self.subset = subset
+        self.transform = transform
+
+    def __getitem__(self, index):
+        image, label = self.subset[index]
+        if self.transform:
+            image = self.transform(image)
+        return image, label
+    
+    def __len__(self):
+        return len(self.subset)
+
+# 訓練用と検証用に前処理を割り当てる
+train_dataset = CustomDataset(train_subset, transform=data_transforms[&#x27;train&#x27;])
+val_dataset = CustomDataset(val_subset, transform=data_transforms[&#x27;val&#x27;])
+
+print(f&quot;===&gt; Dataset Loaded: {IMAGE_DIR}&quot;)
+print(f&quot;     Total samples: {len(full_dataset)}&quot;)
+print(f&quot;     Train samples: {len(train_dataset)}&quot;)
+print(f&quot;     Val samples  : {len(val_dataset)}&quot;)</pre>
+    </div>
+  </details>
+  <details id="gw3-card-Q">
+    <summary>カード Q（11 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># 前処理：訓練用・検証用とも 64×64 に縮小してからテンソルに変換する
+data_transforms = {
+    &#x27;train&#x27;: transforms.Compose([
+        transforms.Resize((64, 64)),
+        transforms.ToTensor(),
+    ]),
+    &#x27;val&#x27;: transforms.Compose([
+        transforms.Resize((64, 64)),
+        transforms.ToTensor(),
+    ])
+}</pre>
+    </div>
+  </details>
+</div>
+
+    <div class="card-header" style="margin-top:1.2rem"><h3>試行③ 差し替えカード R</h3></div>
+<div class="gw3-cards">
+  <details id="gw3-card-R">
+    <summary>カード R（54 行）― クリックで開く</summary>
+    <div class="answer-content">
+<pre># 入力画像のチャネル数・高さ・幅
+INPUT_CHANNELS = c
+IMAGE_HEIGHT = h
+IMAGE_WIDTH = w
+
+# 畳み込み層が出す特徴マップの枚数
+CONV1_OUT_CHANNELS = 16
+
+# 3×3 のフィルタで画像をなぞる．PADDING で縁を補い，POOL_SIZE で縦横を半分にする
+KERNEL_SIZE = 3
+PADDING = 1
+POOL_SIZE = 2
+
+POOL_NUM = 1
+
+FC1_OUT_CHANNELS = 128
+
+# 出力の数 = 分類するクラスの数
+OUTPUT_SIZE = 2
+
+# プーリング後の高さと幅（64 → 32）
+OUT_HEIGHT = IMAGE_HEIGHT // (POOL_SIZE ** POOL_NUM)
+OUT_WIDTH = IMAGE_WIDTH // (POOL_SIZE ** POOL_NUM)
+
+# 全結合層に渡す長さ = 特徴マップの枚数 × 高さ × 幅
+FLATTEN_SIZE = CONV1_OUT_CHANNELS * OUT_HEIGHT * OUT_WIDTH 
+
+# 層を上から順に積み重ねてモデルを作る
+model = nn.Sequential(
+    # 畳み込み層：小さなフィルタで模様（特徴）を取り出す
+    nn.Conv2d(INPUT_CHANNELS, CONV1_OUT_CHANNELS, kernel_size=KERNEL_SIZE, padding=PADDING),
+    # 活性化関数：負の値を 0 にする
+    nn.ReLU(),
+    # プーリング：2×2 の中の最大値だけを残して縮小する
+    nn.MaxPool2d(kernel_size=POOL_SIZE),
+    # 画像（または特徴マップ）を 1 列のベクトルに伸ばす
+    nn.Flatten(),
+    # 全結合層：すべての入力とつながる
+    nn.Linear(FLATTEN_SIZE, FC1_OUT_CHANNELS),
+    nn.ReLU(),
+    nn.Linear(FC1_OUT_CHANNELS, OUTPUT_SIZE)
+)
+
+# モデルを計算装置に載せる
+model = model.to(device)
+
+# 試しに 1 枚分のデータを通し，出力の形が (1, 2) になるかを確かめる
+dummy_input = torch.randn(1, INPUT_CHANNELS, IMAGE_HEIGHT, IMAGE_WIDTH).to(device)
+output = model(dummy_input)
+print(&quot;ダミー入力の出力サイズ:&quot;, output.shape)
+print(&quot;　↑　&quot;)
+print(&quot;torch.Size([1,2]) になることを確認してください。&quot;)
+
+model</pre>
+    </div>
+  </details>
+</div>
+
+
+    <div class="card group">
+      <div class="card-header"><h3>結果を記録する</h3></div>
+      <table style="font-size:0.85rem">
+        <tr><th>試行</th><th>検証正解率（最高／最終）</th><th>学習時間</th><th>学習曲線の形</th></tr>
+        <tr><td>① FashionMNIST × MLP</td><td></td><td></td><td></td></tr>
+        <tr><td>② オリジナル画像 × MLP</td><td></td><td></td><td></td></tr>
+        <tr><td>③ オリジナル画像 × CNN</td><td></td><td></td><td></td></tr>
       </table>
     </div>
 
+    <div class="card standard">
+      <div class="card-header"><h3>想定される時間と精度（教員機 M4 Max で実測・20エポック）</h3></div>
+      <table style="font-size:0.82rem">
+        <tr><th>試行</th><th>学習時間</th><th>検証正解率（最高／最終）</th></tr>
+        <tr><td>① FashionMNIST × MLP</td><td>46 秒</td><td>90.0% ／ 90.0%（テスト 89.5%）</td></tr>
+        <tr><td>② オリジナル画像 × MLP</td><td>3 秒</td><td>78.3% ／ 78.3%</td></tr>
+        <tr><td>③ オリジナル画像 × CNN</td><td>3 秒</td><td>81.7% ／ 76.7%</td></tr>
+      </table>
+      <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">時間は機種で変わる（MacBook Air は数倍の見込み）。正解率はほぼ同じになるはず。</p>
+      <figure style="margin:1rem 0 0">
+        <img src="img/gw3_expected.png" alt="試行①②③の検証正解率の推移と、MLP と CNN の比較" style="width:100%;border-radius:10px;border:1px solid #333;display:block">
+        <figcaption style="font-size:0.78rem;color:#999;margin-top:0.4rem;text-align:center">▲ 右：乱数の種を変えた5回すべてで CNN が上回った（平均 81.3% → 84.7%）。1回だけでは逆転することもある（→ 第4回）</figcaption>
+      </figure>
+    </div>
+
     <div class="card group" id="disc0">
-      <div class="card-header"><h3>グループディスカッション（5分）→ グループ内プレゼン1（GW1〜3 の結論）</h3></div>
+      <div class="card-header"><h3>討議（5分）→ プレゼン1</h3></div>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li>学習が始まるのは何番目のセルか。それより前の9個のセルは何をしているか、一文で言う</li>
-        <li>データが画像からテキストに変わったとき、差し替えるのはどのセルか（→ 演習2 で確認する）</li>
-        <li><code>NameError</code> で止まったセルがあれば、「どのセルが先に必要だったか」を記録する</li>
-        <li>正解率はグループの4台で同じ値になったか。違うなら何が原因か（→ 第4回で扱う）</li>
+        <li>データを替えたとき、モデルを替えたとき、差し替えたのはどのセルか</li>
+        <li>②→③で何ポイント変わったか。検証は60枚（1枚 ≒ 1.7ポイント）。「上がった」と言えるか</li>
+        <li><code>NameError</code> はどのセルが先に必要だったか</li>
       </ol>
-      <div class="notion-submit"><div><strong>プレゼン1:</strong> 代表1人が GW1 の表の結論と GW3 の正解率を2分で話す → 他のメンバーが、番号付けで迷ったセル、並びを変えて出たエラー、討議で割れた点を1分ずつ</div></div>
+      <div class="notion-submit"><div><strong>プレゼン1:</strong> 代表が結論を2分 → 他のメンバーが1分ずつ</div></div>
     </div>
   </div>
 </section>
@@ -937,56 +1314,32 @@ a.sub-item:hover {
   <div class="container">
     <div class="section-header">
       <div class="section-num" style="background:#FFB800">4</div>
-      <h2>役割とルール ― 4人で1つの実験チーム</h2>
+      <h2>役割とルール ― ここから測定</h2>
     </div>
 
     <div class="card group">
-      <div class="card-header"><h3>① 役割分担（毎回ローテーション）</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">グループは4名（1グループのみ5名）。役割は<strong>日替わり</strong>で回し、7回で全員が全役割を1周半経験する。今日の役割は掲示の割当表で確認する。</p>
+      <div class="card-header"><h3>役割（毎回交代）</h3></div>
       <table style="font-size:0.85rem">
-        <tr><th style="width:9rem">役割</th><th>責務</th><th style="width:12rem">今日の提出物</th></tr>
-        <tr><td><strong style="color:#4FC3F7">implementer</strong></td><td>コードを書く。<strong>他の3名はコードを書かない</strong>（助言はしてよい）</td><td>ノートブック・CSV</td></tr>
-        <tr><td><strong style="color:#FFB800">verifier</strong></td><td>結果を疑い、隣で<strong>条件を変えて再実行</strong>する（バッチサイズ、繰り返し回数、指標の向き）</td><td>比較表（何を変えたら何が変わったか）</td></tr>
-        <tr><td><strong style="color:#81D4FA">recorder</strong>（記録・質問係）</td><td>出たエラーと直し方、討議で割れた点を記録し、そこから<strong>他グループへの質問を3問</strong>作る</td><td>失敗記録・討議メモ・質問カード（3問）</td></tr>
-        <tr><td><strong style="color:#B388FF">presenter</strong>（進行・発表係）</td><td>討議の司会と時間管理。グループの結論を<strong>一文</strong>にまとめ、グループ内プレゼンと全体共有でグループを代表して話す。質問カード交換で他グループ3〜4グループ分の実測値を集める</td><td>グループの結論（一文）・集めた他グループデータ</td></tr>
+        <tr><th style="width:9rem">役割</th><th>やること</th><th style="width:10rem">残すもの</th></tr>
+        <tr><td><strong style="color:#4FC3F7">implementer</strong></td><td>コードを書く（1人だけ）</td><td>ノートブック・CSV</td></tr>
+        <tr><td><strong style="color:#FFB800">verifier</strong></td><td>条件を変えて再実行し、結果を疑う</td><td>比較表</td></tr>
+        <tr><td><strong style="color:#81D4FA">recorder</strong></td><td>エラーと討議を記録し、他グループへの質問を3問作る</td><td>失敗記録・質問カード</td></tr>
+        <tr><td><strong style="color:#B388FF">presenter</strong></td><td>司会・時間管理・結論を一文で発表</td><td>結論（一文）</td></tr>
       </table>
-      <div class="callout-info">
-        <h4>グループが3人または5人のとき</h4>
-        <ul class="point-list">
-          <li><strong>3人グループ</strong>：presenter を verifier が兼任する（ノートブックの <code>MEMBER_ROLE</code> は <code>"verifier"</code>）。3役を日替わりで回すと、7回で全員が各役割を2回以上経験する</li>
-          <li><strong>5人グループ</strong>：5つ目の役割 <strong style="color:#4FC3F7">collector（収集係）</strong>を置き、他グループ3〜4グループ分の実測値（演習2の表と演習3の順位・重み）の収集を presenter から引き取る。<code>MEMBER_ROLE</code> は <code>"collector"</code></li>
-          <li>どちらの場合も <strong>implementer は1人のまま</strong>。コードを書く人を増やすと、読んで判断する側が減る</li>
-          <li>グループ内プレゼンは presenter 2分＋他の各1分なので、3人グループは4分、5人グループは6分。余った時間は質疑に回す</li>
-        </ul>
-      </div>
+      <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">3人：verifier が presenter を兼任。5人：collector（他グループの数値を集める）を追加。</p>
     </div>
 
     <div class="card group">
-      <div class="card-header"><h3>② グループ内プレゼンの型（各10分、スライド禁止、画面を見せて話す）</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem"><strong>presenter がグループの結論を2分</strong>で話し、続いて implementer・verifier・recorder が<strong>1分ずつ補足</strong>する（合計5分）。残り5分は質疑。成功した点より、<strong>行き詰まった点や予測が外れた点</strong>に報告の価値がある。</p>
-      <table style="font-size:0.85rem">
-        <tr><th style="width:9rem">役割</th><th>話すこと</th></tr>
-        <tr><td>implementer</td><td>どの TODO で行き詰まったか。同期を入れる前後で数値がどう変わったか</td></tr>
-        <tr><td>verifier</td><td>条件を変えて何が変わったか（繰り返し回数、バッチサイズ、指標の向き）</td></tr>
-        <tr><td>recorder</td><td>出たエラーと直し方。討議で割れた点と、そこから作った他グループへの質問3問</td></tr>
-        <tr><td>presenter</td><td>グループの結論（一文）と、その根拠となる数値。先頭で2分</td></tr>
-      </table>
-    </div>
-
-    <div class="card group">
-      <div class="card-header"><h3>③ 質問カードの評価基準（第1回に配布、以後毎回使う）</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">recorder が作る質問は、受け取ったグループが10分で答え、質問元が3段階で採点する。<strong>検索でも LLM でも答えられない質問</strong>が最高評価。</p>
-      <table style="font-size:0.85rem">
-        <tr><th style="width:5rem">段階</th><th>基準</th><th>例</th></tr>
-        <tr><td><strong style="color:#4FC3F7">3</strong></td><td>相手の<strong>実測値</strong>を要求する。検索でも生成でも答えられない</td><td>「あなたのグループの重みで正解率の重みを 0.1 下げたとき1位は変わりますか。変わるなら何から何へ」</td></tr>
-        <tr><td><strong style="color:#FFB800">2</strong></td><td>手法の理解を問う。教科書的だが妥当</td><td>「minmax と rank で順位が変わるのはどういうときですか」</td></tr>
-        <tr><td><strong style="color:#999">1</strong></td><td>用語の定義を問うだけ。調べれば分かる</td><td>「交差エントロピーとは何ですか」</td></tr>
-      </table>
+      <div class="card-header"><h3>プレゼンと質問カード</h3></div>
+      <ul class="point-list">
+        <li>プレゼン：presenter 2分 → 他の役割が1分ずつ → 質疑。<strong>外れた予測や行き詰まり</strong>を話す</li>
+        <li>質問カードの最高評価は、<strong>相手の実測値を要求する質問</strong>（検索や LLM では答えられない）</li>
+      </ul>
     </div>
 
     <div class="callout-tip">
-      <h4>LLM とこの授業の立場</h4>
-      <p style="font-size:0.9rem">コードを書く作業も、誤りを見つける作業も、その多くは LLM（大規模言語モデル）を用いたツールに任せられるようになった。人がすべてのコードを一から手で打つ場面は、今後さらに減っていく。</p><p style="font-size:0.9rem;margin-top:0.5rem">一方で、複数の LLM が異なる案を出したとき、あるいは出力が正しいかどうか判断がつかないとき、最終的にコードを読み、根拠をもって「この方法を採る」と決めるのは人間である。その判断ができるかどうかで、LLM を使う人と、LLM に使われる人が分かれる。</p><p style="font-size:0.9rem;margin-top:0.5rem">この授業では LLM の利用を制限しない。そのかわり、LLM が書いたコードを読み解き、実行結果を測定し、その数値が信頼できるかを自分で確かめる力を身につける。それが LLM に仕事を任せるために必要な「コードを読む力」であり、この科目で最も重視する能力である。<strong>自グループの実測値は LLM からは得られない</strong>。</p>
+      <h4>LLM の使い方</h4>
+      <p style="font-size:0.9rem">利用は自由。ただし、出てきたコードを読み、結果を測り、数字が信頼できるかを自分で確かめる。</p>
     </div>
   </div>
 </section>
@@ -996,89 +1349,68 @@ a.sub-item:hover {
   <div class="container">
     <div class="section-header">
       <div class="section-num" style="background:#FFB800">5</div>
-      <h2>演習1（E1-1）環境ベンチマーク ― 自分のマシンを測って台帳に投稿する</h2>
+      <h2>演習1 環境ベンチマーク ― <code>ex1.ipynb</code></h2>
     </div>
-    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem"><code>course1/day1/ex1.ipynb</code> を上から順に実行し、<code>TODO</code> を埋める。実行時間は1分以内。implementer が書き、verifier は隣で条件を変えて再実行する。</p>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">上から実行し、TODO を埋める（1分以内）。</p>
 
     <div class="card standard">
-      <div class="card-header"><h3>ブロック構成（ノートブックの番号と対応）</h3></div>
+      <div class="card-header"><h3>測る前に</h3></div>
+      <ul class="point-list">
+        <li>「速い」には2種類ある：<strong>読み書きの速さ</strong>（B1 帯域 GB/s）と<strong>計算の速さ</strong>（B2 演算 GFLOPS）</li>
+        <li>最初の1回は遅く、1回だけの値はぶれる → ウォームアップして、<strong>2秒回した中央値</strong>を使う</li>
+      </ul>
+    </div>
+
+    <div class="card standard">
+      <div class="card-header"><h3>ブロックと TODO</h3></div>
       <table style="font-size:0.85rem">
-        <tr><th style="width:4rem">#</th><th style="width:7rem">教科書</th><th>内容</th><th style="width:10rem">TODO</th></tr>
-        <tr><td>(0)</td><td>—</td><td>グループと役割の設定。<code>GROUP_ID</code> と <code>MEMBER_ROLE</code> を自分のものに書き換える</td><td>書き換え</td></tr>
-        <tr><td>(1)–(2)</td><td>①、⑬-計測</td><td>インポート、機種情報（チップ・メモリ・OS・PyTorch の版）</td><td>—</td></tr>
-        <tr><td>(3)</td><td>⑤（2.3節）</td><td>使用デバイスの選択。cuda → mps → cpu の3分岐</td><td><strong style="color:#FFB800">TODO 1</strong></td></tr>
-        <tr><td>(4)</td><td>⑬-計測</td><td>同期あり／なしで行列積の時間を比べる</td><td><strong style="color:#FFB800">TODO 2</strong></td></tr>
-        <tr><td>(5)</td><td>⑬-計測</td><td>B1 メモリ帯域（GB/s）。2秒回して中央値</td><td><strong style="color:#FFB800">TODO 3</strong></td></tr>
-        <tr><td>(6)</td><td>⑬-計測</td><td>B2 演算性能（GFLOPS）</td><td><strong style="color:#FFB800">TODO 4</strong></td></tr>
-        <tr><td>(7)–(8)</td><td>⑬-計測</td><td>B3 学習ステップ時間（ms/step）、1GB 確保時のピークメモリ</td><td>—</td></tr>
-        <tr><td>(9)–(10)</td><td>⑬-記録</td><td>台帳（CSV）へ投稿し、読み戻して確認</td><td>—</td></tr>
-        <tr><td>(11)</td><td>—</td><td><span class="tag tag-group">討議</span> グループディスカッション1 → プレゼン1</td><td>討議メモ</td></tr>
+        <tr><th style="width:4rem">#</th><th>内容</th><th style="width:6rem">TODO</th></tr>
+        <tr><td>(0)–(2)</td><td>グループ設定・インポート・機種情報</td><td>書き換え</td></tr>
+        <tr><td>(3)</td><td>使用デバイスの選択</td><td><strong style="color:#FFB800">1</strong></td></tr>
+        <tr><td>(4)</td><td>同期あり／なしの比較</td><td><strong style="color:#FFB800">2</strong></td></tr>
+        <tr><td>(5)</td><td>B1 メモリ帯域</td><td><strong style="color:#FFB800">3</strong></td></tr>
+        <tr><td>(6)</td><td>B2 演算性能</td><td><strong style="color:#FFB800">4</strong></td></tr>
+        <tr><td>(7)–(10)</td><td>B3 学習時間・メモリ・CSV 記録</td><td>—</td></tr>
+        <tr><td>(11)</td><td><span class="tag tag-group">討議</span></td><td>メモ</td></tr>
       </table>
     </div>
 
     <div class="card group">
-      <div class="card-header"><h3>TODO のヒント（答えを写すのではなく、なぜそう書くかを言えるように）</h3></div>
-
-      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.5rem 0 0.2rem">TODO 1：使用デバイスの選択（ブロック 3、教科書テンプレート⑤）</p>
-      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">教科書 2.3 節のテンプレート⑤と同じ3分岐。MPS（Apple GPU）が使えるかの判定 <code>torch.backends.mps.is_available()</code> を <code>MPS_AVAILABLE</code> に書く。未実装のまま実行すると <code>AssertionError: TODO 未実装</code> で止まる。</p>
+      <div class="card-header"><h3>TODO のヒント</h3></div>
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.5rem 0 0.2rem">TODO 1：MPS が使えるか</p>
 <pre>Python
-<span class="cmt"># コードテンプレート⑤</span>
-MPS_AVAILABLE <span class="op">=</span> torch.backends.mps.is_available()
-<span class="kw">if</span> torch.cuda.is_available():
-    device <span class="op">=</span> torch.device(<span class="str">"cuda"</span>)
-<span class="kw">elif</span> MPS_AVAILABLE:
-    device <span class="op">=</span> torch.device(<span class="str">"mps"</span>)
-<span class="kw">else</span>:
-    device <span class="op">=</span> torch.device(<span class="str">"cpu"</span>)
-<span class="fn">print</span>(<span class="str">f"使用デバイス: {device}"</span>)</pre>
-
-      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 2：同期（ブロック 4）</p>
-      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">計測の<strong>前</strong>に1回（先行する計算を終わらせる）、<strong>後</strong>に1回（今の計算を終わらせる）。片方だけでは足りない。</p>
+MPS_AVAILABLE <span class="op">=</span> torch.backends.mps.is_available()</pre>
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 2：計測の前後で同期</p>
 <pre>Python
-synchronize(device)                          <span class="cmt"># 前：先行する計算を全部終わらせてから時計を読む</span>
+synchronize(device)                <span class="cmt"># 前：先の計算を終わらせる</span>
 t0 <span class="op">=</span> time.perf_counter()
 <span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):
     c <span class="op">=</span> a <span class="op">@</span> b
-synchronize(device)                          <span class="cmt"># 後：計算の完了を待ってから時計を読む</span>
-t_sync <span class="op">=</span> (time.perf_counter() <span class="op">-</span> t0) <span class="op">/</span> <span class="num">10</span></pre>
-
-      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 3・4：動いたバイト数と演算数（ブロック 5・6）</p>
-      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">加算は「読み2本＋書き1本」、float32 は4バイト。行列積は N³ 回の乗算と N³ 回の加算。</p>
+synchronize(device)                <span class="cmt"># 後：完了を待ってから時計を読む</span></pre>
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 3・4：動いたバイト数と演算数</p>
 <pre>Python
-bytes_moved <span class="op">=</span> <span class="num">3</span> <span class="op">*</span> n <span class="op">*</span> <span class="num">4</span>        <span class="cmt"># 読み a, b ＋ 書き c，各 4 バイト</span>
-flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</span> N <span class="op">**</span> <span class="num">3</span>            <span class="cmt"># 乗算 N^3 ＋ 加算 N^3</span></pre>
-
-      <div class="callout-info">
-        <h4>M3 MacBook Air（16GB）の参考値 ― 自分の値と桁が違ったら測り方を疑う</h4>
-        <table style="font-size:0.82rem">
-          <tr><th>項目</th><th>参考値</th><th>読み方</th></tr>
-          <tr><td>同期あり／なしの比</td><td>70〜225倍</td><td>CPU ではほぼ1倍。MPS で1倍に近ければ同期を入れ忘れている</td></tr>
-          <tr><td>B1 帯域（定常）</td><td>約 44 GB/s（バースト 84〜90）</td><td>公称 100 GB/s の4〜5割。バーストは公称値の約9割に達する</td></tr>
-          <tr><td>B2 演算（定常）</td><td>約 1,050 GFLOPS（バースト 2,600）</td><td>定常とバーストの差は帯域より大きい</td></tr>
-          <tr><td>B3 学習</td><td>約 55 ms/step（3.7M パラメータの参考）</td><td>授業中の「待ち時間」を決める数字</td></tr>
-        </table>
-      </div>
+bytes_moved <span class="op">=</span> <span class="num">3</span> <span class="op">*</span> n <span class="op">*</span> <span class="num">4</span>   <span class="cmt"># 読み2 ＋ 書き1、float32 は4バイト</span>
+flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</span> N <span class="op">**</span> <span class="num">3</span>       <span class="cmt"># 乗算 N³ ＋ 加算 N³</span></pre>
+      <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">MPS で同期比が1倍に近ければ、同期を入れ忘れている。</p>
     </div>
 
     <div class="card standard">
-      <div class="card-header"><h3>verifier がやること（implementer の隣で）</h3></div>
+      <div class="card-header"><h3>verifier がやること</h3></div>
       <ul class="point-list">
-        <li>ブロック 4 の繰り返し回数 <code>10</code> を <code>1</code> と <code>100</code> にして、同期比がどう動くかを見る</li>
-        <li>ブロック 5 の <code>min_sec=2.0</code> を <code>0.2</code> にして、中央値がバースト側に寄るかを見る</li>
-        <li>電源アダプタを外して（バッテリ駆動で）B2 を測り直す。数値が落ちるか</li>
+        <li>ブロック4の繰り返し回数を 1・100 に変える</li>
+        <li>ブロック5の <code>min_sec</code> を 0.2 にして、値のぶれを見る</li>
+        <li>電源を外して B2 を測り直す</li>
       </ul>
     </div>
 
     <div class="card group" id="disc1">
-      <div class="card-header"><h3>グループディスカッション（5分）― 同期・帯域・演算</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">presenter が進行し、グループの4台の数値を並べる（ノートブックのブロック 11 が自分の行を出す。他の3台は画面を見せ合う）。<strong>全員が1回は発言</strong>。recorder は結論を3行で残す。</p>
+      <div class="card-header"><h3>討議（5分）</h3></div>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li>同期あり／なしの比はグループ内で<strong>何倍から何倍まで</strong>あったか。なぜ機種で違うか</li>
-        <li>帯域は公称値の<strong>何%</strong>出たか。待ち時間用課題に書いた予測と比べてどうか</li>
-        <li>B1（帯域）と B2（演算）で、定常とバーストの差が大きいのは<strong>どちら</strong>か。その理由は</li>
-        <li>グループで最も遅いマシンを基準にすると、今日の演習2は<strong>何倍</strong>の時間がかかる見込みか</li>
+        <li>同期比はグループ内で何倍から何倍か</li>
+        <li>帯域は公称値の何%か</li>
+        <li>機種差が大きいのは B1 と B2 のどちらか</li>
+        <li>最も遅いマシンでは演習2に何倍かかりそうか</li>
       </ol>
-      <div class="notion-submit"><div><strong>記録（recorder）:</strong> 討議メモの4行（範囲・%・B1/B2・倍率）を失敗記録に残す。結論は全体共有で presenter が1分で報告する</div></div>
     </div>
   </div>
 </section>
@@ -1088,86 +1420,57 @@ flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</s
   <div class="container">
     <div class="section-header">
       <div class="section-num" style="background:#FFB800">6</div>
-      <h2>演習2（E1-2）学習済み3モデルの4指標同時測定</h2>
+      <h2>演習2 学習済み3モデルの4指標 ― <code>ex2.ipynb</code></h2>
     </div>
-    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">3つの学習済みモデル（<strong>A1</strong> 埋め込み平均＋MLP／<strong>A2</strong> 1次元畳み込み／<strong>A3</strong> 小型 Transformer）を動かし、正解率・損失・推論時間・メモリを<strong>同じ関数で</strong>測って1枚の表にする。3モデルはパラメータ数を約30万に揃え、同じデータ（SST-2 映画レビューの肯定／否定）で同じ回数だけ学習してある。</p>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem"><strong>A1</strong> 埋め込み平均＋MLP／<strong>A2</strong> 1次元畳み込み／<strong>A3</strong> 小型 Transformer。どれも約30万パラメータ、映画レビューの肯定・否定（SST-2）で学習済み。</p>
 
     <div class="callout-warning">
-      <h4>実行する前に：予測を書く（waiting_task.md）</h4>
-      <p style="font-size:0.9rem;margin-bottom:0.5rem">結果を見る前に、<strong>4人それぞれ</strong>が次の表を埋める。外れた予測がプレゼン2の材料になる。当たった予測より価値がある。</p>
+      <h4>実行する前に予測を書く（各自）</h4>
       <table style="font-size:0.82rem">
-        <tr><th>問い</th><th style="width:6rem">予測</th><th>根拠（一言）</th><th style="width:6rem">実際</th></tr>
-        <tr><td>最も正解率が高いのは</td><td></td><td></td><td></td></tr>
-        <tr><td>最も損失が低いのは</td><td></td><td></td><td></td></tr>
-        <tr><td>1000文あたり最も速いのは</td><td></td><td></td><td></td></tr>
-        <tr><td>1文あたり最も速いのは</td><td></td><td></td><td></td></tr>
-        <tr><td>推論中のメモリが最も少ないのは</td><td></td><td></td><td></td></tr>
-        <tr><td>正解率1位と損失1位は同じモデルか</td><td>はい／いいえ</td><td></td><td></td></tr>
-      </table>
-    </div>
-
-    <div class="card standard">
-      <div class="card-header"><h3>ブロック構成</h3></div>
-      <table style="font-size:0.85rem">
-        <tr><th style="width:4rem">#</th><th style="width:7rem">教科書</th><th>内容</th><th style="width:10rem">TODO</th></tr>
-        <tr><td>(1)–(2)</td><td>①、⑤</td><td>インポート、使用デバイスの選択</td><td>—</td></tr>
-        <tr><td>(3)</td><td>②③-テキスト</td><td>乱数固定の3行とデータセット。評価にはテストデータ（1,821文。訓練にも検証にも使っていない文）を使う</td><td>—</td></tr>
-        <tr><td>(4)</td><td>④⑥-計測用</td><td>ミニバッチを<strong>先にデバイスへ載せる</strong>（転送時間を混ぜない）。形状を確認する</td><td>—</td></tr>
-        <tr><td>(5)</td><td>⑦-学習済みモデル（8章）</td><td>学習済みモデルのロード。<code>load_state_dict</code> で読み込み、評価モードにする</td><td><strong style="color:#FFB800">TODO 1</strong></td></tr>
-        <tr><td>(6)</td><td>⑧⑫-4指標</td><td>損失関数と正解率。教科書⑫の3行で予測クラスを取り、正解数を数える</td><td><strong style="color:#FFB800">TODO 2</strong></td></tr>
-        <tr><td>(7)</td><td>⑬-計測</td><td>推論時間。スループット（1000文あたり ms）とレイテンシ（1文 ms）</td><td><strong style="color:#FFB800">TODO 3</strong></td></tr>
-        <tr><td>(8)</td><td>⑬-計測</td><td>メモリ。重みの大きさと推論中のピーク（順伝播フックで同期的に読む）</td><td>—</td></tr>
-        <tr><td>(9)–(11)</td><td>⑫-4指標、⑬-記録</td><td>GPU を2秒間動作させて定常状態にしてから3モデルを同時測定 → 予測と照合 → CSV に記録</td><td>—</td></tr>
-        <tr><td>(12)</td><td>—</td><td><span class="tag tag-group">討議</span> グループディスカッション2 → プレゼン2</td><td>討議メモ</td></tr>
+        <tr><th>問い</th><th style="width:6rem">予測</th><th style="width:6rem">実際</th></tr>
+        <tr><td>正解率が最も高いのは</td><td></td><td></td></tr>
+        <tr><td>損失が最も低いのは</td><td></td><td></td></tr>
+        <tr><td>1000文あたり最も速いのは</td><td></td><td></td></tr>
+        <tr><td>1文あたり最も速いのは</td><td></td><td></td></tr>
+        <tr><td>推論中のメモリが最も少ないのは</td><td></td><td></td></tr>
       </table>
     </div>
 
     <div class="card group">
       <div class="card-header"><h3>TODO のヒント</h3></div>
-
-      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.5rem 0 0.2rem">TODO 1：学習済みモデルのロードと評価モード（ブロック 5、教科書⑦-学習済みモデル／8章）</p>
-      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">重みファイルには構造の情報（隠れ幅など）も入っている。同じ構造を組み立ててから <code>load_state_dict</code> で学習済みパラメータを読み込む。推論だけなので評価モードにして Dropout などを無効化する。</p>
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.5rem 0 0.2rem">TODO 1：重みを読み込み、評価モードに（ブロック5）</p>
 <pre>Python
-model.load_state_dict(ckpt[<span class="str">"state_dict"</span>])   <span class="cmt"># 学習済みモデルのロード</span>
-model.eval()                                <span class="cmt"># 評価モード（Dropout などを無効化）</span></pre>
-
-      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 2：予測クラスと正解数（ブロック 6、教科書テンプレート⑫）</p>
-      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">教科書⑫の3行をそのまま書く。<code>torch.max(outputs.data, 1)</code> は（最大値, その位置）を返し、位置が予測クラスになる。未実装だと <code>AssertionError: TODO 未実装</code> で止まる。</p>
+model.load_state_dict(ckpt[<span class="str">"state_dict"</span>])
+model.eval()</pre>
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 2：予測クラスと正解数（ブロック6）</p>
 <pre>Python
-_, predicted <span class="op">=</span> torch.max(outputs.data, <span class="num">1</span>)     <span class="cmt"># 教科書⑫と同じ：確率最大のクラス</span>
+_, predicted <span class="op">=</span> torch.max(outputs.data, <span class="num">1</span>)
 total <span class="op">+=</span> labels.size(<span class="num">0</span>)
 correct <span class="op">+=</span> (predicted <span class="op">==</span> labels).sum().item()</pre>
-
-      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 3：時計を読む前に同期（ブロック 7）</p>
-      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.3rem">演習1と同じ。<strong>この TODO を忘れてもエラーは出ない</strong>。数値が不自然に小さくなるだけ。verifier は同期を外した値と比べて何倍の差が生じるかを記録する。</p>
+      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 3：時計を読む前に同期（ブロック7）</p>
 <pre>Python
-<span class="kw">for</span> tokens, _ <span class="kw">in</span> batches:
-    model(tokens)
-synchronize(device)                       <span class="cmt"># 計算の完了を待ってから時計を読む</span>
+synchronize(device)                <span class="cmt"># 忘れてもエラーは出ない。値が小さくなるだけ</span>
 times.append(time.perf_counter() <span class="op">-</span> t0)</pre>
 
       <div class="callout-info">
-        <h4>M3 MacBook Air の参考値（配布した重み。正解率と損失は機種によらず同じ）</h4>
+        <h4>参考値（M3 MacBook Air。正解率・損失は機種によらず同じ）</h4>
         <table style="font-size:0.82rem">
-          <tr><th>model</th><th>Accuracy</th><th>Loss</th><th>ms / 1000文</th><th>ms / 1文</th><th>peak MB</th></tr>
-          <tr><td>A1 埋め込み平均＋MLP</td><td>0.8056</td><td>0.4664</td><td>6.0</td><td>0.71</td><td>1.16</td></tr>
-          <tr><td>A2 1次元畳み込み</td><td>0.7897</td><td>0.6941</td><td>26.9</td><td>0.75</td><td>8.0</td></tr>
-          <tr><td>A3 小型 Transformer</td><td>0.8094</td><td>0.4348</td><td>81.3</td><td>1.68</td><td>11.47</td></tr>
+          <tr><th>model</th><th>正解率</th><th>損失</th><th>ms / 1000文</th><th>ms / 1文</th><th>peak MB</th></tr>
+          <tr><td>A1</td><td>0.8056</td><td>0.4664</td><td>6.0</td><td>0.71</td><td>1.16</td></tr>
+          <tr><td>A2</td><td>0.7897</td><td>0.6941</td><td>26.9</td><td>0.75</td><td>8.0</td></tr>
+          <tr><td>A3</td><td>0.8094</td><td>0.4348</td><td>81.3</td><td>1.68</td><td>11.47</td></tr>
         </table>
-        <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">正解率・損失・パラメータ数は2回実行しても完全に一致する。時間は実行ごとに数%変動する。<strong>1つのモデルが4指標すべてで最良にはならない</strong>ことを確認する。</p>
       </div>
     </div>
 
     <div class="card group" id="disc2">
-      <div class="card-header"><h3>グループディスカッション（5分）― 外れた予測から話す</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">予測表を4人分並べ、<strong>外れた予測から</strong>話す。全員が1回は発言する。ブロック 12 が4指標の順位表を出す。</p>
+      <div class="card-header"><h3>討議（5分）― 外れた予測から話す</h3></div>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li>正解率1位と損失1位は同じモデルか。違うなら、<strong>損失は何を余分に見ている</strong>か</li>
-        <li>1000文あたりの時間と1文の時間で速いモデルは同じか。違うなら、どちらの指標が<strong>「実運用」に近い</strong>か</li>
-        <li>パラメータ数が同じなのに推論中のピークメモリが違うのは<strong>なぜ</strong>か（各モデルの <code>forward</code> を見て答える）</li>
-        <li>正解率の差 0.4 ポイントは「差がある」と言えるか。言えないなら、<strong>何を測れば</strong>言えるようになるか（→ 第4回で扱う）</li>
+        <li>正解率1位と損失1位は同じモデルか</li>
+        <li>1000文と1文で速いモデルは同じか。実運用に近いのはどちらか</li>
+        <li>パラメータ数が同じなのに、メモリのピークが違うのはなぜか</li>
+        <li>正解率の差 0.4 ポイントは「差がある」と言えるか（→ 第4回）</li>
       </ol>
-      <div class="notion-submit"><div><strong>全体共有:</strong> presenter が「外れた予測とその理由」を1分で報告する。verifier は条件を変えた再実験（バッチサイズ、繰り返し回数、同期の有無）で何が変わったかを記録し、recorder は「外れた予測／理由の仮説／次に測るべきもの」を残す。演習2 の表は第2回の「良いAI」の定義と順位づけで使う</div></div>
     </div>
   </div>
 </section>
@@ -1177,34 +1480,26 @@ times.append(time.perf_counter() <span class="op">-</span> t0)</pre>
   <div class="container">
     <div class="section-header">
       <div class="section-num" style="background:#FFB800">✓</div>
-      <h2>提出前チェックと次回予告</h2>
+      <h2>提出前チェック</h2>
     </div>
 
     <div class="card standard">
-      <div class="card-header"><h3>✅ 出す前に、この順で確認する</h3></div>
 <pre>Bash
-<span class="cmt"># グループ番号を入れて形式検証（OK が出るまで提出しない）</span>
-<span class="fn">python</span> course1/day1/verify.py --group 12
-
-<span class="cmt"># 出るべきファイル（グループ 12 の例）</span>
-<span class="fn">ls</span> results/ | <span class="fn">grep</span> _12
-<span class="cmt"># c1_d1_ex0_12.csv  c1_d1_ex1_12.csv  c1_d1_ex2_12.csv  table_c1_d1_ex2_12.csv</span></pre>
+<span class="fn">python</span> course1/day1/verify.py --group 12   <span class="cmt"># OK が出るまで提出しない</span></pre>
       <table style="font-size:0.82rem">
         <tr><th style="width:5%"></th><th>確認項目</th></tr>
-        <tr><td><input type="checkbox"></td><td>演習1の CSV に<strong>グループ全員分</strong>の行がある（各自が自分のマシンで投稿 → グループで共有し、自分の <code>results/</code> に集める）</td></tr>
-        <tr><td><input type="checkbox"></td><td>演習2の表に A1・A2・A3 の3行があり、4指標＋パラメータ数が入っている</td></tr>
-        <tr><td><input type="checkbox"></td><td>GW3 の <code>ex0.ipynb</code> が正しい順で最後まで実行され、<code>c1_d1_ex0_&lt;グループ&gt;.csv</code> に正解率が記録されている</td></tr>
-        <tr><td><input type="checkbox"></td><td>グループで共有した記入済みの穴埋めシート（PDF または写真）が手元にある</td></tr>
-        <tr><td><input type="checkbox"></td><td>recorder から共有された失敗記録・討議メモ（GW1〜3、演習1、演習2）が手元にある</td></tr>
-        <tr><td><input type="checkbox"></td><td><code>verify.py</code> が <code>OK: 提出物の形式に問題なし</code> を出した</td></tr>
-        <tr><td><input type="checkbox"></td><td>zip にしていない。ファイル名にグループ番号（<code>_12</code> など）が入ったまま、名前を変えていない</td></tr>
+        <tr><td><input type="checkbox"></td><td>ex0 の CSV に試行①②③の3回分がある</td></tr>
+        <tr><td><input type="checkbox"></td><td>演習1 の CSV にグループ全員分の行がある</td></tr>
+        <tr><td><input type="checkbox"></td><td>演習2 の表に A1・A2・A3 の3行がある</td></tr>
+        <tr><td><input type="checkbox"></td><td>穴埋めシートと失敗記録・討議メモが手元にある</td></tr>
+        <tr><td><input type="checkbox"></td><td>zip にせず、ファイル名を変えていない</td></tr>
       </table>
-      <div class="notion-submit"><div><strong>提出:</strong> 上記のファイルを zip にせず、そのまま <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の課題「第1回」へ<strong>各自がアップロード</strong>する（グループ全員が一人ずつ提出する）。演習2の CSV は<strong>第7回のベースライン</strong>になるので、自分のマシンにも保存しておくこと</div></div>
+      <div class="notion-submit"><div><strong>提出:</strong> <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の「第1回」へ各自アップロード</div></div>
     </div>
 
     <div class="callout-tip">
-      <h4>次回予告 ― 第2回「良いAIとは何を測ることか」と「勾配の観測」</h4>
-      <p style="font-size:0.9rem">前半は今日の演習2の表を使い、グループで「良いAI」を一文で定義して3モデルの順位を出す。同じ数値からグループごとに違う順位が出ることを、質問カード交換で他グループと比べる。後半は自分で学習を回し、<strong>層ごとの勾配の大きさ</strong>を記録して可視化する。今日並び替えたテンプレート⑩の学習ループがそのまま使われる。</p>
+      <h4>次回：「良いAI」の定義と勾配の観測</h4>
+      <p style="font-size:0.9rem">演習2の表から「良いAI」を定義して順位を出し、他グループと比べる。後半は層ごとの勾配を記録する。</p>
     </div>
   </div>
 </section>
