@@ -468,8 +468,8 @@ a.sub-item:hover {
   <a href="#sec-purpose">授業の目的</a>
   <a href="#sec-flow">本日の流れ</a>
   <a href="#sec-prep">0. 環境構築</a>
-  <a href="#sec-lecture">1. AIは何を学習するのか</a>
   <a href="#sec-gw1" class="nav-assignment">GW1 討議</a>
+  <a href="#sec-lecture">1. AIは何を学習するのか</a>
   <a href="#sec-gw2" class="nav-assignment">GW2 並び替え</a>
   <a href="#sec-gw3" class="nav-assignment">GW3 コードを組み立てる</a>
   <a href="#sec-roles">4. 役割とルール</a>
@@ -746,6 +746,38 @@ a.sub-item:hover {
   </div>
 </section>
 
+<!-- ============ GW1 ============ -->
+<section id="sec-gw1">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num" style="background:#81D4FA">GW1</div>
+      <h2>グループディスカッション「AIは何を学習するのか」（15分）</h2>
+    </div>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">穴埋めシート（下のリンクから PDF をダウンロード）の GW1 のページを埋める。教科書1章の内容を、答えを見ずに自分たちの言葉で再構成する。</p>
+    <div class="callout-info">
+      <h4>穴埋めシート（PDF をダウンロードして使う）</h4>
+      <p style="font-size:0.9rem">グループで1部、<a href="slides/aitd1_week1_groupwork.pdf" style="color:#4FC3F7"><strong>穴埋めシート（PDF、3ページ）</strong></a> をダウンロードする。記入は次のどちらでもよい。</p>
+      <ul class="point-list" style="margin-top:0.4rem">
+        <li><strong>PDF に注釈で書く</strong>：Mac の「プレビュー」や iPad で開き、黄色の欄にテキスト注釈を入れる。チップ（人が設計／データから学習）は、欄に文字で書けばよい</li>
+        <li><strong>印刷して手書き</strong>：教室のプリンタでグループ1部を印刷し、ペンで記入する。終わったらスマートフォンで撮影する</li>
+      </ul>
+      <p style="font-size:0.85rem;color:#ccc;margin-top:0.5rem">完成したシート（PDF または写真）はグループ全員に共有し、<strong>各自が自分の提出物に含める</strong>。Google スライドで共同編集したいグループは <a href="slides/aitd1_week1_groupwork.pptx" style="color:#4FC3F7">pptx 版</a> を Google ドライブにアップロードして「Google スライドで開く」を使ってよい。</p>
+    </div>
+
+    <div class="card group">
+      <div class="card-header"><h3>GW1-1 AIの3つのアプローチ ― 表を完成させる</h3></div>
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">ルールベース／従来の機械学習／深層学習について、「主な時期」「特徴量（どこに注目するか）」「判定ルール（どう判定するか）」「代表的な手法」を埋める。特徴量と判定ルールの欄には<strong>「人が設計」か「データから学習」</strong>のチップを貼る。</p>
+      <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
+        <li>「人が設計」から「データから学習」へ移ったのは、表の<strong>どの欄が先</strong>か</li>
+        <li>深層学習でも<strong>人が決めているもの</strong>は何か（3つ）</li>
+        <li>3つのアプローチは置き換わったのか、使い分けられているのか。身近な例を1つ挙げる</li>
+      </ol>
+    </div>
+
+
+  </div>
+</section>
+
 <!-- ============ SECTION 2: LECTURE ============ -->
 <section id="sec-lecture">
   <div class="container">
@@ -816,38 +848,6 @@ a.sub-item:hover {
         <p style="font-size:0.9rem">最初の数百 ms だけ GPU が速く（実測 2.6 TFLOPS）、1秒ほどで定常値（約 1.05 TFLOPS）に落ちる。短時間の計測は過大な値を与える。演習では<strong>最低2秒回して中央値</strong>を定常値とし、初回の値は「バースト」として別に見る。</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ============ GW1 ============ -->
-<section id="sec-gw1">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-num" style="background:#81D4FA">GW1</div>
-      <h2>グループディスカッション「AIは何を学習するのか」（15分）</h2>
-    </div>
-    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">穴埋めシート（下のリンクから PDF をダウンロード）の GW1 のページを埋める。教科書1章の内容を、答えを見ずに自分たちの言葉で再構成する。</p>
-    <div class="callout-info">
-      <h4>穴埋めシート（PDF をダウンロードして使う）</h4>
-      <p style="font-size:0.9rem">グループで1部、<a href="slides/aitd1_week1_groupwork.pdf" style="color:#4FC3F7"><strong>穴埋めシート（PDF、3ページ）</strong></a> をダウンロードする。記入は次のどちらでもよい。</p>
-      <ul class="point-list" style="margin-top:0.4rem">
-        <li><strong>PDF に注釈で書く</strong>：Mac の「プレビュー」や iPad で開き、黄色の欄にテキスト注釈を入れる。チップ（人が設計／データから学習）は、欄に文字で書けばよい</li>
-        <li><strong>印刷して手書き</strong>：教室のプリンタでグループ1部を印刷し、ペンで記入する。終わったらスマートフォンで撮影する</li>
-      </ul>
-      <p style="font-size:0.85rem;color:#ccc;margin-top:0.5rem">完成したシート（PDF または写真）はグループ全員に共有し、<strong>各自が自分の提出物に含める</strong>。Google スライドで共同編集したいグループは <a href="slides/aitd1_week1_groupwork.pptx" style="color:#4FC3F7">pptx 版</a> を Google ドライブにアップロードして「Google スライドで開く」を使ってよい。</p>
-    </div>
-
-    <div class="card group">
-      <div class="card-header"><h3>GW1-1 AIの3つのアプローチ ― 表を完成させる</h3></div>
-      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">ルールベース／従来の機械学習／深層学習について、「主な時期」「特徴量（どこに注目するか）」「判定ルール（どう判定するか）」「代表的な手法」を埋める。特徴量と判定ルールの欄には<strong>「人が設計」か「データから学習」</strong>のチップを貼る。</p>
-      <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li>「人が設計」から「データから学習」へ移ったのは、表の<strong>どの欄が先</strong>か</li>
-        <li>深層学習でも<strong>人が決めているもの</strong>は何か（3つ）</li>
-        <li>3つのアプローチは置き換わったのか、使い分けられているのか。身近な例を1つ挙げる</li>
-      </ol>
-    </div>
-
-
   </div>
 </section>
 
