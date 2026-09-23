@@ -482,6 +482,7 @@ a.sub-item:hover {
   <a href="#sec-gw1" class="nav-assignment">GW1 討議</a>
   <a href="#sec-gw2" class="nav-assignment">GW2 並び替え</a>
   <a href="#sec-gw3" class="nav-assignment">GW3 コードを組み立てる</a>
+  <a href="#sec-opt" class="nav-assignment">オプション課題</a>
   <a href="#sec-roles">1. 役割とルール</a>
   <a href="#sec-ex1" class="nav-assignment">演習1 環境を測る</a>
   <a href="#sec-submit" class="nav-exam">提出</a>
@@ -558,6 +559,7 @@ a.sub-item:hover {
         <a href="#sec-gw3" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">GW3</span>ex0_1〜ex0_3 の3ファイル ／ c1_d1_ex0_&lt;グループ&gt;.csv</a>
         <a href="#sec-ex1" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-standard">演習1</span>c1_d1_ex1_&lt;グループ&gt;.csv</a>
         <a href="#sec-roles" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">ノート</span>失敗記録・討議メモ</a>
+        <a href="#sec-opt" class="sub-item" style="text-decoration:none;color:inherit;border-color:#66BB6A"><span class="sub-count" style="background:#66BB6A">任意</span><span class="tag" style="background:#0a1a2e;color:#66BB6A">オプション</span>opt_datasize.ipynb ／ c1_d1_opt1_&lt;グループ&gt;.csv</a>
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:1rem;font-size:0.85rem;color:#81D4FA">
         <strong>手順:</strong> ① グループで共有（演習1 の各自の行・シート・メモ）→ ② 自分の <code>results/</code> に集める → ③ <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の「第1回」へ<strong>自分で</strong>アップロード
@@ -1374,6 +1376,43 @@ model</pre>
         <li>②→③で何ポイント変わったか。検証は60枚（1枚 ≒ 1.7ポイント）。「上がった」と言えるか</li>
       </ol>
       <div class="notion-submit"><div><strong>プレゼン1:</strong> 代表が結論を2分 → 他のメンバーが1分ずつ</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPTION ============ -->
+<section id="sec-opt">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num" style="background:#66BB6A">任意</div>
+      <h2>オプション課題：何枚あれば学習できるか ― <code>opt_datasize.ipynb</code></h2>
+    </div>
+    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">FashionMNIST の学習に使う枚数を 100〜48,000 枚に変えると、正解率はどう変わるか。MLP と CNN で違うか。<strong>やってみるまで分からない実験</strong>を、<strong>3〜4グループで組んで</strong>分担する。提出は任意。</p>
+
+    <div class="card group">
+      <div class="card-header"><h3>分担表（組んだ3〜4グループで12の条件を埋める）</h3></div>
+      <table style="font-size:0.85rem">
+        <tr><th style="width:8rem">学習に使う枚数</th><th>MLP の担当</th><th>CNN の担当</th></tr>
+          <tr><td>100 枚</td><td></td><td></td></tr>
+          <tr><td>300 枚</td><td></td><td></td></tr>
+          <tr><td>1,000 枚</td><td></td><td></td></tr>
+          <tr><td>3,000 枚</td><td></td><td></td></tr>
+          <tr><td>10,000 枚</td><td></td><td></td></tr>
+          <tr><td>48,000 枚</td><td></td><td></td></tr>
+      </table>
+      <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">枚数が多いほど時間がかかる。48,000 枚は速いマシンの人が担当する。同じ条件を2人以上が実行すると、値のぶれも見える。</p>
+    </div>
+
+    <div class="card group">
+      <div class="card-header"><h3>手順</h3></div>
+      <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
+        <li><strong>予測</strong>：実行する前に、ノートブックの (1) に予測を書く</li>
+        <li><strong>実行</strong>：(2) に自分の担当（<code>MODEL</code> と <code>N_TRAIN</code>）を書き、(3) を実行する</li>
+        <li><strong>共有</strong>：自分の CSV を仲間全員に送り、受け取った CSV は <code>results/opt_shared/</code> に入れる</li>
+        <li><strong>グラフ</strong>：(5) を実行すると、集まった全員分が1枚のグラフになる（何回実行してもよい）</li>
+        <li><strong>考察</strong>：(6) の4問に答える</li>
+      </ol>
+      <div class="notion-submit"><div><strong>提出（任意）:</strong> <code>opt_datasize.ipynb</code> と自分の <code>c1_d1_opt1_&lt;グループ&gt;.csv</code> を <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の「第1回」へ。期限は次回の授業開始まで</div></div>
     </div>
   </div>
 </section>

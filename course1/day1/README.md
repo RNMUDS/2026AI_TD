@@ -25,6 +25,7 @@ code .                           # カーネルに .venv の Python 3.12 を選�
 | `ex0_2_mlp_original.ipynb` | GW3 試行②：MLP × オリジナル画像（①と同じカード＋M〜Q） |
 | `ex0_3_cnn_original.ipynb` | GW3 試行③：シンプルな CNN × オリジナル画像（②と同じカード＋R）．最後に MLP と CNN の説明課題 |
 | `ex1.ipynb` | 演習1：環境ベンチマーク |
+| `opt_datasize.ipynb` | オプション課題（任意）：何枚あれば学習できるか．3〜4 グループで 12 条件を分担 |
 
 オリジナル画像は `assets/cable1/`（2 クラス × 100 枚）．
 
