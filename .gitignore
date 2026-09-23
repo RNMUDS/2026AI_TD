@@ -16,3 +16,5 @@ assets/corpus/
 .ipynb_checkpoints/
 # 受講者手順の動作確認用クローン先
 Student/
+# 受講者の実行環境・成果物（build_student_dist.py が追加）
+assets/data/

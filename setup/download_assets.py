@@ -31,9 +31,9 @@ def main():
     # ---- 1) コーパス
     t0 = time.perf_counter()
     if npz.exists() and vj.exists():
-        print(f"[1/2] コーパス（{c['name']}）は取得済み ... スキップ", flush=True)
+        print(f"[1/3] コーパス（{c['name']}）は取得済み ... スキップ", flush=True)
     else:
-        print(f"[1/2] コーパス（{c['name']}）を HuggingFace Hub から取得中（約 5MB，1〜2 分） ...", flush=True)
+        print(f"[1/3] コーパス（{c['name']}）を HuggingFace Hub から取得中（約 5MB，1〜2 分） ...", flush=True)
         try:
             data.prepare_corpus(cfg)
         except Exception as e:  # noqa: BLE001
@@ -48,18 +48,37 @@ def main():
     print(f"      訓練 {len(d['X_train']):,} 文 / 検証 {len(d['X_dev']):,} 文 / テスト {len(d['X_test']):,} 文 "
           f"/ 語彙 {vocab_n:,} 語 / 系列長 {d['X_test'].shape[1]}  （{npz.name} {mb(npz)}）", flush=True)
 
-    # ---- 2) 学習済み重み
+    # ---- 2) FashionMNIST（GW3 の教科書コード用．torchvision が assets/data に取得する，約 30MB）
+    t0 = time.perf_counter()
+    fm = ASSETS / "data" / "FashionMNIST" / "raw"
+    if fm.exists() and any(fm.glob("*-ubyte")):
+        print("[2/3] FashionMNIST は取得済み ... スキップ", flush=True)
+    else:
+        print("[2/3] FashionMNIST（画像 7 万枚，約 30MB）を取得中（1〜2 分） ...", flush=True)
+        try:
+            from torchvision import datasets
+            datasets.FashionMNIST(root=str(ASSETS / "data"), train=True, download=True)
+            datasets.FashionMNIST(root=str(ASSETS / "data"), train=False, download=True)
+        except Exception as e:  # noqa: BLE001
+            print(f"      失敗: {type(e).__name__}: {str(e)[:200]}", flush=True)
+            print("\n===== 失敗 =====")
+            print("FashionMNIST を取得できませんでした．ネットワークを確認して再実行してください．")
+            return 1
+        print(f"      完了 ({time.perf_counter() - t0:.1f} 秒)", flush=True)
+    print(f"      訓練 60,000 枚 / テスト 10,000 枚（28×28 グレースケール，10 クラス）", flush=True)
+
+    # ---- 3) 学習済み重み
     w = ASSETS / "weights"
     url = cfg["day1"].get("weights_url") or ""
     need = [w / f"day1_{a}.pt" for a in ("A1", "A2", "A3")] + [w / "day1_meta.json"]
     if url:
-        print("[2/2] 学習済み重みをダウンロード中 ...", flush=True)
+        print("[3/3] 学習済み重みをダウンロード中 ...", flush=True)
         import io, zipfile, urllib.request
         w.mkdir(parents=True, exist_ok=True)
         with urllib.request.urlopen(url, timeout=120) as r:
             zipfile.ZipFile(io.BytesIO(r.read())).extractall(w)
     else:
-        print("[2/2] 学習済み重み（リポジトリに同梱）を確認中 ...", flush=True)
+        print("[3/3] 学習済み重み（リポジトリに同梱）を確認中 ...", flush=True)
     missing = [p.name for p in need if not p.exists()]
     if missing:
         print(f"      失敗: 見つからないファイル {missing}", flush=True)
@@ -75,7 +94,7 @@ def main():
     print("\n===== 完了 =====")
     print(f"コーパス: {out}")
     print(f"重み    : {w}")
-    print("演習2（学習済み 3 モデルの測定）の準備ができています．")
+    print("GW3（FashionMNIST）と演習2（学習済み 3 モデルの測定）の準備ができています．")
     return 0
 
 
