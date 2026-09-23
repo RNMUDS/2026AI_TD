@@ -14,8 +14,7 @@ from common.logger import COLUMNS  # noqa: E402
 REQ = {
     "ex0": {"test_accuracy", "epochs", "train_sec", "val_acc_best"},
     "ex1": {"bandwidth_gbps", "matmul_gflops", "train_step_ms", "memory_gb"},
-    "ex2": {"accuracy", "loss", "infer_ms_per_1000", "peak_mem_mb", "params"},
-}
+}   # 演習2（ex2）は第2回の冒頭へ移したので，第1回の提出物には含めない
 
 
 def check(group, root=RESULTS):
@@ -43,9 +42,6 @@ def check(group, root=RESULTS):
             models = set(df.loc[df["metric_name"] == "accuracy", "condition"])
             if models != {"A1", "A2", "A3"}:
                 problems.append(f"{p.name}: 3 モデル分の accuracy がない {sorted(models)}")
-    tbl = root / f"table_c1_d1_ex2_{g}.csv"
-    if not tbl.exists():
-        problems.append(f"{tbl.name} がない")
     return problems, info
 
 

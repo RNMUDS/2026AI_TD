@@ -480,12 +480,10 @@ a.sub-item:hover {
   <a href="#sec-flow">本日の流れ</a>
   <a href="#sec-prep">0. 環境構築</a>
   <a href="#sec-gw1" class="nav-assignment">GW1 討議</a>
-  <a href="#sec-lecture">1. 良いAIとは</a>
   <a href="#sec-gw2" class="nav-assignment">GW2 並び替え</a>
   <a href="#sec-gw3" class="nav-assignment">GW3 コードを組み立てる</a>
-  <a href="#sec-roles">4. 役割とルール</a>
+  <a href="#sec-roles">1. 役割とルール</a>
   <a href="#sec-ex1" class="nav-assignment">演習1 環境を測る</a>
-  <a href="#sec-ex2" class="nav-assignment">演習2 3モデルを測る</a>
   <a href="#sec-submit" class="nav-exam">提出</a>
 </nav>
 
@@ -495,7 +493,7 @@ a.sub-item:hover {
     <div class="hero-badge">人工知能(AI)テクノロジデザインⅠ（AI_TD1）─ 2026年度 3学期</div>
     <p style="font-size:0.85rem;opacity:0.7;margin-bottom:0.3rem">武蔵野大学データサイエンス学部　中村 亮太</p>
     <h1>第1回: AIは何を学習し、どう組み立て、どう測るか</h1>
-    <p>本質（GW1）→ 型（GW2・GW3：コードを組み立て、MLP と CNN を比べる）→ 測定（演習1・2：マシンとモデルを測る）。</p>
+    <p>本質（GW1）→ 型（GW2・GW3：コードを組み立て、MLP と CNN を比べる）→ 測定（演習1：自分のマシンを測る）。</p>
   </div>
 </header>
 
@@ -534,8 +532,8 @@ a.sub-item:hover {
           </ul>
           <table style="font-size:0.85rem">
             <tr><th style="width:4rem">回</th><th>テーマ</th><th>やること</th></tr>
-            <tr><td><strong style="color:#4FC3F7">1</strong></td><td>AIの性能を測る</td><td>コードの組み立て／環境ベンチマーク／3モデルの4指標</td></tr>
-            <tr><td>2</td><td>勾配の観測</td><td>層別勾配ノルム／学習率ジグソー</td></tr>
+            <tr><td><strong style="color:#4FC3F7">1</strong></td><td>AIの性能を測る</td><td>コードの組み立て（MLP・CNN）／環境ベンチマーク</td></tr>
+            <tr><td>2</td><td>勾配の観測</td><td>3モデルの4指標／「良いAI」の順位／層別勾配ノルム</td></tr>
             <tr><td>3</td><td>過学習と評価指標</td><td>過学習を作る／正則化3手法</td></tr>
             <tr><td><strong style="color:#FFB800">4 ★</strong></td><td>再現性と分散</td><td>シード5回／差÷標準偏差</td></tr>
             <tr><td>5</td><td>アーキテクチャ比較</td><td>27セルの格子を分担</td></tr>
@@ -557,7 +555,6 @@ a.sub-item:hover {
         <a href="#sec-gw1" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">GW1・GW2</span>穴埋めシート（PDF）</a>
         <a href="#sec-gw3" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">GW3</span>ex0.ipynb ／ c1_d1_ex0_&lt;グループ&gt;.csv</a>
         <a href="#sec-ex1" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-standard">演習1</span>c1_d1_ex1_&lt;グループ&gt;.csv</a>
-        <a href="#sec-ex2" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">演習2</span>c1_d1_ex2_&lt;グループ&gt;.csv ／ table_c1_d1_ex2_&lt;グループ&gt;.csv</a>
         <a href="#sec-roles" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">ノート</span>失敗記録・討議メモ</a>
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:1rem;font-size:0.85rem;color:#81D4FA">
@@ -579,13 +576,12 @@ a.sub-item:hover {
         <tr><th style="width:6rem">時間</th><th>内容</th><th style="width:8rem">形式</th></tr>
         <tr><td>0–10</td><td>今日の問い・グループ確認</td><td>講義</td></tr>
         <tr><td>10–35</td><td><a href="#sec-prep" style="color:#4FC3F7">環境構築</a></td><td>個人</td></tr>
-        <tr><td>35–50</td><td><a href="#sec-gw1" style="color:#4FC3F7"><strong>GW1</strong></a> AIの3つのアプローチ</td><td><span class="tag tag-group">討議</span></td></tr>
-        <tr><td>50–60</td><td><a href="#sec-gw2" style="color:#4FC3F7"><strong>GW2</strong></a> プログラミングの流れ・テンソル</td><td><span class="tag tag-group">討議</span></td></tr>
-        <tr><td>60–95</td><td><a href="#sec-gw3" style="color:#4FC3F7"><strong>GW3</strong></a> コードを組み立てる（MLP → CNN）</td><td>グループ</td></tr>
-        <tr><td>95–105</td><td>グループ内プレゼン1</td><td><span class="tag tag-group">発表</span></td></tr>
-        <tr><td>105–110</td><td><a href="#sec-roles" style="color:#4FC3F7">役割とルール</a></td><td>講義</td></tr>
-        <tr><td>110–118</td><td><a href="#sec-ex1" style="color:#4FC3F7">演習1</a> 環境ベンチマーク</td><td>個人 → グループ</td></tr>
-        <tr><td>118–140</td><td><a href="#sec-ex2" style="color:#4FC3F7">演習2</a> 3モデルの4指標</td><td>個人 → グループ</td></tr>
+        <tr><td>35–60</td><td><a href="#sec-gw1" style="color:#4FC3F7"><strong>GW1</strong></a> AIの3つのアプローチ・図の穴埋め</td><td><span class="tag tag-group">討議</span></td></tr>
+        <tr><td>60–70</td><td><a href="#sec-gw2" style="color:#4FC3F7"><strong>GW2</strong></a> プログラミングの流れ・テンソル</td><td><span class="tag tag-group">討議</span></td></tr>
+        <tr><td>70–105</td><td><a href="#sec-gw3" style="color:#4FC3F7"><strong>GW3</strong></a> コードを組み立てる（MLP → CNN）</td><td>グループ</td></tr>
+        <tr><td>105–115</td><td>グループ内プレゼン1</td><td><span class="tag tag-group">発表</span></td></tr>
+        <tr><td>115–120</td><td><a href="#sec-roles" style="color:#4FC3F7">役割とルール</a></td><td>講義</td></tr>
+        <tr><td>120–140</td><td><a href="#sec-ex1" style="color:#4FC3F7">演習1</a> 環境ベンチマーク</td><td>個人 → グループ</td></tr>
         <tr><td>140–150</td><td>全体共有・次回予告</td><td>全体</td></tr>
       </table>
     </div>
@@ -675,7 +671,7 @@ a.sub-item:hover {
   <div class="container">
     <div class="section-header">
       <div class="section-num" style="background:#81D4FA">GW1</div>
-      <h2>AIは何を学習するのか（15分）</h2>
+      <h2>AIは何を学習するのか（25分）</h2>
     </div>
     <div class="callout-info">
       <h4>穴埋めシート</h4>
@@ -698,42 +694,20 @@ a.sub-item:hover {
       <table style="font-size:0.85rem">
         <tr><th style="width:5rem">番号</th><th>図</th><th>埋めるもの</th></tr>
         <tr><td>GW1-2</td><td>データの分割</td><td>訓練・検証・テストのどれか</td></tr>
-        <tr><td>GW1-3</td><td>順伝播と誤差逆伝播</td><td>①〜④の名前</td></tr>
+        <tr><td>GW1-3</td><td>順伝播と誤差逆伝播</td><td>①〜④の名前・予測値／正解値／損失・重み・バイアス</td></tr>
         <tr><td>GW1-4</td><td>線形関数と非線形関数</td><td>線形か非線形か</td></tr>
         <tr><td>GW1-5</td><td>学習と推論</td><td>段階の名前・重みの状態</td></tr>
-        <tr><td>GW1-6</td><td>学習の1ステップ</td><td>①〜④の名前と PyTorch のコード</td></tr>
+        <tr><td>GW1-6</td><td>学習の1ステップ</td><td>①〜④の名前（右の表のコードが手がかり）</td></tr>
       </table>
-    </div>
-  </div>
-</section>
-
-<!-- ============ SECTION 2: LECTURE ============ -->
-<section id="sec-lecture">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-num" style="background:#4FC3F7">1</div>
-      <h2>良いAIとは何を測ることか（3分講義）</h2>
-    </div>
-
-    <div class="concept-box">
-      <h4>今日の問い</h4>
-      <p style="font-size:0.95rem">正解率は4つの評価軸の1つにすぎない。<strong>正解率・損失・速度・メモリ</strong>を同じ関数で測る。</p>
-    </div>
-
-    <div class="card standard">
-      <div class="card-header"><h3>4つの評価軸</h3></div>
-      <table style="font-size:0.85rem">
-        <tr><th style="width:9rem">指標</th><th>何を測るか</th><th style="width:6rem">向き</th></tr>
-        <tr><td><strong>正解率</strong></td><td>正解した割合</td><td>高いほど良い</td></tr>
-        <tr><td><strong>損失</strong></td><td>正解に対する自信のなさ</td><td>低いほど良い</td></tr>
-        <tr><td><strong>推論時間</strong></td><td>まとめて流す時間と1件の時間（別物）</td><td>短いほど良い</td></tr>
-        <tr><td><strong>メモリ</strong></td><td>重みの大きさと、推論中のピーク</td><td>少ないほど良い</td></tr>
-      </table>
-    </div>
-
-    <div class="card standard">
-      <div class="card-header"><h3>同期しないと時間は測れない</h3></div>
-      <p style="font-size:0.9rem;color:#ccc">GPU は命令を受け取るとすぐ戻り、裏で計算を続ける。時計を読む前に <code>synchronize(device)</code> で完了を待つ。</p>
+      <div class="callout-info">
+        <h4>PyTorch とは</h4>
+        <ul class="point-list">
+          <li>Python でディープラーニングを書くためのライブラリ（無料・オープンソース）</li>
+          <li>テンソル（多次元の数値の配列）の計算を GPU で速く行う。Mac では <code>mps</code> で Apple の GPU を使う</li>
+          <li><code>loss.backward()</code> の1行で勾配を自動計算する（誤差逆伝播）</li>
+          <li>この授業のコードはすべて PyTorch で書く（<code>import torch</code>）</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -1395,7 +1369,7 @@ model</pre>
 <section id="sec-roles">
   <div class="container">
     <div class="section-header">
-      <div class="section-num" style="background:#FFB800">4</div>
+      <div class="section-num" style="background:#FFB800">1</div>
       <h2>役割とルール ― ここから測定</h2>
     </div>
 
@@ -1430,7 +1404,7 @@ model</pre>
 <section id="sec-ex1">
   <div class="container">
     <div class="section-header">
-      <div class="section-num" style="background:#FFB800">5</div>
+      <div class="section-num" style="background:#FFB800">2</div>
       <h2>演習1 環境ベンチマーク ― <code>ex1.ipynb</code></h2>
     </div>
     <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem">上から実行し、TODO を埋める（1分以内）。</p>
@@ -1438,6 +1412,7 @@ model</pre>
     <div class="card standard">
       <div class="card-header"><h3>測る前に</h3></div>
       <ul class="point-list">
+        <li><strong>同期しないと時間は測れない</strong>：GPU は命令を受け取るとすぐ戻り、裏で計算を続ける。時計を読む前に <code>synchronize(device)</code> で完了を待つ</li>
         <li>「速い」には2種類ある：<strong>読み書きの速さ</strong>（B1 帯域 GB/s）と<strong>計算の速さ</strong>（B2 演算 GFLOPS）</li>
         <li>最初の1回は遅く、1回だけの値はぶれる → ウォームアップして、<strong>2秒回した中央値</strong>を使う</li>
       </ul>
@@ -1491,67 +1466,6 @@ flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</s
         <li>同期比はグループ内で何倍から何倍か</li>
         <li>帯域は公称値の何%か</li>
         <li>機種差が大きいのは B1 と B2 のどちらか</li>
-        <li>最も遅いマシンでは演習2に何倍かかりそうか</li>
-      </ol>
-    </div>
-  </div>
-</section>
-
-<!-- ============ SECTION 4: EX2 ============ -->
-<section id="sec-ex2">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-num" style="background:#FFB800">6</div>
-      <h2>演習2 学習済み3モデルの4指標 ― <code>ex2.ipynb</code></h2>
-    </div>
-    <p style="font-size:0.95rem;color:#ccc;margin-bottom:1rem"><strong>A1</strong> 埋め込み平均＋MLP／<strong>A2</strong> 1次元畳み込み／<strong>A3</strong> 小型 Transformer。どれも約30万パラメータ、映画レビューの肯定・否定（SST-2）で学習済み。</p>
-
-    <div class="callout-warning">
-      <h4>実行する前に予測を書く（各自）</h4>
-      <table style="font-size:0.82rem">
-        <tr><th>問い</th><th style="width:6rem">予測</th><th style="width:6rem">実際</th></tr>
-        <tr><td>正解率が最も高いのは</td><td></td><td></td></tr>
-        <tr><td>損失が最も低いのは</td><td></td><td></td></tr>
-        <tr><td>1000文あたり最も速いのは</td><td></td><td></td></tr>
-        <tr><td>1文あたり最も速いのは</td><td></td><td></td></tr>
-        <tr><td>推論中のメモリが最も少ないのは</td><td></td><td></td></tr>
-      </table>
-    </div>
-
-    <div class="card group">
-      <div class="card-header"><h3>TODO のヒント</h3></div>
-      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.5rem 0 0.2rem">TODO 1：重みを読み込み、評価モードに（ブロック5）</p>
-<pre>Python
-model.load_state_dict(ckpt[<span class="str">"state_dict"</span>])
-model.eval()</pre>
-      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 2：予測クラスと正解数（ブロック6）</p>
-<pre>Python
-_, predicted <span class="op">=</span> torch.max(outputs.data, <span class="num">1</span>)
-total <span class="op">+=</span> labels.size(<span class="num">0</span>)
-correct <span class="op">+=</span> (predicted <span class="op">==</span> labels).sum().item()</pre>
-      <p style="font-weight:700;color:#81D4FA;font-size:0.9rem;margin:0.7rem 0 0.2rem">TODO 3：時計を読む前に同期（ブロック7）</p>
-<pre>Python
-synchronize(device)                <span class="cmt"># 忘れてもエラーは出ない。値が小さくなるだけ</span>
-times.append(time.perf_counter() <span class="op">-</span> t0)</pre>
-
-      <div class="callout-info">
-        <h4>参考値（M3 MacBook Air。正解率・損失は機種によらず同じ）</h4>
-        <table style="font-size:0.82rem">
-          <tr><th>model</th><th>正解率</th><th>損失</th><th>ms / 1000文</th><th>ms / 1文</th><th>peak MB</th></tr>
-          <tr><td>A1</td><td>0.8056</td><td>0.4664</td><td>6.0</td><td>0.71</td><td>1.16</td></tr>
-          <tr><td>A2</td><td>0.7897</td><td>0.6941</td><td>26.9</td><td>0.75</td><td>8.0</td></tr>
-          <tr><td>A3</td><td>0.8094</td><td>0.4348</td><td>81.3</td><td>1.68</td><td>11.47</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div class="card group" id="disc2">
-      <div class="card-header"><h3>討議（5分）― 外れた予測から話す</h3></div>
-      <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
-        <li>正解率1位と損失1位は同じモデルか</li>
-        <li>1000文と1文で速いモデルは同じか。実運用に近いのはどちらか</li>
-        <li>パラメータ数が同じなのに、メモリのピークが違うのはなぜか</li>
-        <li>正解率の差 0.4 ポイントは「差がある」と言えるか（→ 第4回）</li>
       </ol>
     </div>
   </div>
@@ -1572,7 +1486,6 @@ times.append(time.perf_counter() <span class="op">-</span> t0)</pre>
         <tr><th style="width:5%"></th><th>確認項目</th></tr>
         <tr><td><input type="checkbox"></td><td>ex0 の CSV に試行①②③の3回分がある</td></tr>
         <tr><td><input type="checkbox"></td><td>演習1 の CSV にグループ全員分の行がある</td></tr>
-        <tr><td><input type="checkbox"></td><td>演習2 の表に A1・A2・A3 の3行がある</td></tr>
         <tr><td><input type="checkbox"></td><td>穴埋めシートと失敗記録・討議メモが手元にある</td></tr>
         <tr><td><input type="checkbox"></td><td>zip にせず、ファイル名を変えていない</td></tr>
       </table>
@@ -1580,8 +1493,8 @@ times.append(time.perf_counter() <span class="op">-</span> t0)</pre>
     </div>
 
     <div class="callout-tip">
-      <h4>次回：「良いAI」の定義と勾配の観測</h4>
-      <p style="font-size:0.9rem">演習2の表から「良いAI」を定義して順位を出し、他グループと比べる。後半は層ごとの勾配を記録する。</p>
+      <h4>次回：3モデルを測り、「良いAI」を決める</h4>
+      <p style="font-size:0.9rem">冒頭で学習済み3モデルの正解率・損失・速度・メモリを測り、その表から「良いAI」を定義して順位を出す。後半は層ごとの勾配を記録する。</p>
     </div>
   </div>
 </section>
