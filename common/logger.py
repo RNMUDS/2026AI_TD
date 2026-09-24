@@ -13,7 +13,7 @@ from .device import machine_string
 
 COLUMNS = ["timestamp", "group_id", "member_role", "course", "day", "exercise",
            "condition", "seed", "metric_name", "metric_value", "elapsed_sec", "device", "machine"]
-ROLES = ("implementer", "verifier", "recorder", "presenter", "collector")   # collector は 5 人グループの 5 つ目の役割
+ROLES = ("implementer", "verifier", "recorder", "presenter", "collector")   # collector は旧方式（質問カード交換）の役割．過去の CSV との互換のため残す
 
 
 class ResultLogger:
