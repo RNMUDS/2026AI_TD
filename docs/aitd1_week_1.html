@@ -531,7 +531,7 @@ a.sub-item:hover {
             <li><strong>正しく測る</strong>：同期・ウォームアップ・中央値で4指標を測れる</li>
             <li><strong>差を疑う</strong>：複数シードの平均と標準偏差で差を判定できる</li>
             <li><strong>公平に比べる</strong>：パラメータ数を揃えて構造を比べられる</li>
-            <li><strong>言葉にする</strong>：実測値を根拠に質問し、説明できる</li>
+            <li><strong>言葉にする</strong>：実測値を根拠に説明できる</li>
           </ul>
           <table style="font-size:0.85rem">
             <tr><th style="width:4rem">回</th><th>テーマ</th><th>やること</th></tr>
@@ -558,11 +558,10 @@ a.sub-item:hover {
         <a href="#sec-gw1" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">GW1・GW2</span>穴埋めシート（PDF）</a>
         <a href="#sec-gw3" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">GW3</span>ex0_1〜ex0_3 の3ファイル ／ c1_d1_ex0_&lt;グループ&gt;.csv</a>
         <a href="#sec-ex1" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-standard">演習1</span>c1_d1_ex1_&lt;グループ&gt;.csv</a>
-        <a href="#sec-roles" class="sub-item" style="text-decoration:none;color:inherit;border-color:#4FC3F7"><span class="sub-count" style="background:#4FC3F7">1</span><span class="tag" style="background:#0a1a2e;color:#4FC3F7">ノート</span>失敗記録・討議メモ</a>
         <a href="#sec-opt" class="sub-item" style="text-decoration:none;color:inherit;border-color:#66BB6A"><span class="sub-count" style="background:#66BB6A">任意</span><span class="tag" style="background:#0a1a2e;color:#66BB6A">オプション</span>opt_datasize.ipynb ／ c1_d1_opt1_&lt;グループ&gt;.csv</a>
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:1rem;font-size:0.85rem;color:#81D4FA">
-        <strong>手順:</strong> ① グループで共有（演習1 の各自の行・シート・メモ）→ ② 自分の <code>results/</code> に集める → ③ <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の「第1回」へ<strong>自分で</strong>アップロード
+        <strong>手順:</strong> ① グループで共有（演習1 の各自の行・穴埋めシート）→ ② 自分の <code>results/</code> に集める → ③ <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の「第1回」へ<strong>自分で</strong>アップロード
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:0.5rem;font-size:0.85rem;color:#FFB800">
         <strong>期限：</strong>次回の授業開始まで
@@ -966,7 +965,7 @@ model</pre>
     <summary>カード H（14 行）― クリックで開く</summary>
     <div class="answer-content">
 <pre>model.eval()   # 評価モード（学習のときだけ働く Dropout などを止める）
-# テストデータ（学習に使っていない 1 万枚）で正解率を求める
+# テストデータ（学習にも検証にも使っていないデータ）で正解率を求める
 correct = 0
 total = 0
 # 勾配を計算しない（評価だけなので速く，メモリも少なくて済む）
@@ -1014,9 +1013,9 @@ train_dataset, val_dataset = random_split(
     train_val_dataset, 
     [train_size, val_size]
 )
-print(f&quot;訓練データ数: {len(train_dataset)} 枚)&quot;)
-print(f&quot;検証データ数: {len(val_dataset)} 枚)&quot;)
-print(f&quot;テストデータ数: {len(test_dataset)} 枚)&quot;)</pre>
+print(f&quot;訓練データ数: {len(train_dataset)} 枚&quot;)
+print(f&quot;検証データ数: {len(val_dataset)} 枚&quot;)
+print(f&quot;テストデータ数: {len(test_dataset)} 枚&quot;)</pre>
     </div>
   </details>
   <details id="gw3-card-J">
@@ -1112,13 +1111,14 @@ model</pre>
     </div>
   </details>
   <details id="gw3-card-N">
-    <summary>カード N（5 行）― クリックで開く</summary>
+    <summary>カード N（6 行）― クリックで開く</summary>
     <div class="answer-content">
 <pre># 一度にまとめて流す枚数（ミニバッチの大きさ）
 BATCH_SIZE = 8
 # データをミニバッチに分けて順に取り出す仕組み（訓練用は毎回並びを混ぜる）
 train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
-val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)</pre>
+val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
+test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)</pre>
     </div>
   </details>
   <details id="gw3-card-O">
@@ -1147,7 +1147,7 @@ from torchvision.datasets import ImageFolder</pre>
     </div>
   </details>
   <details id="gw3-card-P">
-    <summary>カード P（44 行）― クリックで開く</summary>
+    <summary>カード P（47 行）― クリックで開く</summary>
     <div class="answer-content">
 <pre>IMAGE_DIR = str(ROOT / &#x27;assets&#x27; / &#x27;cable1&#x27;)   # オリジナル画像（2 クラス × 100 枚）
 
@@ -1162,12 +1162,13 @@ torch.cuda.manual_seed(0)
 if torch.backends.mps.is_available():
     torch.mps.manual_seed(0)
 
-# 全 200 枚を 7:3 に分け，訓練用と検証用にする
+# 全 200 枚を 70% 訓練用・15% 検証用・15% テスト用に分ける（テスト用は学習にも調整にも使わない）
 train_size = int(0.7 * len(full_dataset))
-val_size = len(full_dataset) - train_size
+val_size = int(0.15 * len(full_dataset))
+test_size = len(full_dataset) - train_size - val_size
 
-train_subset, val_subset = random_split(
-    full_dataset, [train_size, val_size]
+train_subset, val_subset, test_subset = random_split(
+    full_dataset, [train_size, val_size, test_size]
 )
 
 # 分けたデータに，訓練用・検証用それぞれの前処理をかけるための入れ物
@@ -1185,14 +1186,16 @@ class CustomDataset(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.subset)
 
-# 訓練用と検証用に前処理を割り当てる
+# 訓練用・検証用・テスト用に前処理を割り当てる（テスト用は検証用と同じ前処理）
 train_dataset = CustomDataset(train_subset, transform=data_transforms[&#x27;train&#x27;])
 val_dataset = CustomDataset(val_subset, transform=data_transforms[&#x27;val&#x27;])
+test_dataset = CustomDataset(test_subset, transform=data_transforms[&#x27;val&#x27;])
 
 print(f&quot;===&gt; Dataset Loaded: {IMAGE_DIR}&quot;)
 print(f&quot;     Total samples: {len(full_dataset)}&quot;)
 print(f&quot;     Train samples: {len(train_dataset)}&quot;)
-print(f&quot;     Val samples  : {len(val_dataset)}&quot;)</pre>
+print(f&quot;     Val samples  : {len(val_dataset)}&quot;)
+print(f&quot;     Test samples : {len(test_dataset)}&quot;)</pre>
     </div>
   </details>
   <details id="gw3-card-Q">
@@ -1431,17 +1434,17 @@ model</pre>
         <tr><th style="width:9rem">役割</th><th>やること</th><th style="width:10rem">残すもの</th></tr>
         <tr><td><strong style="color:#4FC3F7">implementer</strong></td><td>コードを書く（1人だけ）</td><td>ノートブック・CSV</td></tr>
         <tr><td><strong style="color:#FFB800">verifier</strong></td><td>条件を変えて再実行し、結果を疑う</td><td>比較表</td></tr>
-        <tr><td><strong style="color:#81D4FA">recorder</strong></td><td>エラーと討議を記録し、他グループへの質問を3問作る</td><td>失敗記録・質問カード</td></tr>
+        <tr><td><strong style="color:#81D4FA">recorder</strong></td><td>討議で出た意見と結論をまとめ、プレゼンで伝える</td><td>—</td></tr>
         <tr><td><strong style="color:#B388FF">presenter</strong></td><td>司会・時間管理・結論を一文で発表</td><td>結論（一文）</td></tr>
       </table>
-      <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">3人：verifier が presenter を兼任。5人：collector（他グループの数値を集める）を追加。</p>
+      <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">3人：verifier が presenter を兼任。5人：verifier を2人にする。</p>
     </div>
 
     <div class="card group">
-      <div class="card-header"><h3>プレゼンと質問カード</h3></div>
+      <div class="card-header"><h3>グループ内プレゼン</h3></div>
       <ul class="point-list">
-        <li>プレゼン：presenter 2分 → 他の役割が1分ずつ → 質疑。<strong>外れた予測や行き詰まり</strong>を話す</li>
-        <li>質問カードの最高評価は、<strong>相手の実測値を要求する質問</strong>（検索や LLM では答えられない）</li>
+        <li>presenter 2分 → 他の役割が1分ずつ → 質疑。スライドは作らず、画面を見せて話す</li>
+        <li>うまくいった点より、<strong>外れた予測や行き詰まった点</strong>を話す</li>
       </ul>
     </div>
 
@@ -1489,6 +1492,7 @@ model</pre>
         <tr><td>他のメンバー</td><td>implementer の書いた行を、自分のノートブックの同じ TODO に写す</td></tr>
         <tr><td>verifier</td><td>実行後、条件を変えて再実行する（下の「verifier がやること」）</td></tr>
       </table>
+      <p style="font-size:0.85rem;color:#ccc;margin-bottom:0.8rem"><strong>なぜ写すのか：</strong>この演習で測る対象はコードではなく、各自のマシンである。全員が同じコードで測るので、グループ内の数字の違いがそのままマシンの違いとして比べられる。</p>
       <table style="font-size:0.85rem">
         <tr><th style="width:4rem">見出し</th><th>セルがすること</th><th>あなたがやること</th></tr>
         <tr><td>(0)</td><td>グループ番号の設定</td><td><code>GROUP_ID = 1</code> を自分のグループ番号に書き換えて実行</td></tr>
@@ -1760,7 +1764,7 @@ flops <span class="op">=</span> <span class="num">2</span> <span class="op">*</s
         <tr><td><input type="checkbox"></td><td>ex0_1〜ex0_3 の3ファイルを実行し、CSV に試行①②③の3回分がある</td></tr>
         <tr><td><input type="checkbox"></td><td>ex0_3 の課題（MLP と CNN の説明）を書いた</td></tr>
         <tr><td><input type="checkbox"></td><td>演習1 の CSV にグループ全員分の行がある</td></tr>
-        <tr><td><input type="checkbox"></td><td>穴埋めシートと失敗記録・討議メモが手元にある</td></tr>
+        <tr><td><input type="checkbox"></td><td>穴埋めシート（PDF）が手元にある</td></tr>
         <tr><td><input type="checkbox"></td><td>zip にせず、ファイル名を変えていない</td></tr>
       </table>
       <div class="notion-submit"><div><strong>提出:</strong> <a href="https://musashino-u.myopenlms.net/course/view.php?id=7914" target="_blank" rel="noopener" style="color:#4FC3F7">Open-LMS</a> の「第1回」へ各自アップロード</div></div>
