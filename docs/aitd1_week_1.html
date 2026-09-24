@@ -755,7 +755,7 @@ a.sub-item:hover {
       <table style="font-size:0.85rem">
         <tr><th style="width:4rem">試行</th><th>ファイル（<code>course1/day1/</code>）</th><th>データ × モデル</th><th>カード</th></tr>
         <tr><td><strong style="color:#4FC3F7">①</strong></td><td><code>ex0_1_mlp_fashion.ipynb</code></td><td>FashionMNIST（衣類 10 クラス）× MLP</td><td>A〜L を①〜⑫に貼る</td></tr>
-        <tr><td><strong style="color:#FFB800">②</strong></td><td><code>ex0_2_mlp_original.ipynb</code></td><td><strong>オリジナル画像</strong>（2 クラス × 100 枚）× MLP</td><td>①と同じカードを貼り、5つだけ M〜Q（⑫はない）</td></tr>
+        <tr><td><strong style="color:#FFB800">②</strong></td><td><code>ex0_2_mlp_original.ipynb</code></td><td><strong>オリジナル画像</strong>（2 クラス × 100 枚）× MLP</td><td>①と同じカードを貼り、5つだけ M〜Q に差し替える</td></tr>
         <tr><td><strong style="color:#B388FF">③</strong></td><td><code>ex0_3_cnn_original.ipynb</code></td><td><strong>オリジナル画像</strong> × <strong>シンプルな CNN</strong></td><td>②と同じカードを貼り、1つだけ R</td></tr>
       </table>
       <p style="font-size:0.85rem;color:#ccc;margin-top:0.5rem">②と③はデータが同じでモデルだけが違う。</p>
@@ -1339,25 +1339,25 @@ model</pre>
     <div class="card group">
       <div class="card-header"><h3>結果を記録する</h3></div>
       <table style="font-size:0.85rem">
-        <tr><th>試行</th><th>検証正解率（最高／最終）</th><th>学習時間</th><th>学習曲線の形</th></tr>
-        <tr><td>① FashionMNIST × MLP</td><td></td><td></td><td></td></tr>
-        <tr><td>② オリジナル画像 × MLP</td><td></td><td></td><td></td></tr>
-        <tr><td>③ オリジナル画像 × CNN</td><td></td><td></td><td></td></tr>
+        <tr><th>試行</th><th>検証正解率（最高／最終）</th><th>テスト正解率</th><th>学習時間</th><th>学習曲線の形</th></tr>
+        <tr><td>① FashionMNIST × MLP</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>② オリジナル画像 × MLP</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>③ オリジナル画像 × CNN</td><td></td><td></td><td></td><td></td></tr>
       </table>
     </div>
 
     <div class="card standard">
-      <div class="card-header"><h3>想定される時間と精度（教員機 M4 Max で実測・20エポック）</h3></div>
+      <div class="card-header"><h3>想定される時間と精度（MacBook Air M3 で実測・20エポック）</h3></div>
       <table style="font-size:0.82rem">
-        <tr><th>試行</th><th>学習時間</th><th>検証正解率（最高／最終）</th></tr>
-        <tr><td>① FashionMNIST × MLP</td><td>46 秒</td><td>90.0% ／ 90.0%（テスト 89.5%）</td></tr>
-        <tr><td>② オリジナル画像 × MLP</td><td>3 秒</td><td>78.3% ／ 78.3%</td></tr>
-        <tr><td>③ オリジナル画像 × CNN</td><td>3 秒</td><td>81.7% ／ 76.7%</td></tr>
+        <tr><th>試行</th><th>学習時間</th><th>検証正解率（最高／最終）</th><th>テスト正解率</th></tr>
+        <tr><td>① FashionMNIST × MLP</td><td>98 秒</td><td>89.8% ／ 89.5%</td><td>88.8%</td></tr>
+        <tr><td>② オリジナル画像 × MLP</td><td>7 秒</td><td>76.7% ／ 73.3%</td><td>83.3%</td></tr>
+        <tr><td>③ オリジナル画像 × CNN</td><td>6 秒</td><td>80.0% ／ 73.3%</td><td>80.0%</td></tr>
       </table>
-      <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">時間は機種で変わる（MacBook Air は数倍の見込み）。正解率はほぼ同じになるはず。</p>
+      <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">時間は機種で変わる。正解率はほぼ同じになるはず（機種や版が違うと一致しないこともある）。</p>
       <figure style="margin:1rem 0 0">
         <img src="img/gw3_expected.png" alt="試行①②③の検証正解率の推移と、MLP と CNN の比較" style="width:100%;border-radius:10px;border:1px solid #333;display:block">
-        <figcaption style="font-size:0.78rem;color:#999;margin-top:0.4rem;text-align:center">▲ 右：乱数の種を変えた5回すべてで CNN が上回った（平均 81.3% → 84.7%）。1回だけでは逆転することもある（→ 第4回）</figcaption>
+        <figcaption style="font-size:0.78rem;color:#999;margin-top:0.4rem;text-align:center">▲ 右：乱数の種を変えた5回のテスト正解率。授業で出る1回（シード 0）では MLP が上回り、5回の平均では CNN が 3.3 ポイント（1枚分）上。この差で「CNN が良い」と言えるかは第4回で扱う</figcaption>
       </figure>
     </div>
 
@@ -1367,7 +1367,7 @@ model</pre>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
         <li><strong>MLP とは何か</strong>。画像をどんな形にしてから入力するか</li>
         <li><strong>CNN とは何か</strong>。畳み込み層とプーリング層はそれぞれ何をするか</li>
-        <li>試行②と③の結果から、オリジナル画像で CNN が有利になりやすいのはなぜか</li>
+        <li>オリジナル画像で CNN が有利になると考えられるのはなぜか。試行②と③の結果はそれを支持したか</li>
       </ol>
       <p style="font-size:0.82rem;color:#999;margin-top:0.4rem">手がかり：<code>nn.Linear</code>・<code>nn.Conv2d</code>・<code>nn.MaxPool2d</code> が書かれたカードのコメント。</p>
     </div>
@@ -1376,7 +1376,7 @@ model</pre>
       <div class="card-header"><h3>討議（5分）→ プレゼン1</h3></div>
       <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
         <li>データを替えたとき、モデルを替えたとき、差し替えたのはどのセルか</li>
-        <li>②→③で何ポイント変わったか。検証は60枚（1枚 ≒ 1.7ポイント）。「上がった」と言えるか</li>
+        <li>②→③でテスト正解率は何ポイント変わったか。テストは30枚（1枚 ≒ 3.3ポイント）。「上がった」と言えるか</li>
       </ol>
       <div class="notion-submit"><div><strong>プレゼン1:</strong> 代表が結論を2分 → 他のメンバーが1分ずつ</div></div>
     </div>
