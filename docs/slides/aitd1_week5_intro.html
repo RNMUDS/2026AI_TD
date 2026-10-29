@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第5回 イントロ：第4回のふりかえりと今日やること | AI_TD1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0b0b; --surface:#161616; --card:#1d1d1d; --line:#333;
+  --ink:#f2f2f2; --ink2:#c8c8c8; --muted:#8a8a8a;
+  --blue:#4FC3F7; --amber:#FFB800; --red:#FF6B6B; --green:#81C784;
+  --scratch:#B97A20; --pre:#2F8FCC;           /* 図のマーク：ゼロから学習／学習済み（暗い背景で検証済み） */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP","Hiragino Sans",sans-serif}
+.deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.slide{position:absolute;width:1280px;height:720px;background:var(--surface);border-radius:14px;padding:46px 60px 40px;
+  display:none;flex-direction:column;transform-origin:center center;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.slide.on{display:flex}
+.kicker{font-size:17px;font-weight:700;color:var(--blue);letter-spacing:.06em;margin-bottom:6px}
+h1{font-size:46px;font-weight:900;line-height:1.25}
+h2{font-size:34px;font-weight:900;line-height:1.3;margin-bottom:18px}
+h3{font-size:21px;font-weight:700;margin-bottom:8px}
+p,li,td,th{font-size:20px;line-height:1.6;color:var(--ink2)}
+strong{color:var(--ink)}
+.lead{font-size:23px;color:var(--ink2);margin-bottom:18px}
+.small{font-size:16px;color:var(--muted)}
+code,.mono{font-family:"JetBrains Mono",monospace;font-size:.9em;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:5px;padding:0 6px;color:#e6e6e6}
+pre{font-family:"JetBrains Mono",monospace;font-size:16.5px;line-height:1.55;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:10px;padding:14px 18px;color:#e6e6e6;white-space:pre}
+pre .c{color:#7d8b99}
+pre .k{color:var(--blue)}
+pre .hl{background:rgba(255,184,0,.16);border-radius:3px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:26px;flex:1;min-height:0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.card.b{border-left:5px solid var(--blue)} .card.a{border-left:5px solid var(--amber)} .card.r{border-left:5px solid var(--red)} .card.g{border-left:5px solid var(--green)}
+table{border-collapse:collapse;width:100%}
+th{background:#202634;color:var(--blue);font-weight:700;text-align:left;padding:8px 12px;font-size:18px}
+td{border-top:1px solid #2a2a2a;padding:8px 12px;font-size:18px;vertical-align:top}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+ul.pt{list-style:none} ul.pt li{position:relative;padding-left:22px;margin-bottom:6px}
+ul.pt li::before{content:"";position:absolute;left:4px;top:.72em;width:8px;height:8px;border-radius:50%;background:var(--blue)}
+.chip{display:inline-block;padding:2px 12px;border-radius:100px;background:#0a1a2e;color:var(--blue);font-size:17px;margin:0 6px 6px 0}
+.tag{display:inline-block;font-size:15px;font-weight:700;padding:1px 10px;border-radius:5px;margin-right:6px;vertical-align:2px}
+.tag.w4{background:#2a2410;color:var(--amber)} .tag.w5{background:#0a1a2e;color:var(--blue)}
+.foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;padding-top:10px}
+.pageno{font-size:15px;color:var(--muted)}
+svg text{font-family:"Noto Sans JP","Hiragino Sans",sans-serif}
+.nav{position:fixed;bottom:14px;right:18px;display:flex;gap:8px;z-index:5}
+.nav button{background:#222;color:#ddd;border:1px solid #444;border-radius:8px;padding:6px 14px;font-size:15px;cursor:pointer}
+.nav button:hover{background:#333}
+.bar{position:fixed;left:0;top:0;height:4px;background:var(--blue);z-index:5;transition:width .2s}
+.back{position:fixed;top:12px;left:16px;font-size:14px;color:#9ad;z-index:5;text-decoration:none}
+@media print{
+  .nav,.bar,.back{display:none}
+  .deck{position:static;display:block}
+  .slide{display:flex !important;position:relative;transform:none !important;margin:0 auto;page-break-after:always;box-shadow:none}
+  @page{size:1280px 720px;margin:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../aitd1_week_5.html">← 第5回の授業ページ</a>
+<div class="bar" id="bar"></div>
+<div class="deck" id="deck">
+
+<!-- 1 表紙 -->
+<section class="slide">
+  <div class="kicker">人工知能(AI)テクノロジデザインⅠ ― 第5回</div>
+  <h1 style="margin-top:110px">第4回のふりかえりと<br>今日やること</h1>
+  <p class="lead" style="margin-top:22px">自分の写真でつくった MLP・CNN を見直し、<br><strong>学習済みのモデル</strong>（ResNet18・ViT）で同じ写真を学習し直す。</p>
+  <div style="margin-top:28px">
+    <span class="tag w4">第4回</span><span class="small" style="margin-right:22px">再現性と分散 ― 自分の画像でモデルをつくる</span>
+    <span class="tag w5">第5回</span><span class="small">転移学習 ― 学習済みのモデルを自分の写真に合わせる</span>
+  </div>
+  <div class="foot"><span class="small">← → キーでページを送る</span><span class="pageno"></span></div>
+</section>
+
+<!-- 2 第4回の全体 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w4">第4回</span>ふりかえり 1/5</div>
+  <h2>第4回の流れ：つくる → 疑う → 使う</h2>
+  <svg viewBox="0 0 1160 300" width="1160" height="300" role="img" aria-label="第4回の流れ">
+    <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#777"/></marker></defs>
+    <g font-size="17">
+      <rect x="0" y="40" width="200" height="200" rx="12" fill="#1d1d1d" stroke="#FF6B6B" stroke-width="2"/>
+      <text x="100" y="78" text-anchor="middle" fill="#FF6B6B" font-weight="900" font-size="20">事前課題</text>
+      <text x="100" y="118" text-anchor="middle" fill="#ddd">2クラスの写真</text>
+      <text x="100" y="146" text-anchor="middle" fill="#ddd">各 50〜100 枚</text>
+      <text x="100" y="186" text-anchor="middle" fill="#999" font-size="15">LLM に当てられない</text>
+      <text x="100" y="208" text-anchor="middle" fill="#999" font-size="15">区別にする</text>
+      <line x1="204" y1="140" x2="232" y2="140" stroke="#777" stroke-width="2" marker-end="url(#ar)"/>
+      <rect x="240" y="40" width="200" height="200" rx="12" fill="#1d1d1d" stroke="#FFB800" stroke-width="2"/>
+      <text x="340" y="78" text-anchor="middle" fill="#FFB800" font-weight="900" font-size="20">演習1 つくる</text>
+      <text x="340" y="118" text-anchor="middle" fill="#ddd">①〜⑫を自分で書く</text>
+      <text x="340" y="146" text-anchor="middle" fill="#ddd">MLP → CNN</text>
+      <text x="340" y="186" text-anchor="middle" fill="#999" font-size="15">CNN を my_cnn.pt に</text>
+      <text x="340" y="208" text-anchor="middle" fill="#999" font-size="15">保存する</text>
+      <line x1="444" y1="140" x2="472" y2="140" stroke="#777" stroke-width="2" marker-end="url(#ar)"/>
+      <rect x="480" y="40" width="200" height="200" rx="12" fill="#1d1d1d" stroke="#FFB800" stroke-width="2"/>
+      <text x="580" y="78" text-anchor="middle" fill="#FFB800" font-weight="900" font-size="20">演習2 疑う</text>
+      <text x="580" y="118" text-anchor="middle" fill="#ddd">シード 0〜4 で</text>
+      <text x="580" y="146" text-anchor="middle" fill="#ddd">5 回ずつ回す</text>
+      <text x="580" y="186" text-anchor="middle" fill="#999" font-size="15">差 ÷ 標準偏差 で</text>
+      <text x="580" y="208" text-anchor="middle" fill="#999" font-size="15">判定する</text>
+      <line x1="684" y1="140" x2="712" y2="140" stroke="#777" stroke-width="2" marker-end="url(#ar)"/>
+      <rect x="720" y="40" width="200" height="200" rx="12" fill="#1d1d1d" stroke="#FFB800" stroke-width="2"/>
+      <text x="820" y="78" text-anchor="middle" fill="#FFB800" font-weight="900" font-size="20">演習3 使う</text>
+      <text x="820" y="118" text-anchor="middle" fill="#ddd">別のファイルで重みを</text>
+      <text x="820" y="146" text-anchor="middle" fill="#ddd">読み、新しい写真を推論</text>
+      <text x="820" y="186" text-anchor="middle" fill="#999" font-size="15">同じ写真を LLM にも</text>
+      <text x="820" y="208" text-anchor="middle" fill="#999" font-size="15">分類させる</text>
+      <line x1="924" y1="140" x2="952" y2="140" stroke="#777" stroke-width="2" marker-end="url(#ar)"/>
+      <rect x="960" y="40" width="200" height="200" rx="12" fill="#1d1d1d" stroke="#B388FF" stroke-width="2"/>
+      <text x="1060" y="78" text-anchor="middle" fill="#B388FF" font-weight="900" font-size="20">討議</text>
+      <text x="1060" y="118" text-anchor="middle" fill="#ddd">専用モデルを作る</text>
+      <text x="1060" y="146" text-anchor="middle" fill="#ddd">価値はあったか</text>
+      <text x="1060" y="186" text-anchor="middle" fill="#999" font-size="15">LLM で済むタスクとの</text>
+      <text x="1060" y="208" text-anchor="middle" fill="#999" font-size="15">境目を考える</text>
+    </g>
+    <text x="0" y="285" fill="#8a8a8a" font-size="16">ファイル：事前課題 assets/myphotos/ → 演習1 ex1.ipynb → 演習2 ex2.ipynb → 演習3 ex3_infer.ipynb</text>
+  </svg>
+  <div class="card b" style="margin-top:8px"><p>第3回の5分類では「<strong>3-A 特化型 AI モデル開発</strong>」に当たる。一般的な PC でできる。</p></div>
+  <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
+<!-- 3 演習1 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w4">第4回</span>ふりかえり 2/5 ― 演習1</div>
+  <h2>①〜⑫の型で、MLP と CNN を自分で書いた</h2>
+  <div class="grid2">
+    <div>
+      <table>
+        <tr><th style="width:9rem">フェーズ</th><th>コードテンプレート</th></tr>
+        <tr><td><strong style="color:var(--green)">データ準備</strong></td><td>① インポート ② 前処理（64×64） ③ 読み込みと分割（訓練 70%・検証 15%・テスト 15%） ④ データローダ</td></tr>
+        <tr><td><strong style="color:var(--blue)">学習設定</strong></td><td>⑤ デバイス ⑥ 形の確認 ⑦ ネットワーク ⑧ 損失関数 ⑨ 最適化（Adam・0.001）</td></tr>
+        <tr><td><strong style="color:var(--amber)">学習・評価</strong></td><td>⑩ 学習（20 エポック） ⑪ 可視化 ⑫ テストで評価</td></tr>
+      </table>
+      <p class="small" style="margin-top:10px">各テンプレートの下の <code>check(...)</code> で OK が出たら次へ進んだ。</p>
+    </div>
+    <div>
+      <svg viewBox="0 0 560 330" width="560" height="330" role="img" aria-label="MLP と CNN の構造">
+        <g font-size="15">
+          <text x="0" y="22" fill="#FFB800" font-weight="900" font-size="19">MLP</text>
+          <text x="70" y="22" fill="#999">画素を 1 列に並べてから全結合</text>
+          <rect x="0" y="38" width="90" height="56" rx="7" fill="#262626" stroke="#555"/><text x="45" y="62" text-anchor="middle" fill="#ddd">画像</text><text x="45" y="82" text-anchor="middle" fill="#999" font-size="13">3×64×64</text>
+          <rect x="108" y="38" width="96" height="56" rx="7" fill="#262626" stroke="#555"/><text x="156" y="62" text-anchor="middle" fill="#ddd">Flatten</text><text x="156" y="82" text-anchor="middle" fill="#999" font-size="13">12,288</text>
+          <rect x="222" y="38" width="96" height="56" rx="7" fill="#262626" stroke="#555"/><text x="270" y="62" text-anchor="middle" fill="#ddd">全結合</text><text x="270" y="82" text-anchor="middle" fill="#999" font-size="13">512</text>
+          <rect x="336" y="38" width="96" height="56" rx="7" fill="#262626" stroke="#555"/><text x="384" y="62" text-anchor="middle" fill="#ddd">全結合</text><text x="384" y="82" text-anchor="middle" fill="#999" font-size="13">256</text>
+          <rect x="450" y="38" width="96" height="56" rx="7" fill="#262626" stroke="#555"/><text x="498" y="62" text-anchor="middle" fill="#ddd">出力</text><text x="498" y="82" text-anchor="middle" fill="#999" font-size="13">クラスの数</text>
+          <text x="0" y="122" fill="#ccc">パラメータ数 <tspan font-weight="700" fill="#fff">6,423,810</tspan></text>
+
+          <text x="0" y="182" fill="#FFB800" font-weight="900" font-size="19">CNN</text>
+          <text x="70" y="182" fill="#999">3×3 の窓で近くの画素を見る</text>
+          <rect x="0" y="198" width="90" height="56" rx="7" fill="#262626" stroke="#555"/><text x="45" y="222" text-anchor="middle" fill="#ddd">画像</text><text x="45" y="242" text-anchor="middle" fill="#999" font-size="13">3×64×64</text>
+          <rect x="108" y="198" width="96" height="56" rx="7" fill="#262626" stroke="#555"/><text x="156" y="222" text-anchor="middle" fill="#ddd">畳み込み</text><text x="156" y="242" text-anchor="middle" fill="#999" font-size="13">16 枚・3×3</text>
+          <rect x="222" y="198" width="96" height="56" rx="7" fill="#262626" stroke="#555"/><text x="270" y="222" text-anchor="middle" fill="#ddd">プーリング</text><text x="270" y="242" text-anchor="middle" fill="#999" font-size="13">→ 32×32</text>
+          <rect x="336" y="198" width="96" height="56" rx="7" fill="#262626" stroke="#555"/><text x="384" y="222" text-anchor="middle" fill="#ddd">全結合</text><text x="384" y="242" text-anchor="middle" fill="#999" font-size="13">128</text>
+          <rect x="450" y="198" width="96" height="56" rx="7" fill="#262626" stroke="#555"/><text x="498" y="222" text-anchor="middle" fill="#ddd">出力</text><text x="498" y="242" text-anchor="middle" fill="#999" font-size="13">クラスの数</text>
+          <text x="0" y="282" fill="#ccc">パラメータ数 <tspan font-weight="700" fill="#fff">2,097,986</tspan>（MLP の約 1/3）</text>
+          <text x="0" y="318" fill="#8a8a8a" font-size="14">パラメータ数は 2 クラスのとき</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="foot"><span class="small">保存したのは重みの数値（state_dict）・クラス名・画像の大きさ。構造は保存されない</span><span class="pageno"></span></div>
+</section>
+
+<!-- 4 演習2 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w4">第4回</span>ふりかえり 3/5 ― 演習2</div>
+  <h2>1回の結果では「差がある」とは言えない</h2>
+  <div class="grid2" style="grid-template-columns:1.05fr 1fr">
+    <div>
+      <svg id="chart4" viewBox="0 0 600 380" width="600" height="380" role="img" aria-label="MLP と CNN の5回のテスト正解率"></svg>
+      <p class="small">教員機・ケーブル画像（テスト 30 枚）。点は 5 回の各回、白い線は平均 ± 標準偏差。点に重ねると値が出る。</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card b">
+        <h3>シードを変えると変わるもの</h3>
+        <p><strong>データの分け方・重みの初期値・ミニバッチの順</strong>。写真とモデルの形は変わらない。</p>
+      </div>
+      <table>
+        <tr><th>差 ÷ 標準偏差</th><th>判定</th></tr>
+        <tr><td>2 以上</td><td><strong style="color:var(--blue)">差がある</strong></td></tr>
+        <tr><td>1 以上 2 未満</td><td>どちらとも言えない</td></tr>
+        <tr><td>1 未満</td><td><strong style="color:var(--red)">差があるとは言えない</strong></td></tr>
+      </table>
+      <div class="card a"><p>差 6.7 ポイント ÷ 標準偏差 9.7 ＝ <strong>0.7 → 差があるとは言えない</strong>。シード 1 だけ両方とも大きく下がった（分け方の当たり外れ）。</p></div>
+    </div>
+  </div>
+  <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
+<!-- 5 テスト枚数 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w4">第4回</span>ふりかえり 4/5 ― 演習2</div>
+  <h2>テストが少ないと、1枚で正解率が大きく動く</h2>
+  <svg viewBox="0 0 1160 230" width="1160" height="230" role="img" aria-label="テスト30枚のうち1枚の重み">
+    <g id="tiles"></g>
+    <text x="0" y="200" fill="#ccc" font-size="20">テスト 30 枚 → 1 枚の正解・不正解で <tspan fill="#fff" font-weight="900">100 ÷ 30 ≒ 3.3 ポイント</tspan> 動く</text>
+  </svg>
+  <table style="margin-top:8px">
+    <tr><th>持ち越した問い（教員が回した値）</th><th>比べたもの</th><th class="num">差 ÷ 標準偏差</th><th>判定</th></tr>
+    <tr><td>第1回 ケーブル画像（テスト 30 枚）</td><td>MLP → CNN</td><td class="num">0.6</td><td>差があるとは言えない</td></tr>
+    <tr><td>第2回 映画レビュー（テスト 1,821 文）</td><td>MLP → Transformer</td><td class="num">2.0</td><td>差がある</td></tr>
+  </table>
+  <p class="small" style="margin-top:8px">差が 3.3 ポイントでも「言えない」、0.4 ポイントでも「差がある」になる。決めるのは差の大きさではなく、ばらつきとの比。</p>
+  <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
+<!-- 6 演習3 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w4">第4回</span>ふりかえり 5/5 ― 演習3・討議</div>
+  <h2>保存したモデルを別のファイルで使い、LLM と比べた</h2>
+  <svg viewBox="0 0 1160 150" width="1160" height="150" role="img" aria-label="重みを読んで推論する5つの手順">
+    <defs><marker id="ar2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#777"/></marker></defs>
+    <g font-size="17" id="steps5"></g>
+  </svg>
+  <div class="grid2" style="margin-top:6px;align-items:start">
+    <div class="card r"><h3>構造が違うと重みは入らない</h3><p>畳み込みのフィルタを 16 枚 → 8 枚にした CNN に <code>load_state_dict</code> するとエラー。ファイルには<strong>数値だけ</strong>が入っている。</p></div>
+    <div class="card g"><h3>討議：専用モデルを作る価値</h3><p>新しい写真（各クラス 5 枚）を、自分のモデルと LLM の両方に分類させた。<strong>LLM が当てられないタスク</strong>ほど、専用モデル（3-A）を作る価値がある。</p></div>
+  </div>
+  <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
+<!-- 7 今日の流れ -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>今日やること</div>
+  <h2>本日の流れ（150分）</h2>
+  <svg viewBox="0 0 1160 210" width="1160" height="210" role="img" aria-label="本日の時間配分">
+    <g id="timeline"></g>
+  </svg>
+  <div class="grid3" style="margin-top:6px">
+    <div class="card a"><h3>成果発表</h3><p>第4回の MLP と CNN を発表し、<strong>7つのキーポイント</strong>でレビューし合う</p></div>
+    <div class="card b"><h3>演習1・演習2</h3><p>学習済みの ResNet18・ViT を自分の写真に合わせ、第4回の CNN と<strong>5回ずつ</strong>比べる</p></div>
+    <div class="card g"><h3>討議</h3><p>学習済みモデルで、何がどれだけ良くなったかを根拠つきで話す</p></div>
+  </div>
+  <div class="foot"><span class="small">presenter：演習1 ①・演習2 ②・討議 ③</span><span class="pageno"></span></div>
+</section>
+
+<!-- 8 成果発表 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>成果発表（30分）― review.ipynb</div>
+  <h2>第4回のモデルを、7つのキーポイントでレビューする</h2>
+  <div class="grid2" style="grid-template-columns:1.2fr 1fr">
+    <table>
+      <tr><th style="width:9.5rem">キーポイント</th><th>見る所</th></tr>
+      <tr><td>1. タスク</td><td>LLM に写真を見せても当てられない区別か</td></tr>
+      <tr><td>2. データ</td><td>各クラスの枚数・偏り。撮り方を変えたか</td></tr>
+      <tr><td>3. 構造</td><td>MLP と CNN の違いと、パラメータ数</td></tr>
+      <tr><td>4. 判定</td><td>平均・標準偏差と 差 ÷ 標準偏差 を正しく読んだか</td></tr>
+      <tr><td>5. テスト枚数</td><td>テストは何枚か。1枚で何ポイント動くか</td></tr>
+      <tr><td>6. 新しい写真</td><td>正解数とテスト正解率の比較</td></tr>
+      <tr><td>7. LLM との比較</td><td>LLM の正解数と、専用モデルの価値</td></tr>
+    </table>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card"><p><strong>0–3分</strong>　(1) に自分のメモを書く</p></div>
+      <div class="card"><p><strong>3–15分</strong>　1人 <strong>2分</strong> で発表。聞く人は (2) に <strong>○</strong> 押さえている・<strong>△</strong> 不十分・<strong>×</strong> 触れていない を付け、質問を1つ</p></div>
+      <div class="card"><p><strong>15–18分</strong>　(3) に代表のタスクを1つ選ぶ（LLM では当てられず、専用モデルが役立ったもの）</p></div>
+      <div class="card a"><p><strong>18–30分</strong>　代表の3グループが前で発表（3分＋質問1分）</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="small">見せる写真は、個人が分かるものが写っていないものだけ</span><span class="pageno"></span></div>
+</section>
+
+<!-- 9 転移学習とは -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>転移学習とは</div>
+  <h2>大量の画像で学習した重みを、出発点にする</h2>
+  <svg viewBox="0 0 1160 330" width="1160" height="330" role="img" aria-label="転移学習の考え方">
+    <defs><marker id="ar3" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#777"/></marker></defs>
+    <g font-size="17">
+      <text x="0" y="24" fill="#999">ImageNet で学習済み（1000 種類・約 128 万枚）</text>
+      <rect x="0" y="40" width="150" height="90" rx="10" fill="#262626" stroke="#555"/><text x="75" y="80" text-anchor="middle" fill="#ddd">犬・車・食べ物</text><text x="75" y="104" text-anchor="middle" fill="#999" font-size="14">などの写真</text>
+      <line x1="154" y1="85" x2="186" y2="85" stroke="#777" stroke-width="2" marker-end="url(#ar3)"/>
+      <rect x="194" y="40" width="520" height="90" rx="10" fill="#14283a" stroke="#2F8FCC" stroke-width="2"/>
+      <text x="454" y="78" text-anchor="middle" fill="#fff" font-weight="700">特徴を取り出す部分（畳み込みの層など）</text>
+      <text x="454" y="104" text-anchor="middle" fill="#9cc" font-size="15">輪郭・模様・形などを数値（512 個）にする</text>
+      <line x1="718" y1="85" x2="750" y2="85" stroke="#777" stroke-width="2" marker-end="url(#ar3)"/>
+      <rect x="758" y="40" width="170" height="90" rx="10" fill="#262626" stroke="#555"/><text x="843" y="78" text-anchor="middle" fill="#ddd">最終層 fc</text><text x="843" y="104" text-anchor="middle" fill="#999" font-size="14">512 → 1000</text>
+
+      <text x="454" y="168" text-anchor="middle" fill="#2F8FCC" font-size="30">⬇</text>
+      <text x="843" y="168" text-anchor="middle" fill="#FFB800" font-size="30">⬇</text>
+      <text x="0" y="214" fill="#999">自分の写真に使う</text>
+      <rect x="0" y="230" width="150" height="90" rx="10" fill="#262626" stroke="#555"/><text x="75" y="270" text-anchor="middle" fill="#ddd">自分の写真</text><text x="75" y="294" text-anchor="middle" fill="#999" font-size="14">2 クラス</text>
+      <line x1="154" y1="275" x2="186" y2="275" stroke="#777" stroke-width="2" marker-end="url(#ar3)"/>
+      <rect x="194" y="230" width="520" height="90" rx="10" fill="#14283a" stroke="#2F8FCC" stroke-width="2"/>
+      <text x="454" y="268" text-anchor="middle" fill="#fff" font-weight="700">同じ重みをそのまま使う</text>
+      <text x="454" y="294" text-anchor="middle" fill="#9cc" font-size="15">（凍結なら動かさない／微調整なら少しだけ動かす）</text>
+      <line x1="718" y1="275" x2="750" y2="275" stroke="#777" stroke-width="2" marker-end="url(#ar3)"/>
+      <rect x="758" y="230" width="170" height="90" rx="10" fill="#2a2410" stroke="#FFB800" stroke-width="2"/><text x="843" y="268" text-anchor="middle" fill="#FFB800" font-weight="700">新しい最終層</text><text x="843" y="294" text-anchor="middle" fill="#ddd" font-size="14">512 → クラスの数</text>
+      <text x="952" y="262" fill="#ccc" font-size="16">ランダムな初期値から</text>
+      <text x="952" y="286" fill="#ccc" font-size="16">自分の写真で学習する</text>
+    </g>
+  </svg>
+  <p class="small">教科書 第8章「転移学習プログラミング」と同じ考え方。</p>
+  <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
+<!-- 10 凍結と微調整 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>演習1 ― ex1.ipynb（50分）</div>
+  <h2>凍結と微調整：どこまで学習し直すか</h2>
+  <div class="grid2">
+    <svg viewBox="0 0 560 300" width="560" height="300" role="img" aria-label="凍結と微調整で学習する層">
+      <g font-size="16">
+        <text x="0" y="22" fill="#fff" font-weight="900" font-size="19">凍結</text>
+        <g id="frz"></g>
+        <text x="0" y="172" fill="#fff" font-weight="900" font-size="19">微調整</text>
+        <g id="fine"></g>
+        <rect x="0" y="268" width="16" height="16" rx="3" fill="#2F8FCC"/><text x="24" y="282" fill="#ccc" font-size="15">学習する</text>
+        <rect x="120" y="268" width="16" height="16" rx="3" fill="#3a3a3a" stroke="#666"/><text x="144" y="282" fill="#ccc" font-size="15">固定（requires_grad = False）</text>
+      </g>
+    </svg>
+    <table style="align-self:start">
+      <tr><th></th><th>凍結</th><th>微調整</th></tr>
+      <tr><td>学習する所</td><td>最終層 <code>fc</code> だけ</td><td>全部の層</td></tr>
+      <tr><td>学習するパラメータ</td><td class="num"><strong>1,026</strong><br><span class="small">全体の約1万分の1</span></td><td class="num"><strong>11,177,538</strong><br><span class="small">全部</span></td></tr>
+      <tr><td>学習率</td><td class="num">0.001</td><td class="num">0.0001</td></tr>
+      <tr><td>エポック</td><td class="num">20</td><td class="num">10</td></tr>
+    </table>
+  </div>
+  <div class="card b"><p>微調整の学習率を 1/10 にするのは、<strong>学習済みの重みを大きく壊さないため</strong>。</p></div>
+  <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
+<!-- 11 変える所 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>演習1 ― 第4回 ex1 のセルをコピーして直す</div>
+  <h2>変えるのは ①②⑦⑧⑨⑩ だけ</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1.15fr">
+    <table>
+      <tr><th style="width:4rem"></th><th>変える所</th></tr>
+      <tr><td>①</td><td><code>from torchvision import models</code> を足す</td></tr>
+      <tr><td>②</td><td><code>Resize((224, 224))</code>、<code>Normalize</code> を足す（ImageNet と同じ入力に）</td></tr>
+      <tr><td>⑦</td><td>右のコード</td></tr>
+      <tr><td>⑧⑨</td><td>凍結 <code>model.fc.parameters()</code>・0.001／微調整 <code>model.parameters()</code>・0.0001</td></tr>
+      <tr><td>⑩</td><td>凍結 <code>EPOCHS = 20</code>／微調整 <code>EPOCHS = 10</code></td></tr>
+    </table>
+<pre>NUM_CLASSES = len(full_dataset.classes)
+<span class="k">from</span> torchvision.models <span class="k">import</span> ResNet18_Weights
+model = models.resnet18(weights=ResNet18_Weights.IMAGENET1K_V1)
+<span class="hl"><span class="k">for</span> param <span class="k">in</span> model.parameters():      <span class="c"># 凍結のときだけ</span>
+    param.requires_grad = False</span>
+num_ftrs = model.fc.in_features             <span class="c"># 512</span>
+model.fc = nn.Linear(num_ftrs, NUM_CLASSES)  <span class="c"># 最終層を替える</span>
+<span class="hl"><span class="k">for</span> param <span class="k">in</span> model.fc.parameters():   <span class="c"># 凍結のときだけ</span>
+    param.requires_grad = True</span>
+model = model.to(device)</pre>
+  </div>
+  <div class="card a" style="margin-top:12px"><p><strong>止まったら</strong>：<code>check</code> のメッセージの「ヒント」を読む → それでも分からなければ、テンプレートの上の「<strong>ヒント（ほぼ答え）</strong>」を開く。LLM は使わない。</p></div>
+  <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
+<!-- 12 演習2 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>演習2 ― ex2.ipynb（35分）</div>
+  <h2>ゼロから学習した CNN と、学習済み3つを5回ずつ比べる</h2>
+  <div class="grid2" style="grid-template-columns:1.15fr 1fr">
+    <div>
+      <svg id="chart5" viewBox="0 0 640 380" width="640" height="380" role="img" aria-label="4つのモデルの5回のテスト正解率"></svg>
+      <p class="small">教員機・ケーブル画像（テスト 30 枚）。平均 ± 標準偏差。自分の写真では結果が変わる。</p>
+    </div>
+    <table style="align-self:start">
+      <tr><th>モデル</th><th class="num">学習する数</th><th class="num">CNN との<br>差 ÷ 標準偏差</th></tr>
+      <tr><td><span style="color:var(--scratch)">■</span> CNN（第4回・ゼロから）</td><td class="num">約210万</td><td class="num">―</td></tr>
+      <tr><td><span style="color:var(--pre)">■</span> ResNet18 凍結</td><td class="num">1,026</td><td class="num">3.1 差がある</td></tr>
+      <tr><td><span style="color:var(--pre)">■</span> ResNet18 微調整</td><td class="num">約1,118万</td><td class="num">3.5 差がある</td></tr>
+      <tr><td><span style="color:var(--pre)">■</span> ViT 凍結</td><td class="num">1,538</td><td class="num">3.1 差がある</td></tr>
+    </table>
+  </div>
+  <div class="foot"><span class="small">同じシードなら4つとも同じ写真がテストになる。ViT-B/16 は画像を 16×16 のパッチに切り、自己注意で見る</span><span class="pageno"></span></div>
+</section>
+
+<!-- 13 討議・オプション -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>討議（30分）とオプション課題</div>
+  <h2>何が、どれだけ、なぜ良くなったか</h2>
+  <div class="grid2">
+    <div class="card g">
+      <h3>討議 ― presenter ③</h3>
+      <ul class="pt">
+        <li>メンバーの4つの平均と判定を並べる。全員で同じ順位だったか</li>
+        <li>学習済みモデルが効かなかったタスクの共通点（ImageNet の写真と似ているか）</li>
+        <li>凍結で学習したのは約 1,000 個。それでも当たるのはなぜか</li>
+        <li>代表のタスクでは、第4回の CNN よりどれだけ上がったか</li>
+      </ul>
+    </div>
+    <div class="card b">
+      <h3>オプション課題（任意）― opt_vit_transfer.ipynb</h3>
+      <ul class="pt">
+        <li><strong>仮説</strong>：ViT が ResNet18 より得意な画像の特徴を考える</li>
+        <li><strong>収集</strong>：その特徴を持つ2クラスを各50枚以上撮る</li>
+        <li><strong>検証</strong>：ResNet18 凍結と ViT 凍結を5回ずつ回して判定</li>
+        <li><strong>考察</strong>：仮説は確かめられたか</li>
+      </ul>
+      <p class="small" style="margin-top:6px">手がかり：CNN は近くの画素から少しずつ広く見る。ViT は最初の層から全部のパッチどうしの関係を見る。</p>
+    </div>
+  </div>
+  <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
+<!-- 14 提出 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>提出</div>
+  <h2>提出物と期限</h2>
+  <table>
+    <tr><th>パート</th><th>ノートブック</th><th>CSV（results/ 直下）</th></tr>
+    <tr><td>成果発表</td><td><code>review.ipynb</code></td><td>―</td></tr>
+    <tr><td>演習1</td><td><code>ex1.ipynb</code></td><td><code>c1_d5_ex1.csv</code></td></tr>
+    <tr><td>演習2</td><td><code>ex2.ipynb</code></td><td><code>c1_d5_ex2.csv</code></td></tr>
+    <tr><td>オプション（任意）</td><td><code>opt_vit_transfer.ipynb</code></td><td><code>c1_d5_opt5.csv</code></td></tr>
+  </table>
+  <div class="grid3" style="margin-top:22px">
+    <div class="card a"><h3>期限</h3><p><strong>11/5（木）13:10</strong></p></div>
+    <div class="card"><h3>提出先</h3><p>Open-LMS「<a href="https://musashino-u.myopenlms.net/mod/assign/view.php?id=49871" target="_blank" rel="noopener" style="color:var(--blue)">第5回 課題提出</a>」</p></div>
+    <div class="card r"><h3>出さないもの</h3><p>写真。zip にしない。ファイル名を変えない</p></div>
+  </div>
+  <div class="foot"><span class="small"><a href="../aitd1_week_5.html" style="color:#9ad">第5回の授業ページへ</a></span><span class="pageno"></span></div>
+</section>
+
+</div>
+<div class="nav"><button id="prev" aria-label="前へ">←</button><button id="next" aria-label="次へ">→</button></div>
+
+<script>
+// ---------- 図（データは授業ページの教員機の実測） ----------
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs, parent, text) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text !== undefined) e.textContent = text; parent && parent.appendChild(e); return e; };
+const mean = a => a.reduce((s, x) => s + x, 0) / a.length;
+const sd = a => { const m = mean(a); return Math.sqrt(a.reduce((s, x) => s + (x - m) ** 2, 0) / (a.length - 1)); };
+
+function dotChart(svg, series, W, H, yMin) {
+  const L = 64, R = 18, T = 20, B = 52, pw = W - L - R, ph = H - T - B;
+  const y = v => T + ph * (1 - (v - yMin) / (100 - yMin));
+  for (let v = yMin; v <= 100; v += 10) {
+    el("line", {x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: "#2b2b2b"}, svg);
+    el("text", {x: L - 10, y: y(v) + 5, "text-anchor": "end", fill: "#8a8a8a", "font-size": 14}, svg, v);
+  }
+  el("text", {x: 16, y: T + ph / 2, fill: "#8a8a8a", "font-size": 14, transform: `rotate(-90 16 ${T + ph / 2})`, "text-anchor": "middle"}, svg, "テスト正解率（%）");
+  const bw = pw / series.length;
+  series.forEach((s, i) => {
+    const cx = L + bw * (i + .5), m = mean(s.v), d = sd(s.v);
+    el("line", {x1: cx + 22, x2: cx + 22, y1: y(Math.min(100, m + d)), y2: y(Math.max(yMin, m - d)), stroke: "#e6e6e6", "stroke-width": 2}, svg);
+    el("line", {x1: cx + 14, x2: cx + 30, y1: y(m), y2: y(m), stroke: "#e6e6e6", "stroke-width": 3}, svg);
+    el("text", {x: cx + 36, y: y(m) + 5, fill: "#f2f2f2", "font-size": 15, "font-weight": 700}, svg, m.toFixed(1));
+    const seen = {};
+    s.v.forEach((v, k) => {
+      const same = s.v.filter(x => x === v).length, n = (seen[v] = (seen[v] || 0) + 1) - 1;
+      const c = el("circle", {cx: cx - 16 + (n - (same - 1) / 2) * 10, cy: y(v), r: 6, fill: s.c, stroke: "#161616", "stroke-width": 2}, svg);
+      el("title", {}, c, `${s.name}・シード ${k}：${v.toFixed(1)}%`);
+    });
+    s.label.split("\n").forEach((t, j) => el("text", {x: cx, y: H - B + 24 + j * 18, "text-anchor": "middle", fill: "#c8c8c8", "font-size": 15}, svg, t));
+  });
+}
+const SCRATCH = "#B97A20", PRE = "#2F8FCC";
+dotChart(document.getElementById("chart4"), [
+  {name: "MLP", label: "MLP", c: SCRATCH, v: [80.0, 56.7, 80.0, 83.3, 83.3]},
+  {name: "CNN", label: "CNN", c: SCRATCH, v: [86.7, 70.0, 86.7, 90.0, 83.3]},
+], 600, 380, 50);
+dotChart(document.getElementById("chart5"), [
+  {name: "CNN", label: "CNN\n（ゼロから）", c: SCRATCH, v: [86.7, 73.3, 86.7, 90.0, 83.3]},
+  {name: "ResNet18 凍結", label: "ResNet18\n凍結", c: PRE, v: [96.7, 100, 96.7, 100, 100]},
+  {name: "ResNet18 微調整", label: "ResNet18\n微調整", c: PRE, v: [100, 100, 100, 100, 100]},
+  {name: "ViT 凍結", label: "ViT\n凍結", c: PRE, v: [100, 100, 100, 96.7, 96.7]},
+], 640, 380, 60);
+
+// テスト 30 枚のタイル（1 枚を強調）
+const tiles = document.getElementById("tiles");
+for (let i = 0; i < 30; i++) {
+  const r = el("rect", {x: i * 38, y: 30, width: 32, height: 110, rx: 5, fill: i === 29 ? "#FF6B6B" : "#2F8FCC"}, tiles);
+  el("title", {}, r, i === 29 ? "この1枚を外すと 100% → 96.7%" : `テスト画像 ${i + 1}`);
+}
+el("text", {x: 29 * 38 + 16, y: 22, "text-anchor": "middle", fill: "#FF6B6B", "font-size": 16, "font-weight": 700}, tiles, "1枚 = 3.3");
+
+// 5 つの手順
+const steps = [["1 読む", "torch.load"], ["2 組み立てる", "⑦ をコピー"], ["3 重みを入れる", "load_state_dict"], ["4 評価モード", "model.eval()"], ["5 推論", "新しい写真"]];
+const g5 = document.getElementById("steps5");
+steps.forEach(([a, b], i) => {
+  const x = i * 236;
+  el("rect", {x, y: 20, width: 200, height: 100, rx: 10, fill: "#1d1d1d", stroke: "#4FC3F7", "stroke-width": 2}, g5);
+  el("text", {x: x + 100, y: 60, "text-anchor": "middle", fill: "#fff", "font-weight": 700, "font-size": 19}, g5, a);
+  el("text", {x: x + 100, y: 92, "text-anchor": "middle", fill: "#aaa", "font-family": "JetBrains Mono, monospace", "font-size": 15}, g5, b);
+  if (i < 4) el("line", {x1: x + 204, x2: x + 230, y1: 70, y2: 70, stroke: "#777", "stroke-width": 2, "marker-end": "url(#ar2)"}, g5);
+});
+
+// 本日の流れ（横の帯．幅は分に比例）
+const tl = document.getElementById("timeline"), PX = 1160 / 150;
+[[0, 30, "成果発表", "#FFB800"], [30, 35, "準備", "#888"], [35, 85, "演習1 ResNet18 を凍結 → 微調整", "#4FC3F7"],
+ [85, 120, "演習2 4つ × 5回", "#4FC3F7"], [120, 150, "討議 → 考察", "#81C784"]].forEach(([s, e, name, c]) => {
+  const x = s * PX + 1, w = (e - s) * PX - 2;
+  el("rect", {x, y: 40, width: w, height: 84, rx: 6, fill: c, opacity: .9}, tl);
+  if (w > 60) el("text", {x: x + 12, y: 90, fill: "#111", "font-size": 19, "font-weight": 700}, tl, name);
+  el("text", {x, y: 150, fill: "#8a8a8a", "font-size": 15}, tl, s);
+});
+el("text", {x: 1160, y: 150, "text-anchor": "end", fill: "#8a8a8a", "font-size": 15}, tl, "150 分");
+el("text", {x: 30 * PX + 1, y: 30, fill: "#aaa", "font-size": 14}, tl, "準備（重みのダウンロード）");
+
+// 凍結・微調整の層の図
+function layers(g, y0, trainAll) {
+  const names = ["conv1", "layer1", "layer2", "layer3", "layer4", "fc"];
+  names.forEach((n, i) => {
+    const x = i * 90, last = i === names.length - 1, on = trainAll || last;
+    el("rect", {x, y: y0, width: 80, height: 80, rx: 8, fill: on ? "#2F8FCC" : "#3a3a3a", stroke: on ? "#2F8FCC" : "#666"}, g);
+    el("text", {x: x + 40, y: y0 + 46, "text-anchor": "middle", fill: on ? "#fff" : "#bbb", "font-size": 15, "font-family": "JetBrains Mono, monospace"}, g, n);
+  });
+}
+layers(document.getElementById("frz"), 40, false);
+layers(document.getElementById("fine"), 186, true);
+
+// ---------- ページ送り ----------
+const slides = [...document.querySelectorAll(".slide")];
+let cur = 0;
+function fit() { const s = Math.min(innerWidth / 1320, innerHeight / 760); slides.forEach(sl => sl.style.transform = `scale(${s})`); }
+function show(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, k) => s.classList.toggle("on", k === cur));
+  document.getElementById("bar").style.width = `${(cur + 1) / slides.length * 100}%`;
+  history.replaceState(null, "", `#${cur + 1}`);
+}
+slides.forEach((s, k) => { const p = s.querySelector(".pageno"); if (p) p.textContent = `${k + 1} / ${slides.length}`; });
+addEventListener("keydown", e => {
+  if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); show(cur + 1); }
+  if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); show(cur - 1); }
+  if (e.key === "Home") show(0);
+  if (e.key === "End") show(slides.length - 1);
+});
+document.getElementById("next").onclick = () => show(cur + 1);
+document.getElementById("prev").onclick = () => show(cur - 1);
+addEventListener("resize", fit);
+fit(); show((parseInt(location.hash.slice(1)) || 1) - 1);
+</script>
+</body>
+</html>
