@@ -498,6 +498,34 @@ svg text{font-family:"Noto Sans JP","Hiragino Sans",sans-serif}
   <div class="foot"><span></span><span class="pageno"></span></div>
 </section>
 
+<!-- 10b 補足：微調整は重みをリセットしない -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>補足 ― 微調整は重みをリセットしない</div>
+  <h2>微調整は、学習済みの重みから少しずつ直す</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1.1fr">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <table>
+        <tr><th>やり方</th><th>出発点</th><th>学習する層</th></tr>
+        <tr><td>ゼロから<br><span class="small">第4回の CNN</span></td><td><strong style="color:var(--scratch)">ランダムな値</strong><br><span class="small">（＝リセット）</span></td><td>全部</td></tr>
+        <tr><td>凍結</td><td><strong style="color:var(--pre)">学習済みの重み</strong></td><td>fc だけ</td></tr>
+        <tr><td>微調整<br><span class="small">フルファインチューニング</span></td><td><strong style="color:var(--pre)">学習済みの重み</strong></td><td>全部（少しずつ）</td></tr>
+      </table>
+      <div class="card b"><p>ランダムな値から始まるのは、付け替えた<strong>最終層 fc だけ</strong>。</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <table>
+        <tr><th>学習率</th><th class="num">conv1</th><th class="num">layer1</th><th class="num">layer4</th><th class="num">全体の平均</th><th class="num">テスト</th></tr>
+        <tr><td><strong>0.0001</strong><br><span class="small">教材の値</span></td><td class="num">0.6%</td><td class="num">1.7%</td><td class="num">7.8%</td><td class="num"><strong>3.2%</strong></td><td class="num">100%</td></tr>
+        <tr><td><strong>0.01</strong><br><span class="small">100倍</span></td><td class="num">60%</td><td class="num">124%</td><td class="num">518%</td><td class="num"><strong style="color:var(--red)">217%</strong></td><td class="num">93.3%</td></tr>
+      </table>
+      <p class="small">10エポック後の重みの変化率（変化の大きさ ÷ 元の重みの大きさ）。教員機・ケーブル画像・シード0の1回。</p>
+      <div class="card a"><p>学習率 0.0001 なら重みは平均 <strong>約3%</strong> しか動かず、ImageNet で学んだ中身が残る。入口に近い層（輪郭・色）ほど動かない。</p></div>
+      <div class="card r"><p>学習率が大きいと元の何倍も動き、学習済みの中身が<strong>壊れる</strong>（破滅的忘却）。だから微調整の学習率は凍結の 1/10。</p></div>
+    </div>
+  </div>
+  <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
 <!-- 11 変える所 -->
 <section class="slide">
   <div class="kicker"><span class="tag w5">第5回</span>演習1 ― 第4回 ex1 のセルをコピーして直す</div>
