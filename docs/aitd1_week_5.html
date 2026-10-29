@@ -521,6 +521,7 @@ a.sub-item:hover {
         <a href="#sec-show" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">1</span><span class="tag tag-standard">成果発表</span>review.ipynb</a>
         <a href="#sec-ex1" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">演習1</span>ex1.ipynb ／ c1_d5_ex1.csv</a>
         <a href="#sec-ex2" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">演習2</span>ex2.ipynb ／ c1_d5_ex2.csv</a>
+        <a href="#sec-hw" class="sub-item" style="text-decoration:none;color:inherit"><span class="sub-count">2</span><span class="tag tag-standard">宿題</span>summary.ipynb ／ c1_d5_summary.pdf</a>
         <a href="#sec-opt" class="sub-item" style="text-decoration:none;color:inherit;border-color:#66BB6A"><span class="sub-count" style="background:#66BB6A">任意</span><span class="tag" style="background:#0a1a2e;color:#66BB6A">オプション</span>opt_vit_transfer.ipynb ／ c1_d5_opt5.csv</a>
       </div>
       <div style="background:#0a1a2e;border:1px solid #2a6a9a;border-radius:8px;padding:0.8rem 1rem;margin-top:1rem;font-size:0.85rem;color:#81D4FA">
@@ -735,6 +736,26 @@ print(<span class="str">"出力の形状: "</span>, output.size())              
   </div>
 </section>
 
+<!-- ============ HOMEWORK ============ -->
+<section id="sec-hw">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num" style="background:#FFB800">宿題</div>
+      <h2>宿題：転移学習を図解する（知識の整理）― <code>summary.ipynb</code></h2>
+    </div>
+    <div class="card standard">
+      <p style="font-size:0.9rem;color:#ccc;margin-bottom:0.6rem">授業のスライドは例の1つ。<strong>授業スライド以外の資料を2つ以上</strong>使って自分で調べ、Google スライドで図解する。</p>
+      <ol style="font-size:0.9rem;padding-left:1.4rem;line-height:1.9">
+        <li><strong>調べる</strong>：教科書 第8章・<a href="https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html" target="_blank" rel="noopener" style="color:#4FC3F7">PyTorch 公式チュートリアル</a>・<a href="https://cs231n.github.io/transfer-learning/" target="_blank" rel="noopener" style="color:#4FC3F7">CS231n</a> など。LLM で調べてもよいが、出典は資料にする</li>
+        <li><strong>整理する</strong>：<code>summary.ipynb</code> の (2) に6つのテーマの説明と出典、(3) に演習2の結果と「自分の写真なら何層まで学習するか」を書く</li>
+        <li><strong>図解する</strong>：Google スライドで5〜7枚。各スライドに図を1つ以上（自分で描くか、Google スライドの AI に描かせる。AI の図は誤りを直し「AI で生成」と書く）</li>
+        <li><strong>保存する</strong>：「ファイル → ダウンロード → PDF ドキュメント」で <code>c1_d5_summary.pdf</code></li>
+      </ol>
+      <p style="font-size:0.85rem;color:#ccc;margin-top:0.5rem"><strong>提出：</strong><code>summary.ipynb</code> と <code>c1_d5_summary.pdf</code> を「第5回 課題提出」へ。評価は <code>summary.ipynb</code> の (5) の7つの観点で ○・△・×。</p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ OPTION ============ -->
 <section id="sec-opt">
   <div class="container">
@@ -768,7 +789,8 @@ print(<span class="str">"出力の形状: "</span>, output.size())              
         <tr><td><input type="checkbox"></td><td>成果発表の <code>review.ipynb</code> の (1)〜(3) を書いた</td></tr>
         <tr><td><input type="checkbox"></td><td>演習1 の①〜⑫（凍結と微調整）がすべて <code>OK</code> で、振り返りを書いた</td></tr>
         <tr><td><input type="checkbox"></td><td>演習2 の (2) の表とグラフが出ていて、考察を書いた</td></tr>
-        <tr><td><input type="checkbox"></td><td>ノートブックを3つ（review・ex1・ex2）と CSV を2つ（ex1・ex2）提出する。写真は出さない</td></tr>
+        <tr><td><input type="checkbox"></td><td>宿題の <code>summary.ipynb</code> の (2)(3) を書き、Google スライドを <code>c1_d5_summary.pdf</code> にした</td></tr>
+        <tr><td><input type="checkbox"></td><td>ノートブックを4つ（review・ex1・ex2・summary）、CSV を2つ（ex1・ex2）、PDF を1つ提出する。写真は出さない</td></tr>
         <tr><td><input type="checkbox"></td><td>zip にせず、ファイル名を変えていない</td></tr>
       </table>
       <div class="notion-submit"><div><strong>提出:</strong> Open-LMS の<a href="https://musashino-u.myopenlms.net/mod/assign/view.php?id=49871" target="_blank" rel="noopener" style="color:#4FC3F7">「第5回 課題提出」</a>へ各自アップロード（期限：11/5（木）13:10）</div></div>
