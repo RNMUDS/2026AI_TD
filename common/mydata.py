@@ -192,7 +192,9 @@ def diff_ratio(a, b):
     a, b = np.asarray(a, dtype=float), np.asarray(b, dtype=float)
     sd = np.sqrt((a.std(ddof=1) ** 2 + b.std(ddof=1) ** 2) / 2)
     diff = b.mean() - a.mean()
-    return diff, sd, (abs(diff) / sd if sd > 0 else float("inf"))
+    if sd == 0:   # 5 回とも同じ値（例：両方 100%）
+        return diff, sd, (0.0 if diff == 0 else float("inf"))
+    return diff, sd, abs(diff) / sd
 
 
 def verdict(ratio):

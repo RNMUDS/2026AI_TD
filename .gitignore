@@ -25,3 +25,6 @@ assets/myphotos/
 assets/mydata/
 assets/mynew_photos/
 assets/mynew/
+# 第5回 オプション課題：ViT 用に集めた写真（公開しない）
+assets/myphotos_vit/
+assets/mydata_vit/
