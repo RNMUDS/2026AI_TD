@@ -578,6 +578,41 @@ svg text{font-family:"Noto Sans JP","Hiragino Sans",sans-serif}
   <div class="foot"><span></span><span class="pageno"></span></div>
 </section>
 
+<!-- 10e 補足：一部の層だけ凍結するコード -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>補足 ― 一部の層だけ凍結するコード</div>
+  <h2>layer4 と fc だけを学習する ⑦⑧⑨ の書き方</h2>
+  <div class="grid2" style="grid-template-columns:1.25fr 1fr">
+<pre style="font-size:15px;line-height:1.45;align-self:start">NUM_CLASSES = len(full_dataset.classes)
+model = models.resnet18(weights=ResNet18_Weights.IMAGENET1K_V1)
+
+<span class="k">for</span> param <span class="k">in</span> model.parameters():          <span class="c"># 1 いったん全部を凍結</span>
+    param.requires_grad = False
+
+num_ftrs = model.fc.in_features
+model.fc = nn.Linear(num_ftrs, NUM_CLASSES)    <span class="c"># 2 新しい fc は学習する</span>
+
+<span class="hl"><span class="k">for</span> param <span class="k">in</span> model.layer4.parameters():   <span class="c"># 3 layer4 の凍結を解く</span>
+    param.requires_grad = True</span>
+model = model.to(device)
+
+<span class="c"># ⑧⑨ 学習する重みだけを渡す（学習率は微調整と同じ）</span>
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(
+    [p <span class="k">for</span> p <span class="k">in</span> model.parameters() <span class="k">if</span> p.requires_grad],
+    lr=0.0001)</pre>
+    <div style="display:flex;flex-direction:column;gap:10px;align-self:start">
+      <div class="card b"><h3>requires_grad = False の意味</h3><p>その重みの勾配を計算しない → <code>optimizer.step()</code> で<strong>値が変わらない</strong>（凍結）。</p></div>
+      <div class="card a"><h3>凍結を解く範囲を変える</h3><p>3 に <code>model.layer3</code> も足せば後ろ2ブロック。名前は次で確かめる：</p>
+<pre style="font-size:14px;padding:8px 12px;margin-top:6px">[n <span class="k">for</span> n, _ <span class="k">in</span> model.named_children()]
+<span class="c"># conv1 bn1 relu maxpool layer1 layer2</span>
+<span class="c"># layer3 layer4 avgpool fc</span></pre></div>
+      <div class="card g"><p>学習する数：<strong>8,394,754</strong>（全体の約75%）</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="small">凍結しても BatchNorm の平均・分散は model.train() のあいだ更新される（重みとは別）</span><span class="pageno"></span></div>
+</section>
+
 <!-- 11 変える所 -->
 <section class="slide">
   <div class="kicker"><span class="tag w5">第5回</span>演習1 ― 第4回 ex1 のセルをコピーして直す</div>
