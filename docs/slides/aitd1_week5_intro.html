@@ -528,6 +528,56 @@ svg text{font-family:"Noto Sans JP","Hiragino Sans",sans-serif}
   <div class="foot"><span></span><span class="pageno"></span></div>
 </section>
 
+<!-- 10c 補足：何層まで学習し直すか -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>補足 ― 何層まで学習し直すか</div>
+  <h2>何層まで学習し直すか：後ろの層から、検証で決める</h2>
+  <svg viewBox="0 0 1160 96" width="1160" height="96" role="img" aria-label="入口の層は汎用、出口の層は ImageNet に特化"><g id="fig-depth"></g></svg>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;margin-top:8px">
+    <div>
+      <table>
+        <tr><th style="width:7.5rem"></th><th>ImageNet に似ている</th><th>似ていない</th></tr>
+        <tr><td><strong>写真が少ない</strong></td><td>凍結（fc だけ）</td><td>凍結。足りなければ後ろの数層</td></tr>
+        <tr><td><strong>写真が多い</strong></td><td>後ろの数層〜全層</td><td>全層</td></tr>
+      </table>
+      <p class="small" style="margin-top:8px">少ないのに多くの層を動かすと合わせすぎ（過学習）になりやすい。似ていないほど入口まで直す意味がある。境目の枚数に決まった値は無い（CS231n の整理）。</p>
+    </div>
+    <div class="card b" style="align-self:start">
+      <h3>決め方の手順</h3>
+      <ol style="padding-left:1.3em">
+        <li>凍結で回し、基準の正解率を出す</li>
+        <li>fc → layer4 → layer3 … と<strong>後ろから1ブロックずつ</strong>広げ、<strong>検証</strong>の正解率を見る</li>
+        <li>上がらなくなったら止める。テストは最後に1回だけ</li>
+        <li>シードを変えて複数回回し、差 ÷ 標準偏差で判定する</li>
+      </ol>
+    </div>
+  </div>
+  <div class="foot"><span class="small">学習する層の数も、学習率と同じく自分で決める設定の1つ。層ごとに学習率を変える（前の層ほど小さく）やり方もある</span><span class="pageno"></span></div>
+</section>
+
+<!-- 10d 補足：後ろ5層と全層の実測 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>補足 ― 何層まで学習し直すか（実測）</div>
+  <h2>後ろ5層と全層：ケーブル画像では差があるとは言えない</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <table>
+        <tr><th>学習する層</th><th class="num">学習する数</th><th class="num">訓練140枚</th><th class="num">訓練20枚</th></tr>
+        <tr><td>凍結（fc）</td><td class="num">1,026</td><td class="num">99.3 ± 1.5</td><td class="num">71.3 ± 12.2</td></tr>
+        <tr><td>後ろ5層（layer4・fc）</td><td class="num">839万</td><td class="num">100 ± 0</td><td class="num">86.7 ± 8.5</td></tr>
+        <tr><td>全層</td><td class="num">1,118万</td><td class="num">100 ± 0</td><td class="num">84.0 ± 11.9</td></tr>
+      </table>
+      <p class="small">テスト正解率（%）、5回の平均 ± 標準偏差。教員機・ケーブル画像（テスト30枚）。20枚は訓練データの先頭20枚（クラスの枚数はそろえていない）。後ろ5層 ＝ layer4 の畳み込み4層 ＋ fc。</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card"><h3>訓練140枚</h3><p>後ろ5層も全層も5回とも100%。テスト30枚では、これ以上は比べられない。</p></div>
+      <div class="card a"><h3>訓練20枚</h3><p>後ろ5層 → 全層：差 −2.7 ÷ 10.3 ＝ <strong>0.3 → 言えない</strong><br>凍結 → 後ろ5層：差 +15.3 ÷ 10.5 ＝ <strong>1.5 → どちらとも言えない</strong></p></div>
+      <div class="card b"><p>少ない写真では、後ろの数層だけで全層と同じくらい。全層でも学習率が小さければ入口の層はほとんど動かない（conv1 0.7%・layer4 5.4%）。</p></div>
+    </div>
+  </div>
+  <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
 <!-- 11 変える所 -->
 <section class="slide">
   <div class="kicker"><span class="tag w5">第5回</span>演習1 ― 第4回 ex1 のセルをコピーして直す</div>
@@ -832,6 +882,18 @@ el("text", {x: 420, y: 218, fill: "#8a8a8a", "font-size": 13}, gSeed, "（写真
     el("text", {x: k * 50 + 23, y: 22, "text-anchor": "middle", fill: on ? "#fff" : "#bbb", "font-size": 11, "font-family": "JetBrains Mono, monospace"}, g, n);
   });
 });
+
+// 何層まで学習し直すか：入口は汎用・出口は特化
+(function () {
+  const g = document.getElementById("fig-depth"), names = ["conv1", "layer1", "layer2", "layer3", "layer4", "fc"];
+  names.forEach((n, i) => {
+    const x = i * 196;
+    el("rect", {x, y: 6, width: 180, height: 48, rx: 8, fill: `rgba(47,143,204,${0.15 + i * 0.15})`, stroke: PRE}, g);
+    el("text", {x: x + 90, y: 37, "text-anchor": "middle", fill: "#fff", "font-size": 17, "font-family": "JetBrains Mono, monospace"}, g, n);
+  });
+  el("text", {x: 0, y: 84, fill: "#ccc", "font-size": 16}, g, "← 入口：輪郭・色・模様（どの写真にも使える）");
+  el("text", {x: 1160, y: 84, "text-anchor": "end", fill: "#ccc", "font-size": 16}, g, "出口：ImageNet の物の形に特化 → ここから直す");
+})();
 
 // ---------- ページ送り ----------
 const slides = [...document.querySelectorAll(".slide")];
