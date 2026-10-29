@@ -168,6 +168,31 @@ svg text{font-family:"Noto Sans JP","Hiragino Sans",sans-serif}
   <div class="foot"><span class="small">保存したのは重みの数値（state_dict）・クラス名・画像の大きさ。構造は保存されない</span><span class="pageno"></span></div>
 </section>
 
+<!-- 3b 補足：MLP・CNN の部品 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w4">第4回</span>補足 ― MLP・CNN の部品</div>
+  <h2>Flatten・全結合・畳み込み・プーリング</h2>
+  <div class="grid2" style="grid-template-rows:1fr 1fr;gap:16px">
+    <div class="card a" style="display:flex;gap:16px;align-items:center">
+      <svg viewBox="0 0 200 120" width="200" height="120" style="flex:none" role="img" aria-label="Flatten の図"><g id="fig-flat"></g></svg>
+      <div><h3>Flatten（MLP）</h3><p>画像 3×64×64 を <strong>12,288 個の1列</strong>に並べ替える。値は変えず、重みも無い。上下の隣どうし（図の 1 と 4）が離れ、<strong>位置の関係が消える</strong>。</p></div>
+    </div>
+    <div class="card a" style="display:flex;gap:16px;align-items:center">
+      <svg viewBox="0 0 200 120" width="200" height="120" style="flex:none" role="img" aria-label="全結合の図"><g id="fig-fc"></g></svg>
+      <div><h3>全結合（MLP・CNN）</h3><p>出力1個 ＝ <strong>入力の全部 × 重み の合計 ＋ バイアス</strong>。12,288 → 512 だけで 12,288×512＋512 ≒ <strong>629万個</strong>（MLP の約98%）。</p></div>
+    </div>
+    <div class="card b" style="display:flex;gap:16px;align-items:center">
+      <svg viewBox="0 0 200 120" width="200" height="120" style="flex:none" role="img" aria-label="畳み込みの図"><g id="fig-conv"></g></svg>
+      <div><h3>畳み込み（CNN）</h3><p>3×3 の窓（フィルタ）を1画素ずつずらし、<strong>窓の中 × 重み の合計</strong>を出す。同じ窓を画像全体で使い回すので、重みは (3×3×3＋1)×16枚 ＝ <strong>448個</strong>。何を拾う窓になるかは学習で決まる。</p></div>
+    </div>
+    <div class="card b" style="display:flex;gap:16px;align-items:center">
+      <svg viewBox="0 0 200 120" width="200" height="120" style="flex:none" role="img" aria-label="プーリングの図"><g id="fig-pool"></g></svg>
+      <div><h3>プーリング（CNN）</h3><p>2×2 ごとに<strong>最大値を1つ</strong>残し、縦横を半分にする（64×64 → 32×32）。重みは無い。位置が少しずれても同じ値になりやすい。</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="small">CNN の重み 約210万個のほぼ全部は、プーリング後の全結合（16×32×32 ＝ 16,384 → 128）にある</span><span class="pageno"></span></div>
+</section>
+
 <!-- 4 演習2 -->
 <section class="slide">
   <div class="kicker"><span class="tag w4">第4回</span>ふりかえり 3/5 ― 演習2</div>
@@ -188,10 +213,65 @@ svg text{font-family:"Noto Sans JP","Hiragino Sans",sans-serif}
         <tr><td>1 以上 2 未満</td><td>どちらとも言えない</td></tr>
         <tr><td>1 未満</td><td><strong style="color:var(--red)">差があるとは言えない</strong></td></tr>
       </table>
+      <p class="small" style="margin-top:-6px">シードと5回の意味・基準の理由は、次の補足2枚</p>
       <div class="card a"><p>差 6.7 ポイント ÷ 標準偏差 9.7 ＝ <strong>0.7 → 差があるとは言えない</strong>。シード 1 だけ両方とも大きく下がった（分け方の当たり外れ）。</p></div>
     </div>
   </div>
   <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
+<!-- 4b 補足：シードと5回 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w4">第4回</span>補足 ― シードと5回</div>
+  <h2>なぜシードを変えて5回ずつ回したのか</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card b">
+        <h3>シード（乱数の種）とは</h3>
+        <p>乱数を作る出発点の数。<strong>同じシードなら同じ乱数</strong>が出るので、同じ結果を出し直せる（再現性）。</p>
+      </div>
+      <svg viewBox="0 0 560 230" width="560" height="230" role="img" aria-label="シードごとに変わるテストの写真"><g id="fig-seed"></g></svg>
+      <p class="small">シードを変えると、どの写真がテストになるか・重みの初期値・ミニバッチの順が変わる。同じシードなら、比べるモデルどうしで同じ写真を使う（公平な比較）。</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card a">
+        <h3>なぜ1回ではだめか</h3>
+        <p>1回の差は、モデルの違いか、<strong>分け方の当たり外れ</strong>かを区別できない。第4回ではシード1だけ両方とも大きく下がった。</p>
+      </div>
+      <div class="card a">
+        <h3>なぜ5回か</h3>
+        <p>何回か回すと<strong>ばらつき（標準偏差）</strong>が測れる（2回以上必要）。回数を増やすほど平均は安定するが時間もかかる。5回は授業時間内に回せる回数。</p>
+      </div>
+      <div class="card g">
+        <h3>差 ÷ 標準偏差 ＝ 差がばらつきの何個分か</h3>
+        <p>標準偏差は2つを2乗平均：√((11.3² ＋ 7.8²) ÷ 2) ≒ 9.7。差 6.7 ÷ 9.7 ＝ <strong>0.7</strong>。ばらつきより小さい差は、偶然でも出る。</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
+<!-- 4c 補足：判定の基準 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w4">第4回</span>補足 ― 判定の基準</div>
+  <h2>「差がある」を何で決めるか：差とばらつきの比</h2>
+  <div class="grid2" style="grid-template-columns:1.1fr 1fr">
+    <div>
+      <svg id="fig-judge" viewBox="0 0 620 400" width="620" height="400" role="img" aria-label="差がばらつきより小さい例と大きい例"></svg>
+      <p class="small">教員機・ケーブル画像の実測。点は5回の各回、白い線は平均。</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card b"><h3>見るのは2つ</h3><p><strong>平均の差</strong>と<strong>ばらつき（標準偏差）</strong>。差 ÷ 標準偏差 ＝ 差がばらつきの何個分か。</p></div>
+      <div class="card a"><h3>なぜ「2」と「1」か</h3><p>本当は差が無くても、シードの当たり外れだけで比がその値以上になる割合（5回ずつのとき）：</p>
+        <table style="margin-top:6px">
+          <tr><th>比</th><th>偶然で出る割合</th><th>だから</th></tr>
+          <tr><td>1</td><td>約15%（よく出る）</td><td>1未満は言えない</td></tr>
+          <tr><td>2</td><td>約1%（まれ）</td><td><strong>2以上は差がある</strong></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="small">割合は t 検定による目安（5回ずつ・ばらつきが正規分布に近いとき）</span><span class="pageno"></span></div>
 </section>
 
 <!-- 5 テスト枚数 -->
@@ -219,8 +299,45 @@ svg text{font-family:"Noto Sans JP","Hiragino Sans",sans-serif}
     <defs><marker id="ar2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#777"/></marker></defs>
     <g font-size="17" id="steps5"></g>
   </svg>
-  <div class="grid2" style="margin-top:6px;align-items:start">
-    <div class="card r"><h3>構造が違うと重みは入らない</h3><p>畳み込みのフィルタを 16 枚 → 8 枚にした CNN に <code>load_state_dict</code> するとエラー。ファイルには<strong>数値だけ</strong>が入っている。</p></div>
+  <div class="grid2" style="grid-template-columns:1.55fr 1fr;margin-top:2px;align-items:start">
+    <svg viewBox="0 0 700 330" width="700" height="330" role="img" aria-label="構造と重みは別。合わせて初めてモデルになる">
+      <defs><marker id="ar4" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#777"/></marker></defs>
+      <g font-size="15">
+        <rect x="0" y="0" width="220" height="150" rx="10" fill="#14283a" stroke="#4FC3F7" stroke-width="2"/>
+        <text x="110" y="28" text-anchor="middle" fill="#4FC3F7" font-weight="900" font-size="18">構造（器）</text>
+        <text x="110" y="50" text-anchor="middle" fill="#999" font-size="13">⑦ のコードで組み立てる</text>
+        <g font-family="JetBrains Mono, monospace" font-size="13" fill="#ddd">
+          <text x="16" y="78">Conv2d 3→16 (3×3)</text><text x="16" y="98">ReLU・MaxPool2d(2)</text>
+          <text x="16" y="118">Linear 16384→128</text><text x="16" y="138">Linear 128→2</text></g>
+        <text x="240" y="84" text-anchor="middle" fill="#aaa" font-size="26">＋</text>
+        <rect x="260" y="0" width="230" height="150" rx="10" fill="#2a2410" stroke="#FFB800" stroke-width="2"/>
+        <text x="375" y="28" text-anchor="middle" fill="#FFB800" font-weight="900" font-size="18">重み（中身の数値）</text>
+        <text x="375" y="50" text-anchor="middle" fill="#999" font-size="13">my_cnn.pt の state_dict</text>
+        <g font-family="JetBrains Mono, monospace" font-size="13" fill="#ddd">
+          <text x="276" y="78">0.weight 16×3×3×3</text><text x="276" y="98">0.bias   16</text>
+          <text x="276" y="118">4.weight 128×16384</text><text x="276" y="138">6.weight 2×128 …</text></g>
+        <line x1="496" y1="75" x2="532" y2="75" stroke="#777" stroke-width="2" marker-end="url(#ar4)"/>
+        <text x="514" y="168" text-anchor="middle" fill="#999" font-size="13" font-family="JetBrains Mono, monospace">load_state_dict</text>
+        <rect x="540" y="20" width="160" height="110" rx="10" fill="#1f2a1f" stroke="#81C784" stroke-width="2"/>
+        <text x="620" y="66" text-anchor="middle" fill="#81C784" font-weight="900" font-size="18">使えるモデル</text>
+        <text x="620" y="94" text-anchor="middle" fill="#ddd">形がすべて一致</text>
+
+        <rect x="0" y="180" width="220" height="110" rx="10" fill="#2a1a1a" stroke="#FF6B6B" stroke-width="2"/>
+        <text x="110" y="208" text-anchor="middle" fill="#FF6B6B" font-weight="900" font-size="17">構造を変えた ⑦</text>
+        <text x="16" y="244" fill="#ddd" font-family="JetBrains Mono, monospace" font-size="13">Conv2d 3→<tspan fill="#FF6B6B" font-weight="700">8</tspan> (3×3)</text>
+        <text x="16" y="270" fill="#999" font-size="13">フィルタを 16 枚 → 8 枚</text>
+        <text x="240" y="244" text-anchor="middle" fill="#aaa" font-size="26">＋</text>
+        <rect x="260" y="180" width="230" height="110" rx="10" fill="#2a2410" stroke="#FFB800" stroke-width="2"/>
+        <text x="375" y="208" text-anchor="middle" fill="#FFB800" font-weight="900" font-size="17">同じ重み</text>
+        <text x="276" y="244" fill="#ddd" font-family="JetBrains Mono, monospace" font-size="13">0.weight <tspan fill="#FF6B6B" font-weight="700">16</tspan>×3×3×3</text>
+        <text x="276" y="270" fill="#999" font-size="13">16 枚分の数値</text>
+        <line x1="496" y1="235" x2="532" y2="235" stroke="#777" stroke-width="2" marker-end="url(#ar4)"/>
+        <rect x="540" y="190" width="160" height="90" rx="10" fill="#2a1a1a" stroke="#FF6B6B" stroke-width="2"/>
+        <text x="620" y="228" text-anchor="middle" fill="#FF6B6B" font-weight="900" font-size="18">エラー</text>
+        <text x="620" y="254" text-anchor="middle" fill="#ddd" font-size="14">size mismatch</text>
+        <text x="0" y="318" fill="#8a8a8a" font-size="14">ファイルには数値だけが入っている。構造は自分で同じものを組み立てる（手順 2）。</text>
+      </g>
+    </svg>
     <div class="card g"><h3>討議：専用モデルを作る価値</h3><p>新しい写真（各クラス 5 枚）を、自分のモデルと LLM の両方に分類させた。<strong>LLM が当てられないタスク</strong>ほど、専用モデル（3-A）を作る価値がある。</p></div>
   </div>
   <div class="foot"><span></span><span class="pageno"></span></div>
@@ -300,6 +417,60 @@ svg text{font-family:"Noto Sans JP","Hiragino Sans",sans-serif}
   <div class="foot"><span></span><span class="pageno"></span></div>
 </section>
 
+<!-- 9b ImageNet と画像分類コンペ -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>補足 ― ImageNet</div>
+  <h2>ImageNet と画像分類コンペ（ILSVRC）</h2>
+  <div class="grid2" style="grid-template-columns:1.2fr 1fr">
+    <div>
+      <svg id="fig-ilsvrc" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="ILSVRC の優勝チームの top-5 誤り率の推移"></svg>
+      <p class="small">各年の優勝の top-5 誤り率（5つの候補に正解が無かった割合）。棒に重ねると値が出る。</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card b"><h3>ImageNet</h3><p>2009年公開の画像データセット。約1,400万枚に、写っている物の名前を人が付けた。</p></div>
+      <div class="card b"><h3>ILSVRC（2010〜2017年）</h3><p><strong>1000種類・訓練約128万枚</strong>で分類の正確さを競った大会。今日の ResNet18・ViT の重みもこの1000種類で学習した。</p></div>
+      <div class="card a"><h3>2012年の転換点</h3><p>CNN の AlexNet が 15.3% で優勝（2位は従来の方法で 26.2%）。以後は深層学習が勝ち続け、2015年の ResNet で人の目安を下回った。</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="small">人の約5%は、研究者1人が試した推定値</span><span class="pageno"></span></div>
+</section>
+
+<!-- 9c 有名なモデル -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>補足 ― ResNet 以外の有名なモデル</div>
+  <h2>ImageNet で生まれた有名なモデル</h2>
+  <table>
+    <tr><th style="width:5rem">年</th><th style="width:12rem">モデル</th><th>特徴</th><th class="num">パラメータ数</th></tr>
+    <tr><td>2012</td><td><strong>AlexNet</strong></td><td>GPU で学習した 8 層の CNN。ReLU・Dropout を使った</td><td class="num">約 6,100 万</td></tr>
+    <tr><td>2014</td><td><strong>VGG16</strong></td><td>3×3 の畳み込みだけを 16 層積む。形が単純</td><td class="num">約 1 億 3,800 万</td></tr>
+    <tr><td>2014</td><td><strong>GoogLeNet</strong></td><td>大きさの違う窓を並べて同時に見る（Inception）。22 層</td><td class="num">約 660 万</td></tr>
+    <tr><td>2015</td><td><strong>ResNet</strong></td><td>層を飛ばす近道（スキップ接続）で 152 層まで深くできた。今日は 18 層版</td><td class="num">約 1,170 万（18層）</td></tr>
+    <tr><td>2017</td><td><strong>MobileNet</strong></td><td>計算を減らしたスマホ向けの軽い CNN</td><td class="num">約 350 万（V2）</td></tr>
+    <tr><td>2019</td><td><strong>EfficientNet</strong></td><td>深さ・幅・画像の大きさをそろえて大きくする</td><td class="num">約 530 万（B0）</td></tr>
+    <tr><td>2020</td><td><strong>ViT</strong></td><td>画像を 16×16 のパッチに切り、Transformer の自己注意で見る</td><td class="num">約 8,600 万（B/16）</td></tr>
+  </table>
+  <div class="card b" style="margin-top:14px"><p>どれも <code>torchvision.models</code> に ImageNet で学習した重みがある。⑦の <code>models.resnet18(...)</code> を替えれば試せる（最後の層の名前はモデルごとに違う）。</p></div>
+  <div class="foot"><span class="small">パラメータ数は 1000 クラス用の最後の層を含む</span><span class="pageno"></span></div>
+</section>
+
+<!-- 9d 用語の定義 -->
+<section class="slide">
+  <div class="kicker"><span class="tag w5">第5回</span>用語の定義</div>
+  <h2>転移学習・ファインチューニング・フルファインチューニング</h2>
+  <table>
+    <tr><th style="width:15rem">用語</th><th>定義</th><th style="width:320px">学習する層（<span style="color:var(--pre)">■</span> 学習／<span style="color:#777">■</span> 固定）</th></tr>
+    <tr><td><strong>転移学習</strong></td><td>別のデータ（ImageNet）で学習済みの重みを<strong>出発点</strong>にして、新しいタスクを学習すること。下の3つをまとめた呼び名</td><td class="small">下の3つ全部</td></tr>
+    <tr><td><strong>凍結</strong><br><span class="small" style="color:var(--amber)">今日の「凍結」</span><span class="small">（特徴抽出とも言う）</span></td><td>本体の重みは<strong>動かさず</strong>、新しい最終層だけを学習する</td><td><svg viewBox="0 0 300 34" width="300" height="34" style="display:block" role="img" aria-label="学習する層"><g id="mini0"></g></svg></td></tr>
+    <tr><td><strong>ファインチューニング</strong></td><td>学習済みの重みの<strong>一部または全部</strong>を、小さな学習率で学習し直す（例：後ろの層と最終層だけ）</td><td><svg viewBox="0 0 300 34" width="300" height="34" style="display:block" role="img" aria-label="学習する層"><g id="mini1"></g></svg></td></tr>
+    <tr><td><strong>フルファインチューニング</strong><br><span class="small" style="color:var(--amber)">今日の「微調整」</span></td><td>ファインチューニングのうち、<strong>全部の層</strong>を学習し直すもの</td><td><svg viewBox="0 0 300 34" width="300" height="34" style="display:block" role="img" aria-label="学習する層"><g id="mini2"></g></svg></td></tr>
+  </table>
+  <div class="grid2" style="margin-top:14px;flex:none">
+    <div class="card b"><p>今日の演習の「<strong>凍結</strong>」は2行目、「<strong>微調整</strong>」は4行目のフルファインチューニング。</p></div>
+    <div class="card"><p class="small" style="font-size:17px">本や記事によっては、凍結だけを「転移学習」、重みを動かすものを「ファインチューニング」と分けて呼ぶ。読むときは<strong>どの層を学習するか</strong>で確かめる。</p></div>
+  </div>
+  <div class="foot"><span></span><span class="pageno"></span></div>
+</section>
+
 <!-- 10 凍結と微調整 -->
 <section class="slide">
   <div class="kicker"><span class="tag w5">第5回</span>演習1 ― ex1.ipynb（50分）</div>
@@ -316,7 +487,7 @@ svg text{font-family:"Noto Sans JP","Hiragino Sans",sans-serif}
       </g>
     </svg>
     <table style="align-self:start">
-      <tr><th></th><th>凍結</th><th>微調整</th></tr>
+      <tr><th></th><th>凍結</th><th>微調整<br><span class="small">（フルファインチューニング）</span></th></tr>
       <tr><td>学習する所</td><td>最終層 <code>fc</code> だけ</td><td>全部の層</td></tr>
       <tr><td>学習するパラメータ</td><td class="num"><strong>1,026</strong><br><span class="small">全体の約1万分の1</span></td><td class="num"><strong>11,177,538</strong><br><span class="small">全部</span></td></tr>
       <tr><td>学習率</td><td class="num">0.001</td><td class="num">0.0001</td></tr>
@@ -509,6 +680,128 @@ function layers(g, y0, trainAll) {
 }
 layers(document.getElementById("frz"), 40, false);
 layers(document.getElementById("fine"), 186, true);
+
+// ---------- 補足の図 ----------
+function cells(g, x0, y0, n, size, vals, fill) {
+  vals.forEach((v, i) => {
+    const x = x0 + (i % n) * size, y = y0 + Math.floor(i / n) * size;
+    el("rect", {x, y, width: size - 2, height: size - 2, rx: 3, fill: fill(i), stroke: "#555"}, g);
+    if (v !== "") el("text", {x: x + (size - 2) / 2, y: y + size / 2 + 4, "text-anchor": "middle", fill: "#eee", "font-size": 13}, g, v);
+  });
+}
+const nine = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const gFlat = document.getElementById("fig-flat");
+cells(gFlat, 0, 10, 3, 26, nine, i => (i === 0 || i === 3) ? "#7a5a10" : "#262626");
+el("text", {x: 104, y: 50, fill: "#999", "font-size": 22}, gFlat, "→");
+cells(gFlat, 0, 96, 9, 22, nine, i => (i === 0 || i === 3) ? "#7a5a10" : "#262626");
+
+const gFc = document.getElementById("fig-fc");
+const ins = [14, 42, 70, 98], outs = [36, 76];
+ins.forEach(a => outs.forEach(b => el("line", {x1: 40, y1: a, x2: 160, y2: b, stroke: "#777"}, gFc)));
+ins.forEach(a => el("circle", {cx: 40, cy: a, r: 9, fill: "#262626", stroke: "#bbb"}, gFc));
+outs.forEach(b => el("circle", {cx: 160, cy: b, r: 9, fill: "#7a5a10", stroke: "#FFB800"}, gFc));
+el("text", {x: 40, y: 118, "text-anchor": "middle", fill: "#999", "font-size": 12}, gFc, "入力");
+el("text", {x: 160, y: 118, "text-anchor": "middle", fill: "#999", "font-size": 12}, gFc, "出力");
+
+const gConv = document.getElementById("fig-conv");
+cells(gConv, 0, 5, 5, 22, Array(25).fill(""), i => (i % 5 < 3 && i < 15) ? "#14283a" : "#262626");
+el("rect", {x: -1, y: 4, width: 66, height: 66, fill: "none", stroke: "#4FC3F7", "stroke-width": 2.5, rx: 3}, gConv);
+el("text", {x: 124, y: 62, fill: "#999", "font-size": 22}, gConv, "→");
+el("rect", {x: 160, y: 40, width: 26, height: 26, rx: 3, fill: "#2F8FCC"}, gConv);
+el("text", {x: 173, y: 86, "text-anchor": "middle", fill: "#999", "font-size": 12}, gConv, "1つの値");
+
+const gPool = document.getElementById("fig-pool");
+const pv = [1, 3, 2, 0, 5, 2, 1, 4, 0, 1, 6, 2, 3, 2, 1, 1];
+const blk = i => (Math.floor(Math.floor(i / 4) / 2) * 2 + Math.floor((i % 4) / 2));
+const pcol = ["#14283a", "#2a2410", "#1f2a1f", "#2a1a1a"];
+cells(gPool, 0, 6, 4, 26, pv, i => pcol[blk(i)]);
+el("text", {x: 112, y: 62, fill: "#999", "font-size": 22}, gPool, "→");
+cells(gPool, 142, 32, 2, 28, [5, 4, 3, 6], i => pcol[i]);
+
+// シードごとのテスト写真（20枚：訓練14・検証3・テスト3）
+const gSeed = document.getElementById("fig-seed");
+function shuffled(seed) {
+  let x = seed * 2654435761 % 4294967296 + 12345;
+  const rnd = () => (x = (1103515245 * x + 12345) % 2147483648) / 2147483648;
+  const a = [...Array(20).keys()];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+for (let s = 0; s < 5; s++) {
+  const order = shuffled(s), role = {};
+  order.forEach((k, r) => role[k] = r < 14 ? 0 : r < 17 ? 1 : 2);
+  el("text", {x: 0, y: 26 + s * 38, fill: "#ccc", "font-size": 15}, gSeed, `シード ${s}`);
+  for (let k = 0; k < 20; k++) {
+    const r = el("rect", {x: 80 + k * 23, y: 10 + s * 38, width: 20, height: 24, rx: 3, fill: ["#3a3a3a", "#8a8a8a", "#2F8FCC"][role[k]]}, gSeed);
+    el("title", {}, r, `写真 ${k + 1}：${["訓練", "検証", "テスト"][role[k]]}`);
+  }
+}
+[["訓練", "#3a3a3a"], ["検証", "#8a8a8a"], ["テスト", "#2F8FCC"]].forEach(([t, c], i) => {
+  el("rect", {x: 80 + i * 110, y: 204, width: 16, height: 16, rx: 3, fill: c}, gSeed);
+  el("text", {x: 102 + i * 110, y: 218, fill: "#ccc", "font-size": 14}, gSeed, t);
+});
+el("text", {x: 420, y: 218, fill: "#8a8a8a", "font-size": 13}, gSeed, "（写真20枚の例）");
+
+// 判定の基準：差がばらつきより小さい例／大きい例
+(function () {
+  const g = document.getElementById("fig-judge"), L = 120, R = 600, x = v => L + (v - 50) / 50 * (R - L);
+  const rows = [
+    {t: "差 6.7 ÷ 標準偏差 9.7 ＝ 0.7 → 差があるとは言えない", y: 20, c: "#FF6B6B", s: [["MLP", SCRATCH, [80.0, 56.7, 80.0, 83.3, 83.3]], ["CNN", SCRATCH, [86.7, 70.0, 86.7, 90.0, 83.3]]]},
+    {t: "差 14.7 ÷ 標準偏差 4.7 ＝ 3.1 → 差がある", y: 200, c: "#4FC3F7", s: [["CNN", SCRATCH, [86.7, 73.3, 86.7, 90.0, 83.3]], ["ResNet18 凍結", PRE, [96.7, 100, 96.7, 100, 100]]]},
+  ];
+  rows.forEach(r => {
+    el("text", {x: 0, y: r.y + 4, fill: r.c, "font-size": 16, "font-weight": 700}, g, r.t);
+    r.s.forEach(([name, c, v], i) => {
+      const yy = r.y + 46 + i * 50, m = mean(v);
+      el("text", {x: 0, y: yy + 5, fill: "#ccc", "font-size": 15}, g, name);
+      el("line", {x1: L, x2: R, y1: yy, y2: yy, stroke: "#2b2b2b"}, g);
+      const seen = {};
+      v.forEach((val, k) => {
+        const n = (seen[val] = (seen[val] || 0) + 1) - 1;
+        const cc = el("circle", {cx: x(val), cy: yy - n * 9 + 4 * (v.filter(z => z === val).length - 1), r: 6, fill: c, stroke: "#161616", "stroke-width": 2}, g);
+        el("title", {}, cc, `${name}・シード ${k}：${val.toFixed(1)}%`);
+      });
+      el("line", {x1: x(m), x2: x(m), y1: yy - 16, y2: yy + 16, stroke: "#e6e6e6", "stroke-width": 3}, g);
+    });
+    [50, 60, 70, 80, 90, 100].forEach(v => el("text", {x: x(v), y: r.y + 150, "text-anchor": "middle", fill: "#8a8a8a", "font-size": 13}, g, v));
+  });
+  el("text", {x: R, y: 392, "text-anchor": "end", fill: "#8a8a8a", "font-size": 13}, g, "テスト正解率（%）");
+})();
+
+// ILSVRC 優勝の top-5 誤り率
+(function () {
+  const g = document.getElementById("fig-ilsvrc");
+  const d = [[2010, 28.2, "NEC-UIUC"], [2011, 25.8, "XRCE"], [2012, 15.3, "AlexNet"], [2013, 11.7, "Clarifai"],
+             [2014, 6.7, "GoogLeNet"], [2015, 3.6, "ResNet"], [2016, 3.0, "Trimps-Soushen"], [2017, 2.3, "SENet"]];
+  const L = 56, R = 630, T = 16, B = 360, y = v => B - v / 30 * (B - T), bw = (R - L) / d.length;
+  [0, 10, 20, 30].forEach(v => {
+    el("line", {x1: L, x2: R, y1: y(v), y2: y(v), stroke: "#2b2b2b"}, g);
+    el("text", {x: L - 8, y: y(v) + 5, "text-anchor": "end", fill: "#8a8a8a", "font-size": 13}, g, v + "%");
+  });
+  d.forEach(([yr, v, name], i) => {
+    const x = L + i * bw + 8, w = bw - 16, h = B - y(v);
+    const r = el("path", {d: `M${x},${B} V${y(v) + 4} q0,-4 4,-4 h${w - 8} q4,0 4,4 V${B} z`, fill: yr >= 2012 ? PRE : "#777"}, g);
+    el("title", {}, r, `${yr}年 ${name}：${v}%`);
+    el("text", {x: x + w / 2, y: y(v) - 8, "text-anchor": "middle", fill: "#f2f2f2", "font-size": 14, "font-weight": 700}, g, v);
+    el("text", {x: x + w / 2, y: B + 20, "text-anchor": "middle", fill: "#c8c8c8", "font-size": 13}, g, yr);
+    if (["AlexNet", "GoogLeNet", "ResNet"].includes(name)) el("text", {x: x + w / 2, y: B + 37, "text-anchor": "middle", fill: "#c8c8c8", "font-size": 12}, g, name);
+  });
+  el("line", {x1: L, x2: R, y1: y(5.1), y2: y(5.1), stroke: "#FFB800", "stroke-dasharray": "6 5", "stroke-width": 2}, g);
+  el("text", {x: R, y: y(5.1) - 6, "text-anchor": "end", fill: "#FFB800", "font-size": 13}, g, "人の目安 約5%");
+  el("rect", {x: L + 300, y: 18, width: 14, height: 14, rx: 3, fill: "#777"}, g); el("text", {x: L + 320, y: 30, fill: "#ccc", "font-size": 13}, g, "従来の方法");
+  el("rect", {x: L + 410, y: 18, width: 14, height: 14, rx: 3, fill: PRE}, g); el("text", {x: L + 430, y: 30, fill: "#ccc", "font-size": 13}, g, "深層学習（CNN）");
+})();
+
+// 用語の定義：学習する層
+[1, 5, 0].forEach((from, i) => {   // from 番目以降の層を学習する（凍結は fc だけ）
+  const g = document.getElementById("mini" + i), names = ["conv1", "layer1", "layer2", "layer3", "layer4", "fc"];
+  const start = i === 0 ? 5 : i === 1 ? 4 : 0;
+  names.forEach((n, k) => {
+    const on = k >= start;
+    el("rect", {x: k * 50, y: 2, width: 46, height: 30, rx: 5, fill: on ? PRE : "#3a3a3a", stroke: on ? PRE : "#666"}, g);
+    el("text", {x: k * 50 + 23, y: 22, "text-anchor": "middle", fill: on ? "#fff" : "#bbb", "font-size": 11, "font-family": "JetBrains Mono, monospace"}, g, n);
+  });
+});
 
 // ---------- ページ送り ----------
 const slides = [...document.querySelectorAll(".slide")];
